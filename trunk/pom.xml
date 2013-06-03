@@ -1,0 +1,210 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.common</groupId>
+	<artifactId>swing</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<spring.richclient.version>1.1.0</spring.richclient.version>
+		<jdk.version>1.7</jdk.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<id>javadoc-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<includeDependencySources>false</includeDependencySources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<compilerVersion>${jdk.version}</compilerVersion>
+					<verbose>true</verbose>
+					<fork>true</fork>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>
+								${project.build.directory}/lib
+							</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[2.7,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+
+		<!-- La librerias comun -->
+
+		<dependency>
+			<groupId>com.common</groupId>
+			<artifactId>util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Libreria de pruebas -->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.1</version>
+		</dependency>
+
+		<!-- Libreria de Log -->
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<!-- La dependencia de SPRING RCP -->
+
+		<dependency>
+			<groupId>org.springframework.richclient</groupId>
+			<artifactId>spring-richclient-core</artifactId>
+			<version>${spring.richclient.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.richclient</groupId>
+			<artifactId>spring-richclient-archetype</artifactId>
+			<version>${spring.richclient.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.richclient</groupId>
+			<artifactId>spring-richclient-integrations</artifactId>
+			<version>${spring.richclient.version}</version>
+			<type>pom</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.richclient</groupId>
+			<artifactId>spring-richclient-jdk6</artifactId>
+			<version>${spring.richclient.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.richclient</groupId>
+			<artifactId>spring-richclient-manual</artifactId>
+			<version>${spring.richclient.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.richclient</groupId>
+			<artifactId>spring-richclient-resources</artifactId>
+			<version>${spring.richclient.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.richclient</groupId>
+			<artifactId>spring-richclient-sandbox</artifactId>
+			<version>${spring.richclient.version}</version>
+		</dependency>
+
+		<!-- La dependencia de las pruebas de SPRING RCP -->
+
+		<dependency>
+			<groupId>org.springframework.richclient.samples.petclinic</groupId>
+			<artifactId>petclinic-gui</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+</project>
