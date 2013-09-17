@@ -15,6 +15,7 @@ public interface FormCloseListener {
 	 * @author Guillermo Mazzali
 	 * @version 1.0
 	 */
+	@Deprecated
 	public enum WindowCloseState {
 
 		/**
@@ -37,5 +38,6 @@ public interface FormCloseListener {
 	 * 
 	 * @return El estado en el que fue cerrada esta ventana.
 	 */
+	@Deprecated
 	public WindowCloseState getCloseState();
 }
