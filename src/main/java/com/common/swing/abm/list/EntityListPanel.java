@@ -32,9 +32,9 @@ import org.apache.log4j.Logger;
 
 import com.common.swing.abm.edit.EntityEditDialog;
 import com.common.swing.abm.edit.EntityEditPanel;
+import com.common.swing.icon.IconResources;
 import com.common.swing.listener.FormCloseListener.WindowCloseState;
 import com.common.swing.model.GenericPanel;
-import com.common.swing.util.SwingResources;
 import com.common.util.model.Persistence;
 import com.common.util.service.GenericService;
 
@@ -193,7 +193,7 @@ public abstract class EntityListPanel<E extends Persistence<PK>, PK extends Seri
 		});
 		this.newButton.setFont(new Font("Arial", Font.BOLD, 11));
 		this.newButton.setBounds(420, 11, EntityListPanel.buttonWidth, EntityListPanel.buttonHeight);
-		this.newButton.setIcon(SwingResources.ADD_ICON);
+		this.newButton.setIcon(IconResources.ADD_ICON);
 		this.add(this.newButton);
 
 		this.modifyButton = new JButton(this.getModifyButtonLabel());
@@ -205,7 +205,7 @@ public abstract class EntityListPanel<E extends Persistence<PK>, PK extends Seri
 		});
 		this.modifyButton.setFont(new Font("Arial", Font.BOLD, 11));
 		this.modifyButton.setBounds(420, 62, EntityListPanel.buttonWidth, EntityListPanel.buttonHeight);
-		this.modifyButton.setIcon(SwingResources.MODIFY_ICON);
+		this.modifyButton.setIcon(IconResources.MODIFY_ICON);
 		this.add(this.modifyButton);
 
 		this.deleteButton = new JButton(this.getDeleteButtonLabel());
@@ -217,7 +217,7 @@ public abstract class EntityListPanel<E extends Persistence<PK>, PK extends Seri
 		});
 		this.deleteButton.setFont(new Font("Arial", Font.BOLD, 11));
 		this.deleteButton.setBounds(420, 113, EntityListPanel.buttonWidth, EntityListPanel.buttonHeight);
-		this.deleteButton.setIcon(SwingResources.DELETE_ICON);
+		this.deleteButton.setIcon(IconResources.DELETE_ICON);
 		this.add(this.deleteButton);
 
 		this.progressLabel = new JLabel("");
@@ -234,7 +234,7 @@ public abstract class EntityListPanel<E extends Persistence<PK>, PK extends Seri
 		});
 		this.closeButton.setFont(new Font("Arial", Font.BOLD, 11));
 		this.closeButton.setBounds(420, 201, EntityListPanel.buttonWidth, EntityListPanel.buttonHeight);
-		this.closeButton.setIcon(SwingResources.RETURN_ICON);
+		this.closeButton.setIcon(IconResources.RETURN_ICON);
 		this.closeButton.setVisible(this.isCloseBottonVisible());
 		this.add(this.closeButton);
 	}
@@ -460,8 +460,8 @@ public abstract class EntityListPanel<E extends Persistence<PK>, PK extends Seri
 	 * @see EntityListPanel#afterLoadEntityList()
 	 */
 	protected void beforeLoadEntityList() {
-		SwingResources.PROGRESS_LIST_ICON.setImageObserver(this.progressLabel);
-		this.progressLabel.setIcon(SwingResources.PROGRESS_LIST_ICON);
+		IconResources.PROGRESS_LIST_ICON.setImageObserver(this.progressLabel);
+		this.progressLabel.setIcon(IconResources.PROGRESS_LIST_ICON);
 
 		this.newButton.setEnabled(false);
 		this.modifyButton.setEnabled(false);
