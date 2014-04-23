@@ -1,4 +1,4 @@
-package com.common.swing.util;
+package com.common.swing.business.util;
 
 import java.awt.Dimension;
 import java.awt.Image;
