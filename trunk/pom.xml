@@ -1,14 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.common</groupId>
-	<artifactId>common-swing</artifactId>
+	<groupId>com</groupId>
+	<artifactId>common.swing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<spring.richclient.version>1.1.0</spring.richclient.version>
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.6</jdk.version>
 	</properties>
 
 	<build>
@@ -78,7 +79,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.7</version>
+				<version>2.7</version><!--$NO-MVN-MAN-VER$-->
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
@@ -131,8 +132,8 @@
 		<!-- La librerias comun -->
 
 		<dependency>
-			<groupId>com.common</groupId>
-			<artifactId>common-util</artifactId>
+			<groupId>com</groupId>
+			<artifactId>common.util</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
@@ -150,60 +151,6 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
-		</dependency>
-
-		<!-- La dependencia de SPRING RCP -->
-
-		<dependency>
-			<groupId>org.springframework.richclient</groupId>
-			<artifactId>spring-richclient-core</artifactId>
-			<version>${spring.richclient.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.richclient</groupId>
-			<artifactId>spring-richclient-archetype</artifactId>
-			<version>${spring.richclient.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.richclient</groupId>
-			<artifactId>spring-richclient-integrations</artifactId>
-			<version>${spring.richclient.version}</version>
-			<type>pom</type>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.richclient</groupId>
-			<artifactId>spring-richclient-jdk6</artifactId>
-			<version>${spring.richclient.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.richclient</groupId>
-			<artifactId>spring-richclient-manual</artifactId>
-			<version>${spring.richclient.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.richclient</groupId>
-			<artifactId>spring-richclient-resources</artifactId>
-			<version>${spring.richclient.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.richclient</groupId>
-			<artifactId>spring-richclient-sandbox</artifactId>
-			<version>${spring.richclient.version}</version>
-		</dependency>
-
-		<!-- La dependencia de las pruebas de SPRING RCP -->
-
-		<dependency>
-			<groupId>org.springframework.richclient.samples.petclinic</groupId>
-			<artifactId>petclinic-gui</artifactId>
-			<version>1.0.0</version>
-			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

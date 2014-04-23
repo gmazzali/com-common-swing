@@ -1,4 +1,4 @@
-package com.common.swing.crud.edit.impl;
+package com.common.swing.domain.model.crud.edit.impl;
 
 import java.awt.Dimension;
 import java.io.Serializable;
@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.common.swing.business.icon.IconResources;
-import com.common.swing.crud.edit.EntityEditForm;
-import com.common.util.exception.CheckedException;
-import com.common.util.model.Persistence;
+import com.common.swing.business.icon.ProgressIcon;
+import com.common.swing.domain.model.crud.edit.EntityEditForm;
+import com.common.util.domain.exception.CheckedException;
+import com.common.util.domain.model.Persistence;
 
 /**
  * 
@@ -28,10 +28,8 @@ import com.common.util.model.Persistence;
  *            La clase que va a hacer de clave primaria de las entidades que vamos a editar.
  */
 public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements EntityEditForm<E, PK> {
-
-	private static final long serialVersionUID = -3862333576607454565L;
-
-	private static final Logger logger = Logger.getLogger(EntityFormPanel.class);
+	private static final long serialVersionUID = 1L;
+	private static final Logger log = Logger.getLogger(EntityFormPanel.class);
 
 	/**
 	 * La entidad que vamos a manejar dentro de este panel.
@@ -43,16 +41,12 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	 */
 	public EntityFormPanel() {
 		super();
-		EntityFormPanel.logger.trace("create");
-
 		Dimension dimension = new Dimension(this.getWidthSize(), this.getHeightSize());
 		this.setPreferredSize(dimension);
 	}
 
 	@Override
 	public EntityEditForm<E, PK> createNewEntityForm() {
-		EntityFormPanel.logger.trace("createNewEntityForm");
-
 		this.entity = this.createNewEntity();
 
 		this.emptyFields();
@@ -62,8 +56,6 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 
 	@Override
 	public EntityEditForm<E, PK> createEditEntityForm(E editEntity) {
-		EntityFormPanel.logger.trace("createEditEntityForm");
-
 		this.entity = editEntity;
 
 		this.emptyFields();
@@ -74,12 +66,10 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 
 	@Override
 	public void rejectForm() {
-		EntityFormPanel.logger.trace("rejectForm");
-
 		this.entity = null;
 
 		if (this.isContainerCloseable()) {
-			this.getEntityFormContainer().close();
+			this.getFormContainer().close();
 		}
 	}
 
@@ -90,22 +80,20 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 
 	@Override
 	public void saveEntity() {
-		EntityFormPanel.logger.trace("saveEntity");
-
 		new Thread() {
 			@Override
 			public void run() {
 				try {
 					EntityFormPanel.this.beforeSaveEntity();
 					EntityFormPanel.this.fromFieldsToEntity();
-					EntityFormPanel.this.getEntityService().saveOrUpdate(EntityFormPanel.this.entity);
+					EntityFormPanel.this.getService().saveOrUpdate(EntityFormPanel.this.entity);
 
 					// Cerramos la ventana.
 					if (EntityFormPanel.this.isContainerCloseable()) {
-						EntityFormPanel.this.getEntityFormContainer().close();
+						EntityFormPanel.this.getFormContainer().close();
 					}
 				} catch (CheckedException e) {
-					EntityFormPanel.logger.error("saveEntity failed", e);
+					EntityFormPanel.log.error("saveEntity failed", e);
 					JOptionPane.showMessageDialog(EntityFormPanel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				} finally {
 					EntityFormPanel.this.afterSaveEntity();
@@ -118,13 +106,11 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	 * La función encargada de ejecutar acciones antes de guardar la entidad dentro de la base de datos.
 	 */
 	protected void beforeSaveEntity() {
-		EntityFormPanel.logger.trace("beforeSaveEntity");
-
 		this.setEnabled(false);
 
 		if (this.getProgressLabel() != null) {
-			IconResources.PROGRESS_LIST_ICON.setImageObserver(this.getProgressLabel());
-			this.getProgressLabel().setIcon(IconResources.PROGRESS_LIST_ICON);
+			ProgressIcon.PROGRESS_CIRCULAR_BAR_ICON.setImageObserver(this.getProgressLabel());
+			this.getProgressLabel().setIcon(ProgressIcon.PROGRESS_CIRCULAR_BAR_ICON);
 		}
 	}
 
@@ -132,8 +118,6 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	 * La función encargada de ejecutar acciones después de guardar la entidad dentro de la base de datos.
 	 */
 	protected void afterSaveEntity() {
-		EntityFormPanel.logger.trace("afterSaveEntity");
-
 		this.setEnabled(true);
 
 		if (this.getProgressLabel() != null) {

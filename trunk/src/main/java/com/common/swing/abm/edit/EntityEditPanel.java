@@ -9,7 +9,7 @@ import javax.swing.border.LineBorder;
 
 import org.apache.log4j.Logger;
 
-import com.common.swing.model.GenericPanel;
+import com.common.swing.domain.model.GenericPanel;
 import com.common.util.exception.CheckedException;
 import com.common.util.model.Persistence;
 import com.common.util.service.GenericService;

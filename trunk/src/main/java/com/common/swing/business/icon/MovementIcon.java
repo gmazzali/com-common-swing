@@ -1,4 +1,4 @@
-package com.common.swing.icon;
+package com.common.swing.business.icon;
 
 import javax.swing.ImageIcon;
 
