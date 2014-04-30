@@ -3,15 +3,15 @@ package com.common.swing.domain.model.crud.edit.impl;
 import java.awt.Dimension;
 import java.io.Serializable;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.common.swing.business.icon.ProgressIcon;
 import com.common.swing.domain.model.crud.edit.EntityEditForm;
-import com.common.util.domain.exception.CheckedException;
+import com.common.util.business.holder.HolderMessage;
 import com.common.util.domain.model.Persistence;
 
 /**
@@ -19,6 +19,7 @@ import com.common.util.domain.model.Persistence;
  * La clase que nos permite definir un panel donde vamos a desplegar los atributos de las entidades, ya sea para dar de alta una nueva, modificar
  * entidades del sistema o visualizar sus atributos.
  * 
+ * @since 30/04/2014
  * @author Guillermo Mazzali
  * @version 1.0
  * 
@@ -46,7 +47,7 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	}
 
 	@Override
-	public EntityEditForm<E, PK> createNewEntityForm() {
+	public EntityEditForm<E, PK> createNewForm() {
 		this.entity = this.createNewEntity();
 
 		this.emptyFields();
@@ -55,7 +56,8 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	}
 
 	@Override
-	public EntityEditForm<E, PK> createEditEntityForm(E editEntity) {
+	public EntityEditForm<E, PK> createEditForm(E editEntity) {
+		log.info("edit entity=" + editEntity);
 		this.entity = editEntity;
 
 		this.emptyFields();
@@ -65,12 +67,11 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	}
 
 	@Override
-	public void rejectForm() {
-		this.entity = null;
+	public void reject() {
+		this.entity = this.createNewEntity();
+		this.emptyFields();
 
-		if (this.isContainerCloseable()) {
-			this.getFormContainer().close();
-		}
+		this.getFormContainer().close();
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	}
 
 	@Override
-	public void saveEntity() {
+	public void confirm() {
 		new Thread() {
 			@Override
 			public void run() {
@@ -88,13 +89,14 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 					EntityFormPanel.this.fromFieldsToEntity();
 					EntityFormPanel.this.getService().saveOrUpdate(EntityFormPanel.this.entity);
 
-					// Cerramos la ventana.
-					if (EntityFormPanel.this.isContainerCloseable()) {
-						EntityFormPanel.this.getFormContainer().close();
-					}
-				} catch (CheckedException e) {
-					EntityFormPanel.log.error("saveEntity failed", e);
-					JOptionPane.showMessageDialog(EntityFormPanel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					// Cerramos la ventana si se puede cerrar.
+					EntityFormPanel.this.getFormContainer().close();
+
+				} catch (Exception e) {
+					EntityFormPanel.log.error("save entity failed", e);
+					JOptionPane.showMessageDialog(EntityFormPanel.this,
+							HolderMessage.getMessage(e.getMessage(), "form.edit.save.fail.message"),
+							HolderMessage.getMessage("Error", "form.edit.save.fail.message.title"), JOptionPane.ERROR_MESSAGE);
 				} finally {
 					EntityFormPanel.this.afterSaveEntity();
 				}
@@ -108,9 +110,9 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	protected void beforeSaveEntity() {
 		this.setEnabled(false);
 
-		if (this.getProgressLabel() != null) {
-			ProgressIcon.PROGRESS_CIRCULAR_BAR_ICON.setImageObserver(this.getProgressLabel());
-			this.getProgressLabel().setIcon(ProgressIcon.PROGRESS_CIRCULAR_BAR_ICON);
+		if (this.getProgressLabel() != null && getProgressIcon() != null) {
+			this.getProgressIcon().setImageObserver(this.getProgressLabel());
+			this.getProgressLabel().setIcon(this.getProgressIcon());
 		}
 	}
 
@@ -126,7 +128,14 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	}
 
 	/**
-	 * La función encargada de retornar el label donde vamos a tener un GIF de progreso para mostrar que la ventana se encuentra en actividad.
+	 * Se encarga de retornar la imagen que vamos a desplegar en caso de que se ejecute un proceso en segundo plano.
+	 * 
+	 * @return El icono de progreso.
+	 */
+	protected abstract ImageIcon getProgressIcon();
+
+	/**
+	 * Se encarga de retornar el label donde vamos a tener un GIF de progreso para mostrar que la ventana se encuentra en actividad.
 	 * 
 	 * @return El label donde tenemos el GIF de progreso.
 	 */

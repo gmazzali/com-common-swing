@@ -14,9 +14,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import com.common.swing.crud.FormContainer;
 import com.common.swing.crud.edit.EntityEditFormContainer;
 import com.common.swing.crud.model.Element;
+import com.common.swing.domain.model.crud.FormContainer;
 import com.common.util.exception.CheckedException;
 import com.common.util.service.GenericService;
 
@@ -165,7 +165,7 @@ public class ElementEditFormPanel extends EntityFormPanel<Element, Integer> {
 	}
 
 	@Override
-	public EntityEditFormContainer<Element, Integer> getEntityFormContainer() {
+	public EntityEditContainer<Element, Integer> getEntityFormContainer() {
 		return this.elementEditFormContainerDialog;
 	}
 

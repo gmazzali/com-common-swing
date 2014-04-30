@@ -1,9 +1,9 @@
-package com.common.swing.crud.filter;
+package com.common.swing.domain.model.crud.filter;
 
 import java.io.Serializable;
 
-import com.common.swing.crud.FormContainer;
-import com.common.util.model.Persistence;
+import com.common.swing.domain.model.crud.FormContainer;
+import com.common.util.domain.model.Persistence;
 
 /**
  * La interfaz que nos permite definir el comportamiento para un contenedor de formularios de filtrado de entidades.

@@ -3,8 +3,8 @@ package com.common.swing.crud.list;
 import java.io.Serializable;
 import java.util.List;
 
-import com.common.swing.crud.Form;
 import com.common.swing.crud.edit.EntityEditFormContainer;
+import com.common.swing.domain.model.crud.Form;
 import com.common.util.model.Persistence;
 import com.common.util.service.GenericService;
 
@@ -36,7 +36,7 @@ public interface EntityListForm<E extends Persistence<PK>, PK extends Serializab
 	 * 
 	 * @return El contenedor del formulario de edición de entidades.
 	 */
-	public EntityEditFormContainer<E, PK> getEntityEditFormContainer();
+	public EntityEditContainer<E, PK> getEntityEditFormContainer();
 
 	/**
 	 * La función encargada de retornar el servicio que vamos a utilizar para la entidad que tenemos en el panel.
