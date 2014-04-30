@@ -1,9 +1,9 @@
-package com.common.swing.crud.filter;
+package com.common.swing.domain.model.crud.filter;
 
 import java.io.Serializable;
 
-import com.common.swing.crud.Form;
-import com.common.util.model.Persistence;
+import com.common.swing.domain.model.crud.Form;
+import com.common.util.domain.model.Persistence;
 
 /**
  * La interfaz que nos permite definir los formularios de búsqueda de entidades para poder cargarlas dentro de un listado de ellas recuperadas desde

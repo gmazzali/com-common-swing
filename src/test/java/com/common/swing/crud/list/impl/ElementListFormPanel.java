@@ -1,10 +1,10 @@
 package com.common.swing.crud.list.impl;
 
-import com.common.swing.crud.FormContainer;
 import com.common.swing.crud.edit.EntityEditFormContainer;
 import com.common.swing.crud.edit.impl.ElementEditFormContainerDialog;
 import com.common.swing.crud.model.Element;
 import com.common.swing.crud.model.ElementServiceImpl;
+import com.common.swing.domain.model.crud.FormContainer;
 import com.common.util.service.GenericService;
 
 /**
@@ -36,7 +36,7 @@ public class ElementListFormPanel extends EntityListFormPanel<Element, Integer> 
 	}
 
 	@Override
-	public EntityEditFormContainer<Element, Integer> getEntityEditFormContainer() {
+	public EntityEditContainer<Element, Integer> getEntityEditFormContainer() {
 		return this.elementEditFormContainerDialog;
 	}
 

@@ -2,7 +2,7 @@ package com.common.swing.crud.list;
 
 import java.io.Serializable;
 
-import com.common.swing.crud.FormContainer;
+import com.common.swing.domain.model.crud.FormContainer;
 import com.common.util.model.Persistence;
 
 /**

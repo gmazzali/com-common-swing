@@ -2,8 +2,8 @@ package com.common.swing.crud.filterList;
 
 import java.io.Serializable;
 
-import com.common.swing.crud.filter.EntityFilterForm;
 import com.common.swing.crud.list.EntityListForm;
+import com.common.swing.domain.model.crud.filter.EntityFilterForm;
 import com.common.util.model.Persistence;
 
 /**
