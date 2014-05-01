@@ -1,26 +1,24 @@
-package com.common.swing.crud.model;
+package com.common.swing.domain.model.crud.model;
 
 import org.springframework.beans.BeanUtils;
 
-import com.common.util.model.Entity;
+import com.common.util.domain.model.Entity;
 
 /**
  * La clase de pruebas.
  * 
+ * @since 30/04/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class Element extends Entity<Integer> {
+	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Elemento.
-	 */
 	private String name = "";
 
 	@Override
 	public String toString() {
-		return super.toString() + "[name=" + this.name + "]";
+		return "Element [name=" + this.name + "]";
 	}
 
 	@Override

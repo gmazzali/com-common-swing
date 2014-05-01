@@ -10,12 +10,11 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.common.swing.domain.model.crud.edit.EntityEditForm;
+import com.common.swing.domain.model.crud.edit.EditForm;
 import com.common.util.business.holder.HolderMessage;
 import com.common.util.domain.model.Persistence;
 
 /**
- * 
  * La clase que nos permite definir un panel donde vamos a desplegar los atributos de las entidades, ya sea para dar de alta una nueva, modificar
  * entidades del sistema o visualizar sus atributos.
  * 
@@ -28,9 +27,9 @@ import com.common.util.domain.model.Persistence;
  * @param <PK>
  *            La clase que va a hacer de clave primaria de las entidades que vamos a editar.
  */
-public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements EntityEditForm<E, PK> {
+public abstract class EditFormPanel<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements EditForm<E, PK> {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(EntityFormPanel.class);
+	private static final Logger log = Logger.getLogger(EditFormPanel.class);
 
 	/**
 	 * La entidad que vamos a manejar dentro de este panel.
@@ -40,14 +39,14 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	/**
 	 * El constructor por omisión.
 	 */
-	public EntityFormPanel() {
+	public EditFormPanel() {
 		super();
 		Dimension dimension = new Dimension(this.getWidthSize(), this.getHeightSize());
 		this.setPreferredSize(dimension);
 	}
 
 	@Override
-	public EntityEditForm<E, PK> createNewForm() {
+	public EditForm<E, PK> createNewForm() {
 		this.entity = this.createNewEntity();
 
 		this.emptyFields();
@@ -56,7 +55,7 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 	}
 
 	@Override
-	public EntityEditForm<E, PK> createEditForm(E editEntity) {
+	public EditForm<E, PK> createEditForm(E editEntity) {
 		log.info("edit entity=" + editEntity);
 		this.entity = editEntity;
 
@@ -85,20 +84,20 @@ public abstract class EntityFormPanel<E extends Persistence<PK>, PK extends Seri
 			@Override
 			public void run() {
 				try {
-					EntityFormPanel.this.beforeSaveEntity();
-					EntityFormPanel.this.fromFieldsToEntity();
-					EntityFormPanel.this.getService().saveOrUpdate(EntityFormPanel.this.entity);
+					EditFormPanel.this.beforeSaveEntity();
+					EditFormPanel.this.fromFieldsToEntity();
+					EditFormPanel.this.getService().saveOrUpdate(EditFormPanel.this.entity);
 
 					// Cerramos la ventana si se puede cerrar.
-					EntityFormPanel.this.getFormContainer().close();
+					EditFormPanel.this.getFormContainer().close();
 
 				} catch (Exception e) {
-					EntityFormPanel.log.error("save entity failed", e);
-					JOptionPane.showMessageDialog(EntityFormPanel.this,
+					EditFormPanel.log.error("save entity failed", e);
+					JOptionPane.showMessageDialog(EditFormPanel.this,
 							HolderMessage.getMessage(e.getMessage(), "form.edit.save.fail.message"),
 							HolderMessage.getMessage("Error", "form.edit.save.fail.message.title"), JOptionPane.ERROR_MESSAGE);
 				} finally {
-					EntityFormPanel.this.afterSaveEntity();
+					EditFormPanel.this.afterSaveEntity();
 				}
 			}
 		}.start();

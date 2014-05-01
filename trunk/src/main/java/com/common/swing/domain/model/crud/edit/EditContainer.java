@@ -17,14 +17,14 @@ import com.common.util.domain.model.Persistence;
  * @param <PK>
  *            La clase que va a hacer de clave primaria de las entidades que vamos a editar.
  */
-public interface EntityEditContainer<E extends Persistence<PK>, PK extends Serializable> extends FormContainer<E> {
+public interface EditContainer<E extends Persistence<PK>, PK extends Serializable> extends FormContainer<E> {
 
 	/**
 	 * Se encarga de establecer la ventana de formulario para una nueva entidad con el panel de edición adecuado.
 	 * 
 	 * @return La ventana configurada para dar de alta una nueva entidad.
 	 */
-	public EntityEditContainer<E, PK> createNewForm();
+	public EditContainer<E, PK> createNewForm();
 
 	/**
 	 * Se encarga de establecer la ventana de formulario para la edición de una entidad con el panel de edición adecuado.
@@ -33,7 +33,7 @@ public interface EntityEditContainer<E extends Persistence<PK>, PK extends Seria
 	 *            La entidad que vamos a editar dentro de esta ventana.
 	 * @return La ventana configurada para modificar una entidad.
 	 */
-	public EntityEditContainer<E, PK> createEditForm(E entity);
+	public EditContainer<E, PK> createEditForm(E entity);
 
 	/**
 	 * Se encarga de retornar el titulo de la ventana que va a contener el panel de alta de una entidad.
@@ -54,7 +54,7 @@ public interface EntityEditContainer<E extends Persistence<PK>, PK extends Seria
 	 * 
 	 * @return El panel de edición de una entidad.
 	 */
-	public EntityEditForm<E, PK> getEditForm();
+	public EditForm<E, PK> getEditForm();
 
 	/**
 	 * Se encarga de retornar la entidad que estamos editando dentro del formulario que tenemos dentro de este contenedor.

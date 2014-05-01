@@ -1,12 +1,12 @@
-package com.common.swing.crud.list;
+package com.common.swing.domain.model.crud.list;
 
 import java.io.Serializable;
 import java.util.List;
 
-import com.common.swing.crud.edit.EntityEditFormContainer;
 import com.common.swing.domain.model.crud.Form;
-import com.common.util.model.Persistence;
-import com.common.util.service.GenericService;
+import com.common.swing.domain.model.crud.edit.EditContainer;
+import com.common.util.business.service.BaseService;
+import com.common.util.domain.model.Persistence;
 
 /**
  * La interfaz que nos permite definir un formulario donde vamos a desplegar un listado de entidades que queremos mostrar.
@@ -19,7 +19,7 @@ import com.common.util.service.GenericService;
  * @param <PK>
  *            La clase que utilizamos para identificar las entidades a mostrar.
  */
-public interface EntityListForm<E extends Persistence<PK>, PK extends Serializable> extends Form {
+public interface EntityListForm<E extends Persistence<PK>, PK extends Serializable> extends Form<E> {
 
 	/**
 	 * La función encargada de cargar el listado de la entidades que queremos mostrar dentro de este formulario.
@@ -36,14 +36,14 @@ public interface EntityListForm<E extends Persistence<PK>, PK extends Serializab
 	 * 
 	 * @return El contenedor del formulario de edición de entidades.
 	 */
-	public EntityEditContainer<E, PK> getEntityEditFormContainer();
+	public EditContainer<E, PK> getEntityEditFormContainer();
 
 	/**
 	 * La función encargada de retornar el servicio que vamos a utilizar para la entidad que tenemos en el panel.
 	 * 
 	 * @return El servicio para la entidad que tenemos en el panel.
 	 */
-	public GenericService<E, PK> getEntityService();
+	public BaseService<E, PK> getService();
 
 	/**
 	 * La función encargada de retornar un listado de títulos que permite cargar los nombres de las columnas que vamos a desplegar dentro de la

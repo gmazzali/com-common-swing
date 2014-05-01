@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 
 import org.apache.log4j.Logger;
 
-import com.common.swing.domain.model.crud.edit.EntityEditContainer;
+import com.common.swing.domain.model.crud.edit.EditContainer;
 import com.common.util.domain.model.Persistence;
 
 /**
@@ -23,21 +23,21 @@ import com.common.util.domain.model.Persistence;
  * @param <PK>
  *            La clase que va a hacer de clave primaria de las entidades que vamos a editar.
  */
-public abstract class EntityFormDialog<E extends Persistence<PK>, PK extends Serializable> extends JDialog implements
-		EntityEditContainer<E, PK> {
+public abstract class EditFormDialog<E extends Persistence<PK>, PK extends Serializable> extends JDialog implements
+		EditContainer<E, PK> {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(EntityFormDialog.class);
+	private static final Logger log = Logger.getLogger(EditFormDialog.class);
 
 	/**
 	 * El constructor por omisión.
 	 */
-	public EntityFormDialog() {
+	public EditFormDialog() {
 		super();
 		this.setModal(true);
 	}
 
 	@Override
-	public EntityFormDialog<E, PK> createNewForm() {
+	public EditFormDialog<E, PK> createNewForm() {
 		log.trace("title='" + this.getNewTitle() + "'");
 		this.setTitle(this.getNewTitle());
 
@@ -49,7 +49,7 @@ public abstract class EntityFormDialog<E extends Persistence<PK>, PK extends Ser
 	}
 
 	@Override
-	public EntityFormDialog<E, PK> createEditForm(E editEntity) {
+	public EditFormDialog<E, PK> createEditForm(E editEntity) {
 		log.trace("title='" + this.getEditTitle() + "'");
 		this.setTitle(this.getEditTitle());
 

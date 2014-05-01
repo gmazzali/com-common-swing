@@ -1,4 +1,4 @@
-package com.common.swing.crud;
+package com.common.swing.domain.model.crud;
 
 /**
  * La clase que contiene las constantes para las pruebas.

@@ -1,4 +1,4 @@
-package com.common.swing.crud.list.impl;
+package com.common.swing.domain.model.crud.list.impl;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -27,9 +27,9 @@ import javax.swing.table.TableRowSorter;
 import org.apache.log4j.Logger;
 
 import com.common.swing.business.icon.IconResources;
-import com.common.swing.crud.edit.EntityEditFormContainer;
-import com.common.swing.crud.list.EntityListForm;
-import com.common.swing.crud.list.EntityListFormContainer;
+import com.common.swing.domain.model.crud.edit.EntityEditFormContainer;
+import com.common.swing.domain.model.crud.list.EntityListForm;
+import com.common.swing.domain.model.crud.list.EntityListFormContainer;
 import com.common.util.exception.CheckedException;
 import com.common.util.model.Persistence;
 import com.common.util.model.filter.Filter;

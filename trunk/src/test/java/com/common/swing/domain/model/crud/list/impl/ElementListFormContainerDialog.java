@@ -1,8 +1,9 @@
-package com.common.swing.crud.list.impl;
+package com.common.swing.domain.model.crud.list.impl;
 
-import com.common.swing.crud.list.EntityListForm;
-import com.common.swing.crud.model.Element;
-import com.common.swing.crud.model.ElementServiceImpl;
+import com.common.swing.domain.model.crud.list.EntityListForm;
+import com.common.swing.domain.model.crud.list.impl.EntityListFormContainerDialog;
+import com.common.swing.domain.model.crud.model.Element;
+import com.common.swing.domain.model.crud.model.ElementServiceImpl;
 import com.common.util.exception.CheckedException;
 
 /**
