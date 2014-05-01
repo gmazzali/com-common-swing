@@ -8,7 +8,7 @@ import javax.swing.JDialog;
 
 import org.apache.log4j.Logger;
 
-import com.common.swing.domain.model.crud.edit.impl.EntityFormDialog;
+import com.common.swing.domain.model.crud.edit.impl.EditFormDialog;
 import com.common.swing.domain.model.crud.view.EntityViewContainer;
 import com.common.util.domain.model.Persistence;
 
@@ -26,7 +26,7 @@ import com.common.util.domain.model.Persistence;
  */
 public abstract class EntityViewDialog<E extends Persistence<PK>, PK extends Serializable> extends JDialog implements EntityViewContainer<E, PK> {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(EntityFormDialog.class);
+	private static final Logger log = Logger.getLogger(EditFormDialog.class);
 
 	/**
 	 * El constructor por omisión.

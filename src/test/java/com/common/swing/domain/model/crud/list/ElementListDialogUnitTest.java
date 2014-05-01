@@ -1,13 +1,13 @@
-package com.common.swing.crud.list;
+package com.common.swing.domain.model.crud.list;
 
 import org.junit.AfterClass;
 import org.junit.Test;
 
-import com.common.swing.crud.edit.impl.ElementEditFormContainerDialog;
-import com.common.swing.crud.edit.impl.ElementEditFormPanel;
-import com.common.swing.crud.list.impl.ElementListFormContainerDialog;
-import com.common.swing.crud.list.impl.ElementListFormPanel;
-import com.common.swing.crud.model.ElementServiceImpl;
+import com.common.swing.domain.model.crud.edit.impl.ElementEditFormDialog;
+import com.common.swing.domain.model.crud.edit.impl.ElementEditFormPanel;
+import com.common.swing.domain.model.crud.list.impl.ElementListFormContainerDialog;
+import com.common.swing.domain.model.crud.list.impl.ElementListFormPanel;
+import com.common.swing.domain.model.crud.model.ElementServiceImpl;
 
 /**
  * La clase de prueba de la ventana de listado de entidades.
@@ -37,7 +37,7 @@ public class ElementListDialogUnitTest {
 		ElementEditFormPanel editPanel = new ElementEditFormPanel();
 		editPanel.setEntityService(service);
 
-		ElementEditFormContainerDialog editDialog = new ElementEditFormContainerDialog();
+		ElementEditFormDialog editDialog = new ElementEditFormDialog();
 		editDialog.setPanel(editPanel);
 
 		ElementListFormPanel listPanel = new ElementListFormPanel();

@@ -19,14 +19,21 @@ import com.common.util.domain.model.Persistence;
  * @param <PK>
  *            La clase que va a hacer de clave primaria de las entidades que vamos a editar.
  */
-public interface EntityEditForm<E extends Persistence<PK>, PK extends Serializable> extends Form<E> {
+public interface EditForm<E extends Persistence<PK>, PK extends Serializable> extends Form<E> {
+
+	/**
+	 * Se encarga de retornar el servicio que vamos a utilizar para la entidad que tenemos en el panel.
+	 * 
+	 * @return El servicio para la entidad que tenemos en el panel.
+	 */
+	public BaseService<E, PK> getService();
 
 	/**
 	 * Se encarga de crear un formulario para el alta de una entidad.
 	 * 
 	 * @return El formulario para dar de alta una nueva entidad.
 	 */
-	public EntityEditForm<E, PK> createNewForm();
+	public EditForm<E, PK> createNewForm();
 
 	/**
 	 * Se encarga de crear un formulario para la edición de una entidad.
@@ -35,7 +42,7 @@ public interface EntityEditForm<E extends Persistence<PK>, PK extends Serializab
 	 *            La entidad que vamos a editar dentro de esta ventana.
 	 * @return El formulario configurada para modificar una entidad.
 	 */
-	public EntityEditForm<E, PK> createEditForm(E editEntity);
+	public EditForm<E, PK> createEditForm(E editEntity);
 
 	/**
 	 * Se encarga de crear una nueva entidad para dar de alta dentro de este formulario.
@@ -50,13 +57,6 @@ public interface EntityEditForm<E extends Persistence<PK>, PK extends Serializab
 	 * @return La entidad que tenemos dentro del formulario.
 	 */
 	public E getEntity();
-
-	/**
-	 * Se encarga de retornar el servicio que vamos a utilizar para la entidad que tenemos en el panel.
-	 * 
-	 * @return El servicio para la entidad que tenemos en el panel.
-	 */
-	public BaseService<E, PK> getService();
 
 	/**
 	 * Se encarga de cargar los campos de la ventana de acuerdo a los valores de los atributos de la entidad que queremos editar.

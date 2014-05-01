@@ -1,4 +1,4 @@
-package com.common.swing.crud.list.impl;
+package com.common.swing.domain.model.crud.list.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.common.swing.crud.list.EntityListFormContainer;
+import com.common.swing.domain.model.crud.list.EntityListFormContainer;
 import com.common.util.model.Persistence;
 
 /**

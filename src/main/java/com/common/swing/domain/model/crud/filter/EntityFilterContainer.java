@@ -8,6 +8,7 @@ import com.common.util.domain.model.Persistence;
 /**
  * La interfaz que nos permite definir el comportamiento para un contenedor de formularios de filtrado de entidades.
  * 
+ * @since 01/05/2014
  * @author Guillermo Mazzali
  * @version 1.0
  * 
@@ -16,19 +17,19 @@ import com.common.util.domain.model.Persistence;
  * @param <PK>
  *            Las clases que representan los identificadores de las entidades.
  */
-public interface EntityFilterFormContainer<E extends Persistence<PK>, PK extends Serializable> extends FormContainer {
+public interface EntityFilterContainer<E extends Persistence<PK>, PK extends Serializable> extends FormContainer<E> {
 
 	/**
 	 * La función que retornar el título que vamos a colocarle a este contenedor de formularios.
 	 * 
 	 * @return El título de este contenedor de formulario.
 	 */
-	public String getFilterContainerTitle();
+	public String getFilterTitle();
 
 	/**
 	 * La función encargada de retornar el panel de búsqueda para el filtrado de las consultas dentro del panel de listado.
 	 * 
 	 * @return El panel de búsqueda filtrada.
 	 */
-	public EntityFilterForm<E, PK> getEntityFilterForm();
+	public EntityFilterForm<E, PK> createFilterForm();
 }

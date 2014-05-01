@@ -1,4 +1,4 @@
-package com.common.swing.crud.edit.impl;
+package com.common.swing.domain.model.crud.edit.impl;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -14,32 +15,28 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import com.common.swing.crud.edit.EntityEditFormContainer;
-import com.common.swing.crud.model.Element;
 import com.common.swing.domain.model.crud.FormContainer;
-import com.common.util.exception.CheckedException;
-import com.common.util.service.GenericService;
+import com.common.swing.domain.model.crud.model.Element;
+import com.common.swing.domain.model.crud.model.ElementServiceImpl;
+import com.common.util.business.service.BaseService;
+import com.common.util.domain.exception.CheckedException;
 
 /**
  * La clase que extiende la clase de formulario de entidades.
  * 
+ * @since 30/04/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementEditFormPanel extends EntityFormPanel<Element, Integer> {
+public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
+	private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = -2118905525298772474L;
+	private ElementEditFormDialog container;
 
-	private ElementEditFormContainerDialog container;
-
-	private GenericService<Element, Integer> service;
-
-	private ElementEditFormContainerDialog elementEditFormContainerDialog;
+	private ElementServiceImpl service;
 
 	private JTextField textField;
-
 	private JLabel progressLabel;
-
 	private JButton botonCancelar;
 	private JButton botonAceptar;
 
@@ -84,7 +81,7 @@ public class ElementEditFormPanel extends EntityFormPanel<Element, Integer> {
 		this.botonCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ElementEditFormPanel.this.rejectForm();
+				ElementEditFormPanel.this.reject();
 			}
 		});
 		this.add(this.botonCancelar);
@@ -101,19 +98,10 @@ public class ElementEditFormPanel extends EntityFormPanel<Element, Integer> {
 		this.botonAceptar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ElementEditFormPanel.this.saveEntity();
+				ElementEditFormPanel.this.confirm();
 			}
 		});
 		this.add(this.botonAceptar);
-	}
-
-	@Override
-	public FormContainer getFormContainer() {
-		return this.container;
-	}
-
-	public void setContainer(ElementEditFormContainerDialog container) {
-		this.container = container;
 	}
 
 	@Override
@@ -127,13 +115,21 @@ public class ElementEditFormPanel extends EntityFormPanel<Element, Integer> {
 	}
 
 	@Override
-	public String getFormTitle() {
-		return "Edición de elemento";
+	public BaseService<Element, Integer> getService() {
+		return this.service;
+	}
+
+	public void setService(ElementServiceImpl service) {
+		this.service = service;
 	}
 
 	@Override
-	public GenericService<Element, Integer> getEntityService() {
-		return this.service;
+	public FormContainer<Element> getFormContainer() {
+		return this.container;
+	}
+
+	public void setContainer(ElementEditFormDialog container) {
+		this.container = container;
 	}
 
 	@Override
@@ -165,11 +161,6 @@ public class ElementEditFormPanel extends EntityFormPanel<Element, Integer> {
 	}
 
 	@Override
-	public EntityEditContainer<Element, Integer> getEntityFormContainer() {
-		return this.elementEditFormContainerDialog;
-	}
-
-	@Override
 	public Integer getWidthSize() {
 		return 300;
 	}
@@ -180,15 +171,7 @@ public class ElementEditFormPanel extends EntityFormPanel<Element, Integer> {
 	}
 
 	@Override
-	public Boolean isContainerCloseable() {
-		return true;
-	}
-
-	public void setEntityService(GenericService<Element, Integer> service) {
-		this.service = service;
-	}
-
-	public void setElementFormDialog(ElementEditFormContainerDialog elementEditFormContainerDialog) {
-		this.elementEditFormContainerDialog = elementEditFormContainerDialog;
+	protected ImageIcon getProgressIcon() {
+		return null;
 	}
 }

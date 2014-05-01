@@ -1,4 +1,4 @@
-package com.common.swing.crud.list;
+package com.common.swing.domain.model.crud.list;
 
 import java.io.Serializable;
 

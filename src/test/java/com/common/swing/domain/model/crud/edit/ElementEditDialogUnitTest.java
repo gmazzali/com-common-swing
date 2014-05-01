@@ -1,14 +1,15 @@
-package com.common.swing.crud.edit;
+package com.common.swing.domain.model.crud.edit;
 
+import org.apache.log4j.BasicConfigurator;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.common.swing.crud.Constants;
-import com.common.swing.crud.edit.impl.ElementEditFormContainerDialog;
-import com.common.swing.crud.edit.impl.ElementEditFormPanel;
-import com.common.swing.crud.model.Element;
-import com.common.swing.crud.model.ElementServiceImpl;
-import com.common.util.service.GenericService;
+import com.common.swing.domain.model.crud.Constants;
+import com.common.swing.domain.model.crud.edit.impl.ElementEditFormDialog;
+import com.common.swing.domain.model.crud.edit.impl.ElementEditFormPanel;
+import com.common.swing.domain.model.crud.model.Element;
+import com.common.swing.domain.model.crud.model.ElementServiceImpl;
 
 /**
  * La clase de prueba de la ventana de edición de entidades.
@@ -18,9 +19,11 @@ import com.common.util.service.GenericService;
  */
 public class ElementEditDialogUnitTest {
 
-	/**
-	 * Cuando se termina de ejecutar la prueba, dejamos un espacio en blanco.
-	 */
+	@BeforeClass
+	public static void initClass() {
+		BasicConfigurator.configure();
+	}
+
 	@AfterClass
 	public static void afterClass() {
 		System.out.println();
@@ -33,12 +36,10 @@ public class ElementEditDialogUnitTest {
 	public void pruebaDeEntityEditDialog() {
 		System.out.println("<<<<<<<<<<<<<<<<< PRUEBAS DEL DIALOGO DE EDICIÓN DE ENTIDADES >>>>>>>>>>>>>>>>>");
 
-		GenericService<Element, Integer> service = new ElementServiceImpl();
-
 		ElementEditFormPanel panel = new ElementEditFormPanel();
-		panel.setEntityService(service);
+		panel.setService(new ElementServiceImpl());
 
-		ElementEditFormContainerDialog dialog = new ElementEditFormContainerDialog();
+		ElementEditFormDialog dialog = new ElementEditFormDialog();
 		dialog.setPanel(panel);
 		dialog.setResizable(false);
 		dialog.setModal(true);
@@ -46,7 +47,7 @@ public class ElementEditDialogUnitTest {
 
 		Element element = new Element();
 
-		dialog = (ElementEditFormContainerDialog) dialog.createNewForm();
+		dialog = (ElementEditFormDialog) dialog.createNewForm();
 		dialog.setVisible(Constants.visible);
 
 		System.out.println();
@@ -56,7 +57,7 @@ public class ElementEditDialogUnitTest {
 		element = new Element();
 		element.setName("Prueba");
 
-		dialog = (ElementEditFormContainerDialog) dialog.createEditForm(element);
+		dialog = (ElementEditFormDialog) dialog.createEditForm(element);
 		dialog.setVisible(Constants.visible);
 
 		System.out.println();
