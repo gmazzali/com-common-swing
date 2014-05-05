@@ -15,23 +15,21 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import com.common.swing.domain.model.crud.FormContainer;
+import com.common.swing.domain.model.crud.form.impl.EditFormImpl;
 import com.common.swing.domain.model.crud.model.Element;
 import com.common.swing.domain.model.crud.model.ElementServiceImpl;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.exception.CheckedException;
 
 /**
- * La clase que extiende la clase de formulario de entidades.
+ * La clase que extiende el formulario de edición de entidades.
  * 
  * @since 30/04/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
+public class ElementEditPanel extends EditFormImpl<Element, Integer> {
 	private static final long serialVersionUID = 1L;
-
-	private ElementEditFormDialog container;
 
 	private ElementServiceImpl service;
 
@@ -43,7 +41,7 @@ public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
 	/**
 	 * Create the panel.
 	 */
-	public ElementEditFormPanel() {
+	public ElementEditPanel() {
 		super();
 		this.init();
 	}
@@ -66,7 +64,7 @@ public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
 		this.textField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				ElementEditFormPanel.this.textField.selectAll();
+				ElementEditPanel.this.textField.selectAll();
 			}
 		});
 		this.add(this.textField);
@@ -81,7 +79,7 @@ public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
 		this.botonCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ElementEditFormPanel.this.reject();
+				ElementEditPanel.this.reject();
 			}
 		});
 		this.add(this.botonCancelar);
@@ -98,7 +96,7 @@ public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
 		this.botonAceptar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ElementEditFormPanel.this.confirm();
+				ElementEditPanel.this.confirm();
 			}
 		});
 		this.add(this.botonAceptar);
@@ -121,15 +119,6 @@ public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
 
 	public void setService(ElementServiceImpl service) {
 		this.service = service;
-	}
-
-	@Override
-	public FormContainer<Element> getFormContainer() {
-		return this.container;
-	}
-
-	public void setContainer(ElementEditFormDialog container) {
-		this.container = container;
 	}
 
 	@Override
@@ -156,11 +145,6 @@ public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
 	}
 
 	@Override
-	public Element createNewEntity() {
-		return new Element();
-	}
-
-	@Override
 	public Integer getWidthSize() {
 		return 300;
 	}
@@ -173,5 +157,30 @@ public class ElementEditFormPanel extends EditFormPanel<Element, Integer> {
 	@Override
 	protected ImageIcon getProgressIcon() {
 		return null;
+	}
+
+	@Override
+	public String getNewTitle() {
+		return "Nuevo elemento";
+	}
+
+	@Override
+	public String getEditTitle() {
+		return "Editar elemento";
+	}
+
+	@Override
+	public String getViewTitle() {
+		return "Visualizar elemento";
+	}
+
+	@Override
+	public void enabled() {
+		this.setEnabled(true);
+	}
+
+	@Override
+	public void disabled() {
+		this.setEnabled(false);
 	}
 }
