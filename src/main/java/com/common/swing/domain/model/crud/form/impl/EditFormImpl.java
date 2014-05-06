@@ -17,6 +17,7 @@ import com.common.swing.domain.model.crud.form.EditForm;
 import com.common.swing.domain.model.crud.util.CallbackForm;
 import com.common.swing.domain.model.crud.util.FormTypeEnum;
 import com.common.util.business.holder.HolderMessage;
+import com.common.util.business.service.BaseService;
 import com.common.util.domain.model.Persistence;
 
 /**
@@ -33,7 +34,7 @@ import com.common.util.domain.model.Persistence;
  *            La clase que va a hacer de clave primaria de las entidades que vamos a editar.
  */
 @SuppressWarnings("unchecked")
-public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements EditForm<E, PK> {
+public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements EditForm<E> {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(EditFormImpl.class);
 
@@ -225,4 +226,11 @@ public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Seriali
 	 * @return El titulo para el formulario de visualización de una entidad.
 	 */
 	protected abstract String getViewTitle();
+
+	/**
+	 * Se encarga de retornar el servicio que vamos a utilizar para la entidad que tenemos en el panel.
+	 * 
+	 * @return El servicio para la entidad que tenemos en el panel.
+	 */
+	public abstract BaseService<E, PK> getService();
 }
