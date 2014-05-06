@@ -3,7 +3,7 @@ package com.common.swing.icon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import com.common.swing.business.icon.MovementIcon;
+import com.common.swing.domain.icon.impl.MovementIcon;
 
 /**
  * La ventana de prueba para los iconos de movimientos.

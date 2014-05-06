@@ -1,27 +1,30 @@
-package com.common.swing.business.icon;
+package com.common.swing.domain.icon.impl;
 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import com.common.swing.domain.icon.IconResources;
+
 /**
  * La clase que va a contener el listado de los iconos para edición de elementos.
  * 
+ * @since 06/05/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
 public class EditIcon {
 
 	/**
+	 * El path de los recursos de acción.
+	 */
+	public static final String EDIT_RESOURCE_PATH = IconResources.RESOURCE_PATH + "edit/";
+
+	/**
 	 * Los anchos y alto de las imágenes.
 	 */
 	private static Integer height = 30;
 	private static Integer width = 30;
-
-	/**
-	 * El path de los recursos de acción.
-	 */
-	private static final String EDIT_RESOURCE_PATH = IconResources.RESOURCE_PATH + "edit/";
 
 	/**
 	 * El icono para deshacer.
@@ -63,14 +66,14 @@ public class EditIcon {
 				.getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
 
 		// Copiar, Cortar y Pegar.
-		EditIcon.COPY_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(EditIcon.EDIT_RESOURCE_PATH + "copy_32.png"))
-				.getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
+		EditIcon.COPY_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
+				EditIcon.EDIT_RESOURCE_PATH + "copy_32.png")).getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
 
-		EditIcon.CUT_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(EditIcon.EDIT_RESOURCE_PATH + "cut_32.png"))
-				.getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
+		EditIcon.CUT_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
+				EditIcon.EDIT_RESOURCE_PATH + "cut_32.png")).getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
 
-		EditIcon.PASTE_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(EditIcon.EDIT_RESOURCE_PATH + "paste_32.png"))
-				.getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
+		EditIcon.PASTE_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
+				EditIcon.EDIT_RESOURCE_PATH + "paste_32.png")).getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
 
 		// Buscar y Refrescar.
 		EditIcon.REFRESH_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
