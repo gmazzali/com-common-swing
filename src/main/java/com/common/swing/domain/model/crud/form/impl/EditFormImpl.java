@@ -6,7 +6,6 @@ import java.lang.reflect.ParameterizedType;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
@@ -16,7 +15,7 @@ import com.common.swing.domain.model.crud.container.BaseContainer;
 import com.common.swing.domain.model.crud.form.EditForm;
 import com.common.swing.domain.model.crud.util.CallbackForm;
 import com.common.swing.domain.model.crud.util.FormTypeEnum;
-import com.common.util.business.holder.HolderMessage;
+import com.common.swing.domain.model.notification.Notificaction;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.model.Persistence;
 
@@ -160,8 +159,7 @@ public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Seriali
 					}
 				} catch (Exception e) {
 					EditFormImpl.log.error("save entity failed", e);
-					JOptionPane.showMessageDialog(EditFormImpl.this, HolderMessage.getMessage(e.getMessage(), "form.edit.save.fail.message"),
-							HolderMessage.getMessage("Error", "form.edit.save.fail.message.title"), JOptionPane.ERROR_MESSAGE);
+					Notificaction.showErrorMessage(EditFormImpl.this, "form.edit.save.fail.message");
 				} finally {
 					EditFormImpl.this.afterSaveEntity();
 				}

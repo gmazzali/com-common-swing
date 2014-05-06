@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 
 import com.common.swing.abm.edit.EntityEditDialog;
 import com.common.swing.abm.edit.EntityEditPanel;
-import com.common.swing.business.icon.IconResources;
+import com.common.swing.domain.icon.IconResources;
 import com.common.swing.domain.model.GenericPanel;
 import com.common.swing.listener.FormCloseListener.WindowCloseState;
 import com.common.util.model.Persistence;

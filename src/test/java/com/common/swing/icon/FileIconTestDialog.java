@@ -4,7 +4,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import com.common.swing.business.icon.FileIcon;
+import com.common.swing.domain.icon.impl.FileIcon;
 
 /**
  * La ventana de prueba para los iconos de los archivos.

@@ -3,7 +3,7 @@ package com.common.swing.icon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import com.common.swing.business.icon.ActionIcon;
+import com.common.swing.domain.icon.impl.ActionIcon;
 
 /**
  * La ventana de prueba para los iconos de acciones.

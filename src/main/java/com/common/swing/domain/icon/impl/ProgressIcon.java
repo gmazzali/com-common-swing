@@ -1,10 +1,13 @@
-package com.common.swing.business.icon;
+package com.common.swing.domain.icon.impl;
 
 import javax.swing.ImageIcon;
+
+import com.common.swing.domain.icon.IconResources;
 
 /**
  * La clase que contiene los iconos de progreso de actividades.
  * 
+ * @since 06/05/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
@@ -13,7 +16,7 @@ public class ProgressIcon {
 	/**
 	 * El path de los recursos de acción.
 	 */
-	private static final String PROGRESS_RESOURCE_PATH = IconResources.RESOURCE_PATH + "progress/";
+	public static final String PROGRESS_RESOURCE_PATH = IconResources.RESOURCE_PATH + "progress/";
 
 	/**
 	 * El GIF de progreso en forma de barra horizontal.

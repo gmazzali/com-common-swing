@@ -1,27 +1,30 @@
-package com.common.swing.business.icon;
+package com.common.swing.domain.icon.impl;
 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+import com.common.swing.domain.icon.IconResources;
+
 /**
  * La clase que va a contener el listado de los iconos que vamos a poder utilizar para las acciones dentro de las ventanas creadas con SWING.
  * 
+ * @since 06/05/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
 public class ActionIcon extends IconResources {
 
 	/**
+	 * El path de los recursos de acción.
+	 */
+	public static final String ACTION_RESOURCE_PATH = IconResources.RESOURCE_PATH + "action/";
+
+	/**
 	 * Los anchos y alto de las imágenes.
 	 */
 	private static Integer height = 30;
 	private static Integer width = 30;
-
-	/**
-	 * El path de los recursos de acción.
-	 */
-	private static final String ACTION_RESOURCE_PATH = IconResources.RESOURCE_PATH + "action/";
 
 	/**
 	 * El icono para agregar elementos.

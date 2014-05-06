@@ -5,7 +5,7 @@ import java.awt.Cursor;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import com.common.swing.business.icon.MediaIcon;
+import com.common.swing.domain.icon.impl.MediaIcon;
 
 /**
  * La ventana de prueba para los iconos de medios.

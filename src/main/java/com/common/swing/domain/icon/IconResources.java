@@ -1,12 +1,13 @@
-package com.common.swing.business.icon;
+package com.common.swing.domain.icon;
 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
 /**
- * La clase que va a contener todos los recursos gráficos que vamos a ocupar dentro del sistema.
+ * La clase que va a contener los métodos gráficos que vamos a ocupar dentro del sistema.
  * 
+ * @since 06/05/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
@@ -15,7 +16,7 @@ public class IconResources {
 	/**
 	 * El path de los recursos.
 	 */
-	protected static final String RESOURCE_PATH = "com/common/swing/image/";
+	public static final String RESOURCE_PATH = "com/common/swing/image/";
 
 	/**
 	 * La función encargada de crear los iconos de acuerdo al path recibidos y al tamaño requerido de redimensión.
