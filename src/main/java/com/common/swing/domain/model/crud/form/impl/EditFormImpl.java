@@ -59,12 +59,11 @@ public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Seriali
 		try {
 			this.entityClass = (Class<E>) ((ParameterizedType) super.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 		} catch (Exception ex) {
-			log.error("The generic parameter of this class doesn't must be empty", ex);
-			// TODO agregar la clave del mensaje.
-			throw new SwingException("The generic parameter of this class doesn't must be empty", "");
+			EditFormImpl.log.error("The generic parameter of this class doesn't must be empty", ex);
+			throw new SwingException("The generic parameter of this class doesn't must be empty", "form.edit.error.parameter.empty");
 		}
 
-		log.trace("load dimension=[" + this.getWidthSize() + "; " + this.getHeightSize() + "]");
+		EditFormImpl.log.trace("load dimension=[" + this.getWidthSize() + "; " + this.getHeightSize() + "]");
 		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
 	}
 
@@ -91,8 +90,8 @@ public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Seriali
 			switch (formType) {
 
 			case NEW:
-				log.trace("new title='" + this.getNewTitle() + "'");
-				log.debug("new entity=" + entity);
+				EditFormImpl.log.trace("new title='" + this.getNewTitle() + "'");
+				EditFormImpl.log.debug("new entity=" + entity);
 
 				// Cargamos el titulo.
 				container.setTitle(this.getNewTitle());
@@ -103,8 +102,8 @@ public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Seriali
 				break;
 
 			case EDIT:
-				log.trace("edit title='" + this.getEditTitle() + "'");
-				log.debug("edit entity=" + entity);
+				EditFormImpl.log.trace("edit title='" + this.getEditTitle() + "'");
+				EditFormImpl.log.debug("edit entity=" + entity);
 
 				// Cargamos el titulo.
 				container.setTitle(this.getEditTitle());
@@ -115,8 +114,8 @@ public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Seriali
 				break;
 
 			case VIEW:
-				log.trace("view title='" + this.getViewTitle() + "'");
-				log.debug("view entity=" + entity);
+				EditFormImpl.log.trace("view title='" + this.getViewTitle() + "'");
+				EditFormImpl.log.debug("view entity=" + entity);
 
 				// Cargamos el titulo.
 				container.setTitle(this.getViewTitle());
@@ -127,9 +126,8 @@ public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Seriali
 				break;
 			}
 		} catch (Exception e) {
-			log.error("Failed to create form", e);
-			// TODO agregar la clave del mensaje y el mensaje por default.
-			throw new SwingException("Fail when create the form", "");
+			EditFormImpl.log.error("failed to create form", e);
+			throw new SwingException("Fail when create the form", "form.edit.error.create.form");
 
 		}
 	}
@@ -205,26 +203,26 @@ public abstract class EditFormImpl<E extends Persistence<PK>, PK extends Seriali
 	 * 
 	 * @return El label donde tenemos el GIF de progreso.
 	 */
-	public abstract JLabel getProgressLabel();
+	protected abstract JLabel getProgressLabel();
 
 	/**
 	 * Se encarga de retornar el titulo para el formulario de alta de una nueva entidad.
 	 * 
 	 * @return El titulo para el formulario de alta de una nueva entidad.
 	 */
-	public abstract String getNewTitle();
+	protected abstract String getNewTitle();
 
 	/**
 	 * Se encarga de retornar el titulo para el formulario de modificación de una entidad..
 	 * 
 	 * @return El titulo para el formulario de modificación de una entidad..
 	 */
-	public abstract String getEditTitle();
+	protected abstract String getEditTitle();
 
 	/**
 	 * Se encarga de retornar el titulo para el formulario de visualización de una entidad.
 	 * 
 	 * @return El titulo para el formulario de visualización de una entidad.
 	 */
-	public abstract String getViewTitle();
+	protected abstract String getViewTitle();
 }

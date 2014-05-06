@@ -5,8 +5,11 @@ import java.util.Collection;
 
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import com.common.swing.domain.model.crud.filter.FilterForm;
 import com.common.util.domain.model.Persistence;
+import com.common.util.persistence.filter.BaseFilter;
 
 /**
  * La clase que implementa la interfaz que nos permite definir los formularios de filtrado para la búsqueda de entidades dentro de un sistema.
@@ -20,14 +23,22 @@ import com.common.util.domain.model.Persistence;
  * @param <PK>
  *            La clase que utilizamos para identificar las entidades filtradas.
  */
-public abstract class FilterFormImpl<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements FilterForm<E> {
+public abstract class FilterFormImpl<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements FilterForm<E, PK> {
 	private static final long serialVersionUID = 1L;
-
-	// private static final Logger log = Logger.getLogger(FilterFormImpl.class);
+	private static final Logger log = Logger.getLogger(FilterFormImpl.class);
 
 	@Override
 	public Collection<E> filter() {
-		// TODO Hacer lo del filtrado.
-		return null;
+		BaseFilter<PK> filter = this.createFilter();
+		log.debug(filter);
+
+		return this.getService().findByFilter(filter);
 	}
+
+	/**
+	 * Se encarga de crear el filtro de busqueda de acuerdo a los criterios que tenemos cargado dentro del filtro del panel.
+	 * 
+	 * @return El filtro para la busqueda de entidades.
+	 */
+	protected abstract BaseFilter<PK> createFilter();
 }
