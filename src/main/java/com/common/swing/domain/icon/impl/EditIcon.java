@@ -1,7 +1,5 @@
 package com.common.swing.domain.icon.impl;
 
-import java.awt.Image;
-
 import javax.swing.ImageIcon;
 
 import com.common.swing.domain.icon.IconResources;
@@ -13,7 +11,8 @@ import com.common.swing.domain.icon.IconResources;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class EditIcon {
+public class EditIcon extends IconResources {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El path de los recursos de acción.
@@ -27,59 +26,44 @@ public class EditIcon {
 	private static Integer width = 30;
 
 	/**
+	 * Permite crear de manera rápida los iconos.
+	 * 
+	 * @param name
+	 *            El nombre del archivo.
+	 * @return El icono creado.
+	 */
+	public static ImageIcon create(String name) {
+		return IconResources.createStaticImage(EditIcon.EDIT_RESOURCE_PATH + name, EditIcon.width, EditIcon.height);
+	}
+
+	/**
 	 * El icono para deshacer.
 	 */
-	public static ImageIcon UNDO_ICON;
+	public static final ImageIcon UNDO_ICON = EditIcon.create("undo_32.png");
 	/**
 	 * El icono para rehacer.
 	 */
-	public static ImageIcon REDO_ICON;
+	public static final ImageIcon REDO_ICON = EditIcon.create("redo_32.png");
 
 	/**
 	 * El icono de copiar elementos.
 	 */
-	public static ImageIcon COPY_ELEMENT_ICON;
+	public static final ImageIcon COPY_ELEMENT_ICON = EditIcon.create("copy_32.png");
 	/**
 	 * El icono de cortar elementos.
 	 */
-	public static ImageIcon CUT_ELEMENT_ICON;
+	public static final ImageIcon CUT_ELEMENT_ICON = EditIcon.create("cut_32.png");
 	/**
 	 * El icono de pegar elementos.
 	 */
-	public static ImageIcon PASTE_ELEMENT_ICON;
+	public static final ImageIcon PASTE_ELEMENT_ICON = EditIcon.create("paste_32.png");
 
 	/**
 	 * El icono para refrescar elementos.
 	 */
-	public static ImageIcon REFRESH_ELEMENT_ICON;
+	public static final ImageIcon REFRESH_ELEMENT_ICON = EditIcon.create("refresh_32.png");
 	/**
 	 * El icono para buscar elementos.
 	 */
-	public static ImageIcon SEARCH_ELEMENT_ICON;
-
-	static {
-		// Deshacer y Rehacer
-		EditIcon.UNDO_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(EditIcon.EDIT_RESOURCE_PATH + "undo_32.png"))
-				.getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
-
-		EditIcon.REDO_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(EditIcon.EDIT_RESOURCE_PATH + "redo_32.png"))
-				.getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
-
-		// Copiar, Cortar y Pegar.
-		EditIcon.COPY_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
-				EditIcon.EDIT_RESOURCE_PATH + "copy_32.png")).getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
-
-		EditIcon.CUT_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
-				EditIcon.EDIT_RESOURCE_PATH + "cut_32.png")).getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
-
-		EditIcon.PASTE_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
-				EditIcon.EDIT_RESOURCE_PATH + "paste_32.png")).getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
-
-		// Buscar y Refrescar.
-		EditIcon.REFRESH_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
-				EditIcon.EDIT_RESOURCE_PATH + "refresh_32.png")).getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
-
-		EditIcon.SEARCH_ELEMENT_ICON = new ImageIcon(new ImageIcon(EditIcon.class.getClassLoader().getResource(
-				EditIcon.EDIT_RESOURCE_PATH + "search_32.png")).getImage().getScaledInstance(EditIcon.width, EditIcon.height, Image.SCALE_SMOOTH));
-	}
+	public static final ImageIcon SEARCH_ELEMENT_ICON = EditIcon.create("search_32.png");
 }

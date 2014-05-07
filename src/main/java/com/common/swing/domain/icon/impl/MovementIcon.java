@@ -11,7 +11,8 @@ import com.common.swing.domain.icon.IconResources;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class MovementIcon {
+public class MovementIcon extends IconResources {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El path de los recursos de acción.

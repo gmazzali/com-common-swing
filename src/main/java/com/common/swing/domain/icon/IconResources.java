@@ -1,6 +1,7 @@
 package com.common.swing.domain.icon;
 
 import java.awt.Image;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
@@ -11,8 +12,8 @@ import javax.swing.ImageIcon;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class IconResources {
-
+public class IconResources implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * El path de los recursos.
 	 */
