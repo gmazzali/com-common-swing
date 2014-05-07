@@ -11,7 +11,8 @@ import com.common.swing.domain.icon.IconResources;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ProgressIcon {
+public class ProgressIcon extends IconResources {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El path de los recursos de acción.
@@ -19,33 +20,30 @@ public class ProgressIcon {
 	public static final String PROGRESS_RESOURCE_PATH = IconResources.RESOURCE_PATH + "progress/";
 
 	/**
+	 * Permite crear de manera rápida los iconos.
+	 * 
+	 * @param name
+	 *            El nombre del archivo.
+	 * @return El icono creado.
+	 */
+	public static ImageIcon create(String name) {
+		return IconResources.createGifImage(ProgressIcon.PROGRESS_RESOURCE_PATH + name);
+	}
+
+	/**
 	 * El GIF de progreso en forma de barra horizontal.
 	 */
-	public static ImageIcon PROGRESS_HORIZONTAL_BAR_ICON;
+	public static final ImageIcon PROGRESS_HORIZONTAL_BAR_ICON = ProgressIcon.create("horizontal_progress_bar.gif");
 	/**
 	 * El GIF de progreso en forma de barra vertical.
 	 */
-	public static ImageIcon PROGRESS_VERTICAL_BAR_ICON;
+	public static final ImageIcon PROGRESS_VERTICAL_BAR_ICON = ProgressIcon.create("progress_list.gif");
 	/**
 	 * El GIF de progreso en forma circular con puntos.
 	 */
-	public static ImageIcon PROGRESS_CIRCULAR_DOT_ICON;
+	public static final ImageIcon PROGRESS_CIRCULAR_DOT_ICON = ProgressIcon.create("progress_save.gif");
 	/**
 	 * El GIF de progreso en forma circular con barras.
 	 */
-	public static ImageIcon PROGRESS_CIRCULAR_BAR_ICON;
-
-	static {
-		ProgressIcon.PROGRESS_HORIZONTAL_BAR_ICON = new ImageIcon(ProgressIcon.class.getClassLoader().getResource(
-				ProgressIcon.PROGRESS_RESOURCE_PATH + "horizontal_progress_bar.gif"));
-
-		ProgressIcon.PROGRESS_VERTICAL_BAR_ICON = new ImageIcon(ProgressIcon.class.getClassLoader().getResource(
-				ProgressIcon.PROGRESS_RESOURCE_PATH + "progress_list.gif"));
-
-		ProgressIcon.PROGRESS_CIRCULAR_DOT_ICON = new ImageIcon(ProgressIcon.class.getClassLoader().getResource(
-				ProgressIcon.PROGRESS_RESOURCE_PATH + "progress_save.gif"));
-
-		ProgressIcon.PROGRESS_CIRCULAR_BAR_ICON = new ImageIcon(ProgressIcon.class.getClassLoader().getResource(
-				ProgressIcon.PROGRESS_RESOURCE_PATH + "progress_save.gif"));
-	}
+	public static final ImageIcon PROGRESS_CIRCULAR_BAR_ICON = ProgressIcon.create("progress_save.gif");
 }

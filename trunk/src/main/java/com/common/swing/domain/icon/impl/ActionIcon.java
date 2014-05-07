@@ -1,7 +1,5 @@
 package com.common.swing.domain.icon.impl;
 
-import java.awt.Image;
-
 import javax.swing.ImageIcon;
 
 import com.common.swing.domain.icon.IconResources;
@@ -14,6 +12,7 @@ import com.common.swing.domain.icon.IconResources;
  * @version 1.0
  */
 public class ActionIcon extends IconResources {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El path de los recursos de acción.
@@ -27,84 +26,53 @@ public class ActionIcon extends IconResources {
 	private static Integer width = 30;
 
 	/**
+	 * Permite crear de manera rápida los iconos.
+	 * 
+	 * @param name
+	 *            El nombre del archivo.
+	 * @return El icono creado.
+	 */
+	public static ImageIcon create(String name) {
+		return IconResources.createStaticImage(ActionIcon.ACTION_RESOURCE_PATH + name, ActionIcon.width, ActionIcon.height);
+	}
+
+	/**
 	 * El icono para agregar elementos.
 	 */
-	public static ImageIcon ADD_ELEMENT_ICON;
+	public static final ImageIcon ADD_ELEMENT_ICON = ActionIcon.create("add_32.png");
 	/**
 	 * El icono para editar elementos.
 	 */
-	public static ImageIcon EDIT_ELEMENT_ICON;
+	public static final ImageIcon EDIT_ELEMENT_ICON = ActionIcon.create("edit_32.png");
 	/**
 	 * El icono para quitar elementos.
 	 */
-	public static ImageIcon REMOVE_ELEMENT_ICON;
+	public static final ImageIcon REMOVE_ELEMENT_ICON = ActionIcon.create("remove_32.png");
 	/**
 	 * El icono para seleccionar elementos.
 	 */
-	public static ImageIcon SELECT_ELEMENT_ICON;
+	public static final ImageIcon SELECT_ELEMENT_ICON = ActionIcon.create("select_32.png");
 
 	/**
 	 * El icono para procesar elementos.
 	 */
-	public static ImageIcon PROCCESS_ELEMENT_ICON;
+	public static final ImageIcon PROCCESS_ELEMENT_ICON = ActionIcon.create("proccess_32.png");
 
 	/**
 	 * El icono para bloquear elementos.
 	 */
-	public static ImageIcon LOCK_ELEMENT_ICON;
+	public static final ImageIcon LOCK_ELEMENT_ICON = ActionIcon.create("lock_32.png");
 	/**
 	 * El icono para desbloquear elementos.
 	 */
-	public static ImageIcon UNLOCK_ELEMENT_ICON;
+	public static final ImageIcon UNLOCK_ELEMENT_ICON = ActionIcon.create("unlock_32.png");
 
 	/**
 	 * El icono para aceptar una ventana.
 	 */
-	public static ImageIcon COMMIT_ICON;
+	public static final ImageIcon COMMIT_ICON = ActionIcon.create("commit_1_32.png");
 	/**
 	 * El icono para cancelar una ventana.
 	 */
-	public static ImageIcon REJECT_ICON;
-
-	static {
-		// Acciones sobre los elementos.
-		ActionIcon.ADD_ELEMENT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "add_32.png")).getImage()
-				.getScaledInstance(ActionIcon.width, ActionIcon.height, Image.SCALE_SMOOTH));
-
-		ActionIcon.EDIT_ELEMENT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "edit_32.png")).getImage().getScaledInstance(ActionIcon.width, ActionIcon.height,
-				Image.SCALE_SMOOTH));
-
-		ActionIcon.REMOVE_ELEMENT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "remove_32.png")).getImage().getScaledInstance(ActionIcon.width, ActionIcon.height,
-				Image.SCALE_SMOOTH));
-
-		ActionIcon.SELECT_ELEMENT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "select_32.png")).getImage().getScaledInstance(ActionIcon.width, ActionIcon.height,
-				Image.SCALE_SMOOTH));
-
-		// Procesamiento de los elementos.
-		ActionIcon.PROCCESS_ELEMENT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "proccess_32.png")).getImage().getScaledInstance(ActionIcon.width, ActionIcon.height,
-				Image.SCALE_SMOOTH));
-
-		// Bloque y desbloqueo de elementos.
-		ActionIcon.LOCK_ELEMENT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "lock_32.png")).getImage().getScaledInstance(ActionIcon.width, ActionIcon.height,
-				Image.SCALE_SMOOTH));
-
-		ActionIcon.UNLOCK_ELEMENT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "unlock_32.png")).getImage().getScaledInstance(ActionIcon.width, ActionIcon.height,
-				Image.SCALE_SMOOTH));
-
-		// Acciones sobre la ventana.
-		ActionIcon.COMMIT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "commit_1_32.png")).getImage().getScaledInstance(ActionIcon.width, ActionIcon.height,
-				Image.SCALE_SMOOTH));
-
-		ActionIcon.REJECT_ICON = new ImageIcon(new ImageIcon(ActionIcon.class.getClassLoader().getResource(
-				ActionIcon.ACTION_RESOURCE_PATH + "reject_1_32.png")).getImage().getScaledInstance(ActionIcon.width, ActionIcon.height,
-				Image.SCALE_SMOOTH));
-	}
+	public static final ImageIcon REJECT_ICON = ActionIcon.create("reject_1_32.png");
 }

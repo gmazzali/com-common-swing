@@ -1,7 +1,5 @@
 package com.common.swing.domain.icon.impl;
 
-import java.awt.Image;
-
 import javax.swing.ImageIcon;
 
 import com.common.swing.domain.icon.IconResources;
@@ -13,7 +11,8 @@ import com.common.swing.domain.icon.IconResources;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class FileIcon {
+public class FileIcon extends IconResources {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El path de los recursos de acción.
@@ -27,19 +26,22 @@ public class FileIcon {
 	private static Integer width = 30;
 
 	/**
+	 * Permite crear de manera rápida los iconos.
+	 * 
+	 * @param name
+	 *            El nombre del archivo.
+	 * @return El icono creado.
+	 */
+	public static ImageIcon create(String name) {
+		return IconResources.createStaticImage(FileIcon.FILE_RESOURCE_PATH + name, FileIcon.width, FileIcon.height);
+	}
+
+	/**
 	 * El icono de los archivos PDF.
 	 */
-	public static ImageIcon FILE_PDF_ICON;
+	public static final ImageIcon FILE_PDF_ICON = FileIcon.create("pdf_32.png");
 	/**
 	 * El icono de los archivos XLS.
 	 */
-	public static ImageIcon FILE_XLS_ICON;
-
-	static {
-		FileIcon.FILE_PDF_ICON = new ImageIcon(new ImageIcon(FileIcon.class.getClassLoader().getResource(FileIcon.FILE_RESOURCE_PATH + "pdf_32.png"))
-				.getImage().getScaledInstance(FileIcon.width, FileIcon.height, Image.SCALE_SMOOTH));
-
-		FileIcon.FILE_XLS_ICON = new ImageIcon(new ImageIcon(FileIcon.class.getClassLoader().getResource(FileIcon.FILE_RESOURCE_PATH + "xls_32.png"))
-				.getImage().getScaledInstance(FileIcon.width, FileIcon.height, Image.SCALE_SMOOTH));
-	}
+	public static final ImageIcon FILE_XLS_ICON = MediaIcon.create("xls_32.png");
 }
