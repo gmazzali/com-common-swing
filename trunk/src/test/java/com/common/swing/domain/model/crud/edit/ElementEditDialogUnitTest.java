@@ -6,12 +6,12 @@ import org.apache.log4j.BasicConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.common.swing.domain.model.crud.container.impl.DialogContainer;
 import com.common.swing.domain.model.crud.edit.impl.ElementEditPanel;
 import com.common.swing.domain.model.crud.model.Element;
 import com.common.swing.domain.model.crud.model.ElementServiceImpl;
-import com.common.swing.domain.model.crud.util.CallbackForm;
-import com.common.swing.domain.model.crud.util.FormTypeEnum;
+import com.common.swing.view.crud.container.impl.DialogContainer;
+import com.common.swing.view.crud.util.CallbackForm;
+import com.common.swing.view.crud.util.FormTypeEnum;
 
 /**
  * La clase de prueba de la ventana de edición de entidades.

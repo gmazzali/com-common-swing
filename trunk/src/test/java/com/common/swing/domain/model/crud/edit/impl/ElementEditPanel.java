@@ -15,9 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import com.common.swing.domain.model.crud.form.impl.EditFormImpl;
 import com.common.swing.domain.model.crud.model.Element;
 import com.common.swing.domain.model.crud.model.ElementServiceImpl;
+import com.common.swing.view.crud.form.impl.EditFormImpl;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.exception.CheckedException;
 

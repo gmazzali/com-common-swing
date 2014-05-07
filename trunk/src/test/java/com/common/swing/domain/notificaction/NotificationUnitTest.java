@@ -6,9 +6,9 @@ import org.apache.log4j.BasicConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.common.swing.domain.model.notification.Notificaction;
-import com.common.swing.domain.model.notification.util.ConfirmReturnType;
-import com.common.swing.domain.model.notification.util.ConfirmType;
+import com.common.swing.view.notification.Notificaction;
+import com.common.swing.view.notification.util.ConfirmReturnType;
+import com.common.swing.view.notification.util.ConfirmType;
 
 /**
  * Las pruebas sobre los mensajes de notificación.
