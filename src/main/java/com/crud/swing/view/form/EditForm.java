@@ -11,13 +11,13 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import com.common.swing.domain.exception.SwingException;
-import com.common.swing.view.crud.container.BaseContainer;
-import com.common.swing.view.crud.util.CallbackForm;
-import com.common.swing.view.crud.util.FormTypeEnum;
 import com.common.swing.view.notification.Notificaction;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.model.Persistence;
 import com.crud.swing.view.BaseForm;
+import com.crud.swing.view.container.BaseContainer;
+import com.crud.swing.view.util.CallbackForm;
+import com.crud.swing.view.util.FormTypeEnum;
 
 /**
  * La clase que nos permite definir un panel donde vamos a desplegar los atributos de las entidades, ya sea para dar de alta una nueva, modificar
@@ -83,31 +83,31 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 				formType = FormTypeEnum.VIEW;
 			}
 			switch (formType) {
-				case NEW:
-					LOGGER.trace("new title='" + this.getNewTitle() + "'");
-	
-					container.setTitle(this.getNewTitle());
-					this.entity = this.entityClass.newInstance();
-					this.emptyFields();
-					break;
-	
-				case EDIT:
-					LOGGER.trace("edit title='" + this.getEditTitle() + "'");
-					LOGGER.debug("edit entity=" + entity);
-	
-					container.setTitle(this.getEditTitle());
-					this.emptyFields();
-					this.fromEntityToFields();
-					break;
-	
-				case VIEW:
-					LOGGER.trace("view title='" + this.getViewTitle() + "'");
-					LOGGER.debug("view entity=" + entity);
-	
-					container.setTitle(this.getViewTitle());
-					this.emptyFields();
-					this.fromEntityToFields();
-					break;
+			case NEW:
+				LOGGER.trace("new title='" + this.getNewTitle() + "'");
+
+				container.setTitle(this.getNewTitle());
+				this.entity = this.entityClass.newInstance();
+				this.emptyFields();
+				break;
+
+			case EDIT:
+				LOGGER.trace("edit title='" + this.getEditTitle() + "'");
+				LOGGER.debug("edit entity=" + entity);
+
+				container.setTitle(this.getEditTitle());
+				this.emptyFields();
+				this.fromEntityToFields();
+				break;
+
+			case VIEW:
+				LOGGER.trace("view title='" + this.getViewTitle() + "'");
+				LOGGER.debug("view entity=" + entity);
+
+				container.setTitle(this.getViewTitle());
+				this.emptyFields();
+				this.fromEntityToFields();
+				break;
 			}
 		} catch (Exception e) {
 			LOGGER.error("failed to create form", e);
