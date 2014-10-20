@@ -1,11 +1,11 @@
-package com.common.swing.view.crud.filter;
+package com.crud.swing.view.filter;
 
 import java.io.Serializable;
 import java.util.Collection;
 
-import com.common.swing.view.crud.BaseForm;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.model.Persistence;
+import com.crud.swing.view.BaseForm;
 
 /**
  * La interfaz que nos permite definir los formularios de filtrado para la búsqueda de entidades dentro de un sistema.

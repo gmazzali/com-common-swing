@@ -1,4 +1,4 @@
-package com.common.swing.view.crud.filter.impl;
+package com.crud.swing.view.filter.impl;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -7,9 +7,9 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.common.swing.view.crud.filter.FilterForm;
 import com.common.util.domain.model.Persistence;
 import com.common.util.persistence.filter.BaseFilter;
+import com.crud.swing.view.filter.FilterForm;
 
 /**
  * La clase que implementa la interfaz que nos permite definir los formularios de filtrado para la búsqueda de entidades dentro de un sistema.

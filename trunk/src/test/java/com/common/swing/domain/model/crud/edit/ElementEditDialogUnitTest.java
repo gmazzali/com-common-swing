@@ -9,9 +9,9 @@ import org.junit.Test;
 import com.common.swing.domain.model.crud.edit.impl.ElementEditPanel;
 import com.common.swing.domain.model.crud.model.Element;
 import com.common.swing.domain.model.crud.model.ElementServiceImpl;
-import com.common.swing.view.crud.container.impl.DialogContainer;
-import com.common.swing.view.crud.util.CallbackForm;
-import com.common.swing.view.crud.util.FormTypeEnum;
+import com.crud.swing.view.container.impl.DialogContainer;
+import com.crud.swing.view.util.CallbackForm;
+import com.crud.swing.view.util.FormTypeEnum;
 
 /**
  * La clase de prueba de la ventana de edición de entidades.

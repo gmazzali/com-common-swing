@@ -1,4 +1,4 @@
-package com.common.swing.view.crud.container;
+package com.crud.swing.view.container;
 
 import java.io.Serializable;
 

@@ -17,9 +17,9 @@ import javax.swing.border.LineBorder;
 
 import com.common.swing.domain.model.crud.model.Element;
 import com.common.swing.domain.model.crud.model.ElementServiceImpl;
-import com.common.swing.view.crud.form.impl.EditFormImpl;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.exception.CheckedException;
+import com.crud.swing.view.form.EditForm;
 
 /**
  * La clase que extiende el formulario de edición de entidades.
@@ -28,7 +28,7 @@ import com.common.util.domain.exception.CheckedException;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementEditPanel extends EditFormImpl<Element, Integer> {
+public class ElementEditPanel extends EditForm<Element, Integer> {
 	private static final long serialVersionUID = 1L;
 
 	private ElementServiceImpl service;

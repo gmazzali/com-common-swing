@@ -1,8 +1,8 @@
-package com.common.swing.view.crud.list.impl;
+package com.crud.swing.view.list.impl;
 
 import javax.swing.JPanel;
 
-import com.common.swing.view.crud.list.ListForm;
+import com.crud.swing.view.list.ListForm;
 
 public class ListFormImpl extends JPanel implements ListForm {
 	private static final long serialVersionUID = 1L;
