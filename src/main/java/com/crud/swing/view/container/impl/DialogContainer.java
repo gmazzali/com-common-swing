@@ -1,9 +1,9 @@
-package com.common.swing.view.crud.container.impl;
+package com.crud.swing.view.container.impl;
 
 import javax.swing.JDialog;
 
-import com.common.swing.view.crud.BaseForm;
-import com.common.swing.view.crud.container.BaseContainer;
+import com.crud.swing.view.BaseForm;
+import com.crud.swing.view.container.BaseContainer;
 
 /**
  * La clase que extiende de {@link JDialog} para poder contener un formulario {@link BaseForm}.

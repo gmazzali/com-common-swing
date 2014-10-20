@@ -1,4 +1,4 @@
-package com.common.swing.view.crud.util;
+package com.crud.swing.view.util;
 
 /**
  * La enumeración que contiene los modos en los que puede ser llamado un formulario de edición de una entidad.

@@ -1,4 +1,4 @@
-package com.common.swing.view.crud.util;
+package com.crud.swing.view.util;
 
 import java.io.Serializable;
 
