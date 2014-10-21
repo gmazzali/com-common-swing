@@ -4,12 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.common.swing.view.action.TableAction;
 import com.common.swing.view.component.table.BaseTable;
@@ -34,9 +35,10 @@ public abstract class ListForm<E extends Serializable> extends JPanel implements
 	 */
 	protected BaseTable<E> table;
 	/**
-	 * El listado de los botones de las acciones.
+	 * El listado de las acciones y su acceso exclusivo.
 	 */
-	protected Collection<JButton> tableActionButton;
+	protected Collection<TableAction<E>> tableActions;
+	private Object actionsMutex = new Object();
 
 	/**
 	 * El contrustor del panel de listado.
@@ -54,23 +56,36 @@ public abstract class ListForm<E extends Serializable> extends JPanel implements
 
 		this.table = this.createTable();
 		this.table.setFillsViewportHeight(true);
-		this.addColumnGenerators(this.table);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.add(this.table);
 		scrollPane.setViewportView(this.table);
 		this.add(scrollPane, BorderLayout.CENTER);
 
-		this.tableActionButton = new ArrayList<JButton>();
-		if (CollectionUtil.isNotEmpty(this.getTableActions())) {
+		this.tableActions = this.getTableActions();
+		if (CollectionUtil.isNotEmpty(this.tableActions)) {
 			JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			for (TableAction<E> tableAction : this.getTableActions()) {
-				JButton button = tableAction.createButton();
-				buttonPanel.add(button);
-				this.tableActionButton.add(button);
+			for (TableAction<E> tableAction : this.tableActions) {
+				buttonPanel.add(tableAction.createButton());
 			}
 			this.add(buttonPanel, BorderLayout.SOUTH);
 		}
+
+		ListSelectionModel cellSelectionModel = this.table.getSelectionModel();
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				new Thread() {
+					public void run() {
+						synchronized (actionsMutex) {
+							for (TableAction<E> tableAction : tableActions) {
+								tableAction.createButton().setEnabled(tableAction.isVivibleAction(table.getSelectedValues()));
+							}
+						}
+					}
+				}.start();
+
+			}
+		});
 
 		this.afterInit();
 	}
@@ -78,8 +93,10 @@ public abstract class ListForm<E extends Serializable> extends JPanel implements
 	@Override
 	public void setEnabled(boolean enabled) {
 		this.table.setEnabled(enabled);
-		for (JButton button : this.tableActionButton) {
-			button.setEnabled(enabled);
+		synchronized (actionsMutex) {
+			for (TableAction<E> tableAction : this.tableActions) {
+				tableAction.getButton().setEnabled(enabled);
+			}
 		}
 	}
 
@@ -117,19 +134,11 @@ public abstract class ListForm<E extends Serializable> extends JPanel implements
 	protected abstract void afterInit();
 
 	/**
-	 * Permite crear la tabla para cargar las entidades.
+	 * Permite retornar la instancia la tabla para cargar las entidades.
 	 * 
-	 * @return La tabla creada.
+	 * @return La tabla para listar las entidades.
 	 */
 	protected abstract BaseTable<E> createTable();
-
-	/**
-	 * Permite cargar los generadores de columnas a la tabla.
-	 * 
-	 * @param table
-	 *            La tabla a la que vamos a cargar los generadores de columnas.
-	 */
-	protected abstract void addColumnGenerators(BaseTable<E> table);
 
 	/**
 	 * Retorna el listado de las acciones de la tabla.

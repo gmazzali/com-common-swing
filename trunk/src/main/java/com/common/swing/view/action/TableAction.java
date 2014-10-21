@@ -3,6 +3,7 @@ package com.common.swing.view.action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.swing.JButton;
 
@@ -30,6 +31,10 @@ public class TableAction<E extends Serializable> implements Serializable {
 	 */
 	private TableListener<E> tableListener;
 	/**
+	 * El botón de la acción.
+	 */
+	private JButton button;
+	/**
 	 * El decorador del botón.
 	 */
 	private ButtonDecorator buttonDecorator;
@@ -56,15 +61,37 @@ public class TableAction<E extends Serializable> implements Serializable {
 	 * @return El botón creado.
 	 */
 	public JButton createButton() {
-		JButton button = new JButton();
-		this.buttonDecorator.decorateButton(button);
-		button.addActionListener(new ActionListener() {
+		if (this.button == null) {
+			this.button = new JButton();
+			this.buttonDecorator.decorateButton(this.button);
+			this.button.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tableListener.fireEvent(new TableEvent<E>(table).addAllEntity(table.getSelectedValues()));
-			}
-		});
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tableListener.fireEvent(new TableEvent<E>(table).addAllEntity(table.getSelectedValues()));
+				}
+			});
+		}
+		return this.button;
+	}
+
+	/**
+	 * Permite recuperar el botón de la acción.
+	 * 
+	 * @return El botón de la acción.
+	 */
+	public JButton getButton() {
 		return button;
+	}
+
+	/**
+	 * Permite definir si la acción va a estar activa de acuerdo a la entidad que tenemos seleccionada.
+	 * 
+	 * @param entities
+	 *            Las entidades que tenemos seleccionadas dentro del la tabla.
+	 * @return <code>true</code> en caso de que la acción este habilitada para las entidades, en caso contrario, retorna <code>false</code>.
+	 */
+	public boolean isVivibleAction(Collection<E> entities) {
+		return true;
 	}
 }

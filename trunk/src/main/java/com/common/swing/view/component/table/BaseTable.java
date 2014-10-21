@@ -51,6 +51,10 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 */
 	protected Integer nextIndex = 0;
 	/**
+	 * El valor booleano que nos indica si va a seleccionarse o no la primer fila cuando se carguen datos.
+	 */
+	private boolean firstSelected;
+	/**
 	 * Las propiedades que vamos a mostrar en al tabla.
 	 */
 	protected String[] visibleProperties;
@@ -79,7 +83,7 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 *            El listado de las propiedades que vamos a listar.
 	 */
 	public BaseTable(String[] visibleProperty) {
-		this(new ArrayList<E>(), visibleProperty, null, null);
+		this(visibleProperty, null);
 	}
 
 	/**
@@ -91,7 +95,7 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 */
 	public BaseTable(String[] visibleProperty, Map<String, String> visiblePropertyName) {
-		this(new ArrayList<E>(), visibleProperty, visiblePropertyName, null);
+		this(visibleProperty, visiblePropertyName, null);
 	}
 
 	/**
@@ -106,7 +110,25 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 *            Los anchos que va a tener cada una de las columnas.
 	 */
 	public BaseTable(String[] visibleProperty, Map<String, String> visiblePropertyName, Map<String, Integer> visiblePropertiesWidth) {
-		this(new ArrayList<E>(), visibleProperty, visiblePropertyName, visiblePropertiesWidth);
+		this(visibleProperty, visiblePropertyName, visiblePropertiesWidth, true);
+	}
+
+	/**
+	 * Constructor de una tabla que recibe las propiedades de las entidades que vamos a listar, los nombres que van a recibir cada una de ellas y el
+	 * ancho de cada una, como asi tambien si va a seleccionarse la primer fila o no cuando se carguen datos.
+	 * 
+	 * @param visibleProperty
+	 *            El listado de las propiedades que vamos a listar.
+	 * @param visiblePropertyName
+	 *            El mapa de los nombres de las propiedades que vamos a listar.
+	 * @param visiblePropertiesWidth
+	 *            El mapa de los anchos que va a tener cada una de las columnas.
+	 * @param firstSelected
+	 *            El valor booleano que nos va a indicar si va a seleccionarse o no la primer fila cuando se carguen datos.
+	 */
+	public BaseTable(String[] visibleProperty, Map<String, String> visiblePropertyName, Map<String, Integer> visiblePropertiesWidth,
+			boolean firstSelected) {
+		this(new ArrayList<E>(), visibleProperty, visiblePropertyName, visiblePropertiesWidth, firstSelected);
 	}
 
 	/**
@@ -121,9 +143,11 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 * @param visiblePropertiesWidth
 	 *            El mapa de los anchos que va a tener cada una de las columnas.
+	 * @param firstSelected
+	 *            El valor booleano que nos va a indicar si va a seleccionarse o no la primer fila cuando se carguen datos.
 	 */
 	public BaseTable(List<E> entities, String[] visibleProperties, Map<String, String> visiblePropertiesName,
-			Map<String, Integer> visiblePropertiesWidth) {
+			Map<String, Integer> visiblePropertiesWidth, boolean firstSelected) {
 		super();
 		try {
 			this.entityClass = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -133,7 +157,11 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 		}
 
 		this.visibleProperties = visibleProperties;
+		this.firstSelected = firstSelected;
+
 		this.init(visiblePropertiesName, visiblePropertiesWidth);
+		this.loadColumnsRenderer();
+		this.loadHeadersRenderer();
 		this.reloadData(entities);
 	}
 
@@ -253,7 +281,7 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * @param renderer
 	 *            El render de la columna propiamente dicha.
 	 */
-	public void addColumnRenderer(String property, ColumnTableRenderer renderer) {
+	protected void addColumnRenderer(String property, ColumnTableRenderer renderer) {
 		// Si el renderer es nulo, lanzamos una excepción.
 		if (renderer == null) {
 			log.warn("The column renderer for the property '" + property + "' cannot be null");
@@ -279,7 +307,7 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * @param renderer
 	 *            El render de la cabecera propiamente dicha.
 	 */
-	public void addHeaderRenderer(String property, HeaderTableRenderer renderer) {
+	protected void addHeaderRenderer(String property, HeaderTableRenderer renderer) {
 		// Si el renderer es nulo, lanzamos una excepción.
 		if (renderer == null) {
 			log.warn("The header renderer for the property '" + property + "' cannot be null");
@@ -356,6 +384,9 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 							entityMap.put(nextIndex, entity);
 							nextIndex++;
 						}
+					}
+					if (firstSelected) {
+						setRowSelectionInterval(0, 0);
 					}
 				}
 				setEnabled(true);
@@ -531,4 +562,14 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 			return selectedValues;
 		}
 	}
+
+	/**
+	 * Permite cargar los generadores de columnas a la tabla.
+	 */
+	protected abstract void loadColumnsRenderer();
+
+	/**
+	 * Permite cargar los generadores de cabeceras columnas a la tabla.
+	 */
+	protected abstract void loadHeadersRenderer();
 }
