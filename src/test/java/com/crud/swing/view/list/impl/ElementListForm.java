@@ -3,9 +3,7 @@ package com.crud.swing.view.list.impl;
 import javax.swing.ListSelectionModel;
 
 import com.common.swing.view.component.table.BaseTable;
-import com.common.util.business.service.BaseService;
 import com.crud.swing.model.Element;
-import com.crud.swing.model.ElementServiceImpl;
 import com.crud.swing.model.ElementTable;
 
 /**
@@ -15,10 +13,8 @@ import com.crud.swing.model.ElementTable;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public abstract class ElementListForm extends ListForm<Element, Integer> {
+public abstract class ElementListForm extends ListForm<Element> {
 	private static final long serialVersionUID = 1L;
-
-	private ElementServiceImpl service;
 
 	@Override
 	public Integer getHeightSize() {
@@ -43,15 +39,6 @@ public abstract class ElementListForm extends ListForm<Element, Integer> {
 	@Override
 	public void disabled() {
 		this.table.setEnabled(false);
-	}
-
-	@Override
-	protected BaseService<Element, Integer> getService() {
-		return service;
-	}
-
-	public void setService(ElementServiceImpl service) {
-		this.service = service;
 	}
 
 	@Override
