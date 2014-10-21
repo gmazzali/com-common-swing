@@ -1,4 +1,6 @@
 package com.common.swing.view.component.table.renderer;
+import java.io.Serializable;
+
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -8,5 +10,5 @@ import javax.swing.table.TableCellRenderer;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public interface ColumnTableRenderer extends TableCellRenderer {
+public interface ColumnTableRenderer extends TableCellRenderer, Serializable {
 }
