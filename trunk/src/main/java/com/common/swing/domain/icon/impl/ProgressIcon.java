@@ -33,17 +33,17 @@ public class ProgressIcon extends IconResources {
 	/**
 	 * El GIF de progreso en forma de barra horizontal.
 	 */
-	public static final ImageIcon PROGRESS_HORIZONTAL_BAR_ICON = ProgressIcon.create("horizontal_progress_bar.gif");
+	public static final ImageIcon PROGRESS_HORIZONTAL_BAR_ICON = ProgressIcon.create("progress_circle_bar_32.gif");
 	/**
 	 * El GIF de progreso en forma de barra vertical.
 	 */
-	public static final ImageIcon PROGRESS_VERTICAL_BAR_ICON = ProgressIcon.create("progress_list.gif");
+	public static final ImageIcon PROGRESS_VERTICAL_BAR_ICON = ProgressIcon.create("progress_circle_bar_32.gif");
 	/**
 	 * El GIF de progreso en forma circular con puntos.
 	 */
-	public static final ImageIcon PROGRESS_CIRCULAR_DOT_ICON = ProgressIcon.create("progress_save.gif");
+	public static final ImageIcon PROGRESS_CIRCULAR_DOT_ICON = ProgressIcon.create("progress_circle_bar_32.gif");
 	/**
 	 * El GIF de progreso en forma circular con barras.
 	 */
-	public static final ImageIcon PROGRESS_CIRCULAR_BAR_ICON = ProgressIcon.create("progress_save.gif");
+	public static final ImageIcon PROGRESS_CIRCULAR_BAR_ICON = ProgressIcon.create("progress_circle_bar_32.gif");
 }

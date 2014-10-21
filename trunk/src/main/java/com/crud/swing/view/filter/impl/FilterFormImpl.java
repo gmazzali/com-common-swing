@@ -29,7 +29,7 @@ public abstract class FilterFormImpl<E extends Persistence<PK>, PK extends Seria
 
 	@Override
 	public Collection<E> filter() {
-		BaseFilter<PK> filter = this.createFilter();
+		BaseFilter<E, PK> filter = this.createFilter();
 		log.debug(filter);
 
 		return this.getService().findByFilter(filter);
@@ -40,5 +40,5 @@ public abstract class FilterFormImpl<E extends Persistence<PK>, PK extends Seria
 	 * 
 	 * @return El filtro para la busqueda de entidades.
 	 */
-	protected abstract BaseFilter<PK> createFilter();
+	protected abstract BaseFilter<E, PK> createFilter();
 }

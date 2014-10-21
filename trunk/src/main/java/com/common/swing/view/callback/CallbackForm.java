@@ -1,9 +1,9 @@
-package com.crud.swing.view.util;
+package com.common.swing.view.callback;
 
 import java.io.Serializable;
 
 /**
- * Interface para el manejo de eventos de un formulario de alta / modificación / visualización.
+ * Interfaz para el manejo de eventos de un formulario de alta / modificación / visualización.
  * 
  * @since 05/05/2014
  * @author Guillermo Mazzali

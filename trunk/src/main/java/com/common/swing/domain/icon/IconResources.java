@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
  */
 public class IconResources implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * El path de los recursos.
 	 */

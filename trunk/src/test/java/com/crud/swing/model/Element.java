@@ -1,4 +1,4 @@
-package com.common.swing.domain.model.crud.model;
+package com.crud.swing.model;
 
 import org.springframework.beans.BeanUtils;
 
@@ -14,7 +14,23 @@ import com.common.util.domain.model.Entity;
 public class Element extends Entity<Integer> {
 	private static final long serialVersionUID = 1L;
 
+	public interface Attribute extends Entity.Attributes {
+		public static final String NAME = "name";
+	}
+
 	private String name = "";
+
+	public Element() {
+	}
+
+	public Element(String name) {
+		this.name = name;
+	}
+
+	public Element(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
 	@Override
 	public String toString() {
@@ -29,6 +45,11 @@ public class Element extends Entity<Integer> {
 		BeanUtils.copyProperties(source, target);
 
 		return target;
+	}
+
+	@Override
+	public Integer getId() {
+		return this.id;
 	}
 
 	/**

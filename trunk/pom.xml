@@ -79,7 +79,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.7</version><!--$NO-MVN-MAN-VER$-->
+				<version>2.7</version><!--$NO-MVN-MAN-VER$ -->
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
@@ -128,8 +128,45 @@
 	</build>
 
 	<dependencies>
+		<!-- TEST -->
 
-		<!-- La librerias comun -->
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hamcrest</groupId>
+					<artifactId>hamcrest-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.3.165</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- /TEST -->
+
+		<!-- COMMON -->
 
 		<dependency>
 			<groupId>com</groupId>
@@ -137,21 +174,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<!-- Libreria de pruebas -->
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.1</version>
-		</dependency>
-
-		<!-- Libreria de Log -->
-
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
+		<!-- /COMMON -->
 
 	</dependencies>
 </project>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.common.swing.domain.exception.SwingException;
 import com.common.swing.view.component.table.model.ReadOnlyTableModel;
 import com.common.swing.view.component.table.renderer.ColumnTableRenderer;
 import com.common.swing.view.component.table.renderer.HeaderTableRenderer;
+import com.common.util.business.tool.collection.CollectionUtil;
 
 /**
  * Representa una tabla para desplegarse en formularios hechos con SWING y que contiene dentro de si misma el listado de las entidades que vamos a
@@ -43,7 +45,7 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	/**
 	 * El mapa de las entidades que tenemos desplegadas en la tabla.
 	 */
-	protected Map<Integer, E> entities;
+	protected Map<Integer, E> entityMap;
 	/**
 	 * El indice del proximo elemento que vamos a agregar a la tabla.
 	 */
@@ -64,6 +66,11 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * El modelo de la tabla.
 	 */
 	protected DefaultTableModel tableModel;
+	/**
+	 * Los objectos de exclusion de fila y de tabla.
+	 */
+	private final Object rowMutex = new Object();
+	private final Object tableMutex = new Object();
 
 	/**
 	 * Constructor de una tabla que recibe las propiedades de las entidades que vamos a listar.
@@ -118,7 +125,6 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	public BaseTable(List<E> entities, String[] visibleProperties, Map<String, String> visiblePropertiesName,
 			Map<String, Integer> visiblePropertiesWidth) {
 		super();
-
 		try {
 			this.entityClass = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 		} catch (Exception ex) {
@@ -186,8 +192,8 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 				this.propertiesGetter.put(property, getter);
 			} catch (Exception e) {
 				log.warn("Not found the getter for the property '" + property + "' in the class '" + this.entityClass.getSimpleName() + "'");
-				throw new SwingException("Not found the getter for the property '" + property + "' in the class '"
-						+ this.entityClass.getSimpleName() + "'", "swing.component.basetable.getter.missing", property, this.entityClass.getSimpleName());
+				throw new SwingException("Not found the getter for the property '" + property + "' in the class '" + this.entityClass.getSimpleName()
+						+ "'", "swing.component.basetable.getter.missing", property, this.entityClass.getSimpleName());
 			}
 		}
 	}
@@ -251,7 +257,8 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 		// Si el renderer es nulo, lanzamos una excepción.
 		if (renderer == null) {
 			log.warn("The column renderer for the property '" + property + "' cannot be null");
-			throw new SwingException("The column renderer for the property '" + property + "' cannot be null", "swing.component.basetable.error.columnrenderer.null", property);
+			throw new SwingException("The column renderer for the property '" + property + "' cannot be null",
+					"swing.component.basetable.error.columnrenderer.null", property);
 		}
 
 		// Cargamos el renderer en el mapa de las columnas.
@@ -259,7 +266,8 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 			this.propertiesColumn.get(property).setCellRenderer(renderer);
 		} else {
 			log.warn("Don't exist the column for the property '" + property + "'");
-			throw new SwingException("Don't exist the column for the property '" + property + "'", "swing.component.basetable.error.columnrenderer.nonexist", property);
+			throw new SwingException("Don't exist the column for the property '" + property + "'",
+					"swing.component.basetable.error.columnrenderer.nonexist", property);
 		}
 	}
 
@@ -275,7 +283,8 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 		// Si el renderer es nulo, lanzamos una excepción.
 		if (renderer == null) {
 			log.warn("The header renderer for the property '" + property + "' cannot be null");
-			throw new SwingException("The header renderer for the property '" + property + "' cannot be null", "swing.component.basetable.error.headerrenderer.null", property);
+			throw new SwingException("The header renderer for the property '" + property + "' cannot be null",
+					"swing.component.basetable.error.headerrenderer.null", property);
 		}
 
 		// Cargamos el renderer en el mapa de las columnas.
@@ -283,7 +292,34 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 			this.propertiesColumn.get(property).setHeaderRenderer(renderer);
 		} else {
 			log.warn("Don't exist the header for the property '" + property + "'");
-			throw new SwingException("Don't exist the header for the property '" + property + "'", "swing.component.basetable.error.headerrenderer.nonexist", property);
+			throw new SwingException("Don't exist the header for the property '" + property + "'",
+					"swing.component.basetable.error.headerrenderer.nonexist", property);
+		}
+	}
+
+	/**
+	 * Permite saber si la tabla se encuentra vacía.
+	 * 
+	 * @return <code>true</code> en caso de que la tabla no contenga ninguna entidad, en caso contrario, retorna <code>false</code>.
+	 */
+	public boolean isEmpty() {
+		return this.entityMap.isEmpty();
+	}
+
+	/**
+	 * Permite vaciar el contenido de la tabla.
+	 */
+	public void clearTable() {
+		synchronized (tableMutex) {
+			synchronized (rowMutex) {
+				this.entityMap = new HashMap<Integer, E>();
+				Integer size = this.tableModel.getDataVector().size();
+				if (size > 0) {
+					this.tableModel.getDataVector().clear();
+					this.tableModel.fireTableRowsDeleted(0, size - 1);
+				}
+				this.nextIndex = 0;
+			}
 		}
 	}
 
@@ -293,27 +329,38 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * @param entities
 	 *            La lista de entidades que vamos a almacenar en la tabla.
 	 */
-	protected void reloadData(List<E> entities) {
-		// Si la lista es nula, lanzamos una excepción.
-		if (entities == null) {
-			log.warn("The entities list cannot be null");
-			throw new SwingException("The entities list cannot be null", "swing.component.basetable.error.entities.null");
-		}
+	protected void reloadData(final Collection<E> entities) {
+		new Thread() {
+			public void run() {
+				setEnabled(false);
 
-		// Deshabilitamos la tabla, la vaciamos y reiniciamos el indice.
-		this.setEnabled(false);
-		this.tableModel.getDataVector().clear();
-		this.nextIndex = 0;
+				// Limpiamos la tabla.
+				clearTable();
 
-		// Tomamos las entidades y las cargamos fila por fila.
-		for (E entity : entities) {
-			if (entity != null) {
-				this.addEntity(entity);
+				synchronized (tableMutex) {
+					// Tomamos las entidades y las cargamos fila por fila.
+					for (E entity : entities) {
+						// Creamos la fila y la cargamos.
+						List<Object> row = new ArrayList<Object>();
+						for (String property : visibleProperties) {
+							try {
+								row.add(propertiesGetter.get(property).invoke(entity));
+							} catch (Exception e) {
+							}
+						}
+
+						synchronized (rowMutex) {
+							// Cargamos la fila al modelo de la tabla.
+							tableModel.addRow(row.toArray());
+							// Agregamos la entidad al listado interno.
+							entityMap.put(nextIndex, entity);
+							nextIndex++;
+						}
+					}
+				}
+				setEnabled(true);
 			}
-		}
-
-		// Volvemos a habilitar la tabla.
-		this.setEnabled(true);
+		}.start();
 	}
 
 	/**
@@ -322,26 +369,28 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * @param entity
 	 *            La entidad que vamos a almacenar en el mapa y la tabla.
 	 */
-	protected void addEntity(E entity) {
-		synchronized (this.nextIndex) {
-			try {
-				// Creamos la fila y la cargamos.
-				List<Object> row = new ArrayList<Object>();
-				for (String property : this.visibleProperties) {
-					row.add(this.propertiesGetter.get(property).invoke(entity));
+	protected void addEntity(final E entity) {
+		new Thread() {
+			public void run() {
+				try {
+					// Creamos la fila y la cargamos.
+					List<Object> row = new ArrayList<Object>();
+					for (String property : visibleProperties) {
+						row.add(propertiesGetter.get(property).invoke(entity));
+					}
+
+					synchronized (rowMutex) {
+						// Cargamos la fila al modelo de la tabla.
+						tableModel.addRow(row.toArray());
+
+						// Agregamos la entidad al listado interno.
+						entityMap.put(nextIndex, entity);
+						nextIndex++;
+					}
+				} catch (Exception e) {
 				}
-
-				// Cargamos la fila al modelo de la tabla.
-				this.tableModel.addRow(row.toArray());
-
-				// Agregamos la entidad al listado interno.
-				this.entities.put(this.nextIndex, entity);
-				this.nextIndex++;
-
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
-		}
+		}.start();
 	}
 
 	/**
@@ -350,46 +399,52 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * @param entity
 	 *            La entidad que vamos a quitar del mapa y la tabla.
 	 */
-	protected void removeEntity(E entity) {
-		synchronized (this.nextIndex) {
-			// Buscamos el indice de la entidad que queremos borrar.
-			Integer removeRowKey = null;
-			for (Integer entityRowKey : this.entities.keySet()) {
-				if (this.entities.get(entityRowKey).equals(entity)) {
-					removeRowKey = entityRowKey;
-					break;
+	protected void removeEntity(final E entity) {
+		new Thread() {
+			public void run() {
+				synchronized (rowMutex) {
+					// Buscamos el indice de la entidad que queremos borrar.
+					Integer removeRowKey = null;
+					for (Integer entityRowKey : entityMap.keySet()) {
+						if (entityMap.get(entityRowKey).equals(entity)) {
+							removeRowKey = entityRowKey;
+							break;
+						}
+					}
+
+					// Si encontramos el indice, eliminamos.
+					if (removeRowKey != null) {
+						// Quitamos la entidad de la tabla y del mapa de entidades.
+						entityMap.remove(removeRowKey);
+						tableModel.removeRow(removeRowKey);
+
+						// Bajamos en 1 la cantidad de entidades en la tabla.
+						nextIndex--;
+
+						// Ahora tenemos que actualizar el mapa de las entidades a partir del índice eliminado, solo corriendo las entidades.
+						for (Integer i = removeRowKey; i < nextIndex; i++) {
+							entityMap.put(i, entityMap.get(i + 1));
+						}
+						entityMap.remove(nextIndex);
+					}
 				}
 			}
-
-			// Si encontramos el indice, eliminamos.
-			if (removeRowKey != null) {
-
-				// Quitamos la entidad de la tabla y del mapa de entidades.
-				this.entities.remove(removeRowKey);
-				this.tableModel.removeRow(removeRowKey);
-
-				// Bajamos en 1 la cantidad de entidades en la tabla.
-				this.nextIndex--;
-
-				// Ahora tenemos que actualizar el mapa de las entidades a partir del índice eliminado, solo corriendo las entidades.
-				for (Integer i = removeRowKey; i < this.nextIndex; i++) {
-					this.entities.put(i, this.entities.get(i + 1));
-				}
-
-				this.entities.remove(this.nextIndex);
-			}
-		}
+		}.start();
 	}
 
 	/**
 	 * Permite cargar un listado de entidades dentro de la tabla. Al cargar este nuevo listado, se borra el contenido de la tabla que se encuentra
-	 * actualmente y se carga la misma con este listado.
+	 * actualmente y se carga la misma con este listado. En caso de que la lista este vacía o sea <code>null</code> se va a limpiar la tabla.
 	 * 
 	 * @param entities
-	 *            El listado de las entidades.
+	 *            El listado de las entidades. Puede estar vacía o ser <code>null</code>.
 	 */
-	public void setValues(List<E> entities) {
-		this.reloadData(entities);
+	public void setValues(Collection<E> entities) {
+		if (CollectionUtil.isNotEmpty(entities)) {
+			this.reloadData(entities);
+		} else {
+			this.clearTable();
+		}
 	}
 
 	/**
@@ -399,7 +454,9 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 *            La entidad que vamos a agregar a las que ya tenemos-
 	 */
 	public void addValue(E entity) {
-		this.addEntity(entity);
+		synchronized (this.nextIndex) {
+			this.addEntity(entity);
+		}
 	}
 
 	/**
@@ -409,7 +466,9 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 *            La entidad que queremos quitar de la tabla.
 	 */
 	public void removeValue(E entity) {
-		this.removeEntity(entity);
+		synchronized (this.nextIndex) {
+			this.removeEntity(entity);
+		}
 	}
 
 	/**
@@ -420,7 +479,7 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * @return <i>true</i> en caso de que la entidad se encuentra cargada dentro de la tabla, en caso contrario retorna <i>false</i>.
 	 */
 	public boolean containValue(E entity) {
-		return this.entities.containsValue(entity);
+		return this.entityMap.containsValue(entity);
 	}
 
 	/**
@@ -429,13 +488,15 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * @return La entidad que se encuentra seleccionada en la tabla, en caso de que no se encuentre ninguna seleccionada, retornamos un valor nulo.
 	 */
 	public E getSelectedValue() {
-		// Otenemos el indice seleccinado.
-		Integer index = this.getSelectedRow();
-		if (index != -1) {
-			Integer realIndex = this.convertRowIndexToModel(index);
-			return this.entities.get(realIndex);
+		synchronized (this.rowMutex) {
+			// Otenemos el indice seleccinado.
+			Integer index = this.getSelectedRow();
+			if (index != -1) {
+				Integer realIndex = this.convertRowIndexToModel(index);
+				return this.entityMap.get(realIndex);
+			}
+			return null;
 		}
-		return null;
 	}
 
 	/**
@@ -445,23 +506,29 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 	 * @return El listado de las entidades que se encuentran seleccionadas en la tabla, en caso de que no se encuentre ninguna seleccionada,
 	 *         retornamos una lista vacia.
 	 */
-	public List<E> getSelectedValues() {
-		// Obtenemos los indices seleccionados.
-		int[] indexs = this.getSelectedRows();
+	public Collection<E> getSelectedValues() {
+		synchronized (this.tableMutex) {
+			// Obtenemos los indices seleccionados.
+			int[] indexs = this.getSelectedRows();
 
-		// Convertimos esos indices.
-		int[] realIndexs = new int[indexs.length];
-		for (int i = 0; i < indexs.length; i++) {
-			realIndexs[i] = this.convertRowIndexToModel(indexs[i]);
+			// Convertimos esos indices.
+			int[] realIndexs = new int[indexs.length];
+			if (!this.isEmpty()) {
+				for (int i = 0; i < indexs.length; i++) {
+					realIndexs[i] = this.convertRowIndexToModel(indexs[i]);
+				}
+			}
+
+			// Otenemos las entidades de esos indices.
+			Collection<E> selectedValues = new ArrayList<E>();
+			for (Integer realIndex : realIndexs) {
+				if (this.entityMap.containsKey(realIndex)) {
+					selectedValues.add(this.entityMap.get(realIndex));
+				}
+			}
+
+			// Recuperamos esos objetos y los devolvemos.
+			return selectedValues;
 		}
-
-		// Otenemos las entidades de esos indices.
-		List<E> selectedValues = new ArrayList<E>();
-		for (Integer realIndex : realIndexs) {
-			selectedValues.add(this.entities.get(realIndex));
-		}
-
-		// Recuperamos esos objetos y los devolvemos.
-		return selectedValues;
 	}
 }

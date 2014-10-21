@@ -1,4 +1,4 @@
-package com.common.swing.domain.model.crud.edit.impl;
+package com.crud.swing.view.form;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,11 +15,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import com.common.swing.domain.model.crud.model.Element;
-import com.common.swing.domain.model.crud.model.ElementServiceImpl;
+import com.common.swing.domain.exception.SwingException;
+import com.common.swing.domain.icon.impl.ProgressIcon;
 import com.common.util.business.service.BaseService;
-import com.common.util.domain.exception.CheckedException;
-import com.crud.swing.view.form.EditForm;
+import com.crud.swing.model.Element;
+import com.crud.swing.model.ElementServiceImpl;
 
 /**
  * La clase que extiende el formulario de edición de entidades.
@@ -28,7 +28,7 @@ import com.crud.swing.view.form.EditForm;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementEditPanel extends EditForm<Element, Integer> {
+public class ElementEditForm extends EditForm<Element, Integer> {
 	private static final long serialVersionUID = 1L;
 
 	private ElementServiceImpl service;
@@ -38,18 +38,8 @@ public class ElementEditPanel extends EditForm<Element, Integer> {
 	private JButton botonCancelar;
 	private JButton botonAceptar;
 
-	/**
-	 * Create the panel.
-	 */
-	public ElementEditPanel() {
-		super();
-		this.init();
-	}
-
-	/**
-	 * La función de inicialización de componentes.
-	 */
-	private void init() {
+	@Override
+	protected void init() {
 		this.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		this.setLayout(null);
 
@@ -64,7 +54,7 @@ public class ElementEditPanel extends EditForm<Element, Integer> {
 		this.textField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				ElementEditPanel.this.textField.selectAll();
+				ElementEditForm.this.textField.selectAll();
 			}
 		});
 		this.add(this.textField);
@@ -79,7 +69,7 @@ public class ElementEditPanel extends EditForm<Element, Integer> {
 		this.botonCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ElementEditPanel.this.reject();
+				ElementEditForm.this.reject();
 			}
 		});
 		this.add(this.botonCancelar);
@@ -96,7 +86,7 @@ public class ElementEditPanel extends EditForm<Element, Integer> {
 		this.botonAceptar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ElementEditPanel.this.confirm();
+				ElementEditForm.this.confirm();
 			}
 		});
 		this.add(this.botonAceptar);
@@ -105,9 +95,7 @@ public class ElementEditPanel extends EditForm<Element, Integer> {
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-
 		this.textField.setEnabled(enabled);
-
 		this.botonAceptar.setEnabled(enabled);
 		this.botonCancelar.setEnabled(enabled);
 	}
@@ -123,25 +111,31 @@ public class ElementEditPanel extends EditForm<Element, Integer> {
 
 	@Override
 	public void emptyFields() {
-		System.out.println("EMPTY FIELD");
 		this.textField.setText("");
 	}
 
 	@Override
 	public void fromEntityToFields() {
-		System.out.println("LOAD ENTITY TO PANEL");
 		this.textField.setText(this.entity.getName());
 	}
 
 	@Override
-	public void fromFieldsToEntity() throws CheckedException {
-		System.out.println("LOAD ENTITY FROM PANEL");
+	protected void preValidate() throws SwingException {
+	}
+
+	@Override
+	public void fromFieldsToEntity() {
 		this.entity.setName(this.textField.getText());
 	}
 
 	@Override
 	public JLabel getProgressLabel() {
 		return this.progressLabel;
+	}
+
+	@Override
+	protected ImageIcon getProgressIcon() {
+		return ProgressIcon.PROGRESS_CIRCULAR_DOT_ICON;
 	}
 
 	@Override
@@ -152,11 +146,6 @@ public class ElementEditPanel extends EditForm<Element, Integer> {
 	@Override
 	public Integer getHeightSize() {
 		return 100;
-	}
-
-	@Override
-	protected ImageIcon getProgressIcon() {
-		return null;
 	}
 
 	@Override

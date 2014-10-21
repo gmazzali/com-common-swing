@@ -34,7 +34,7 @@ public interface BaseForm {
 	public void disabled();
 
 	/**
-	 * Se encarga de reiniciar los campos de búsqueda para comenzar con una búsqueda desde el comienzo.
+	 * Se encarga de vaciar los campos de la ventana para poder volver a cargarlos desde cero.
 	 */
 	public void emptyFields();
 }
