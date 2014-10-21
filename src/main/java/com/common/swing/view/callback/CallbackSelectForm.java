@@ -1,4 +1,4 @@
-package com.crud.swing.view.util;
+package com.common.swing.view.callback;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * @param <T>
  *            El tipo de elemento que vamos a poder seleccionar.
  */
-public interface SelectCallbackForm<T> extends Serializable {
+public interface CallbackSelectForm<T> extends Serializable {
 
 	/**
 	 * Se encarga de cargar dentro del formulario de llamada los elementos seleccionados dentro de este.

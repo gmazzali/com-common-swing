@@ -11,12 +11,12 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import com.common.swing.domain.exception.SwingException;
+import com.common.swing.view.callback.CallbackForm;
 import com.common.swing.view.notification.Notificaction;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.model.Persistence;
 import com.crud.swing.view.BaseForm;
 import com.crud.swing.view.container.BaseContainer;
-import com.crud.swing.view.util.CallbackForm;
 import com.crud.swing.view.util.FormTypeEnum;
 
 /**
@@ -63,7 +63,13 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 		}
 		LOGGER.trace("load dimension=[" + this.getWidthSize() + "; " + this.getHeightSize() + "]");
 		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
+		this.init();
 	}
+
+	/**
+	 * Permite inicializar los componentes del formulario.
+	 */
+	protected abstract void init();
 
 	/**
 	 * Se encarga de crear un formulario de acuerdo al tipo recibido y con la entidad que tenemos cargada dentro de esta.
@@ -83,31 +89,31 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 				formType = FormTypeEnum.VIEW;
 			}
 			switch (formType) {
-			case NEW:
-				LOGGER.trace("new title='" + this.getNewTitle() + "'");
-
-				container.setTitle(this.getNewTitle());
-				this.entity = this.entityClass.newInstance();
-				this.emptyFields();
-				break;
-
-			case EDIT:
-				LOGGER.trace("edit title='" + this.getEditTitle() + "'");
-				LOGGER.debug("edit entity=" + entity);
-
-				container.setTitle(this.getEditTitle());
-				this.emptyFields();
-				this.fromEntityToFields();
-				break;
-
-			case VIEW:
-				LOGGER.trace("view title='" + this.getViewTitle() + "'");
-				LOGGER.debug("view entity=" + entity);
-
-				container.setTitle(this.getViewTitle());
-				this.emptyFields();
-				this.fromEntityToFields();
-				break;
+				case NEW:
+					LOGGER.trace("new title='" + this.getNewTitle() + "'");
+	
+					container.setTitle(this.getNewTitle());
+					this.entity = this.entityClass.newInstance();
+					this.emptyFields();
+					break;
+	
+				case EDIT:
+					LOGGER.trace("edit title='" + this.getEditTitle() + "'");
+					LOGGER.debug("edit entity=" + entity);
+	
+					container.setTitle(this.getEditTitle());
+					this.emptyFields();
+					this.fromEntityToFields();
+					break;
+	
+				case VIEW:
+					LOGGER.trace("view title='" + this.getViewTitle() + "'");
+					LOGGER.debug("view entity=" + entity);
+	
+					container.setTitle(this.getViewTitle());
+					this.emptyFields();
+					this.fromEntityToFields();
+					break;
 			}
 		} catch (Exception e) {
 			LOGGER.error("failed to create form", e);
@@ -138,7 +144,7 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 	/**
 	 * Se encarga de cerrar el formulario de edición de entidades y no guardar ningún cambio de esta en la base de datos.
 	 */
-	public void reject() {
+	protected void reject() {
 		this.entity = null;
 		this.emptyFields();
 		if (this.callback != null) {
@@ -149,15 +155,16 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 	/**
 	 * Se encarga del guardado de la entidad que estamos editando dentro de la base de datos.
 	 */
-	public void confirm() {
+	protected void confirm() {
 		new Thread() {
 			@Override
 			public void run() {
 				try {
-					EditForm.this.beforeSaveEntity();
-					EditForm.this.fromFieldsToEntity();
-					EditForm.this.getService().saveOrUpdate(EditForm.this.entity);
-					if (EditForm.this.callback != null) {
+					beforeSaveEntity();
+					preValidate();
+					fromFieldsToEntity();
+					getService().saveOrUpdate(entity);
+					if (callback != null) {
 						callback.confirm();
 					}
 				} catch (Exception e) {
@@ -194,7 +201,7 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 	/**
 	 * Se encarga de cargar los campos de la ventana de acuerdo a los valores de los atributos de la entidad que queremos editar.
 	 */
-	public abstract void fromEntityToFields();
+	protected abstract void fromEntityToFields();
 
 	/**
 	 * Permite pre validar los datos que tenemos dentro del formulario antes de cargarlos dentro de la entidad.
@@ -202,12 +209,12 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 	 * @throws SwingException
 	 *             En caso de que no se pase alguna validación.
 	 */
-	public abstract void preValidate() throws SwingException;
+	protected abstract void preValidate() throws SwingException;
 
 	/**
 	 * Se encarga de tomar los valores de los campos de la ventana y cargarlos dentro de la entidad antes de guardarlo dentro de la base de datos.
 	 */
-	public abstract void fromFieldsToEntity();
+	protected abstract void fromFieldsToEntity();
 
 	/**
 	 * Se encarga de retornar la imagen que vamos a desplegar en caso de que se ejecute un proceso en segundo plano.
@@ -249,5 +256,5 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 	 * 
 	 * @return El servicio para la entidad que tenemos en el panel.
 	 */
-	public abstract BaseService<E, PK> getService();
+	protected abstract BaseService<E, PK> getService();
 }

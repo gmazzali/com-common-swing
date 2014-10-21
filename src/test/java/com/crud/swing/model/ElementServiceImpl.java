@@ -1,4 +1,4 @@
-package com.common.swing.domain.model.crud.model;
+package com.crud.swing.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.common.util.business.service.impl.BaseServiceImpl;
 import com.common.util.domain.exception.UncheckedException;
+import com.common.util.persistence.filter.BaseFilter;
 
 /**
  * La clase que da servicios a los elementos Element.
@@ -57,7 +58,7 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 		ElementServiceImpl.elements.add(entity);
 
 		try {
-			Thread.sleep(200);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -84,7 +85,7 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 		ElementServiceImpl.elements.add(entity);
 
 		try {
-			Thread.sleep(200);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -100,10 +101,15 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 		}
 
 		try {
-			Thread.sleep(200);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<Element> findByFilter(BaseFilter<Element, Integer> filter) {
+		return elements;
 	}
 
 	/**

@@ -1,26 +1,28 @@
-package com.common.swing.domain.model.crud.edit;
+package com.crud.swing.view.form;
 
 import java.awt.BorderLayout;
 
 import org.apache.log4j.BasicConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import com.common.swing.domain.model.crud.edit.impl.ElementEditPanel;
-import com.common.swing.domain.model.crud.model.Element;
-import com.common.swing.domain.model.crud.model.ElementServiceImpl;
+import com.common.swing.view.callback.CallbackForm;
+import com.crud.swing.model.Element;
+import com.crud.swing.model.ElementServiceImpl;
 import com.crud.swing.view.container.impl.DialogContainer;
-import com.crud.swing.view.util.CallbackForm;
 import com.crud.swing.view.util.FormTypeEnum;
 
 /**
  * La clase de prueba de la ventana de edición de entidades.
  * 
- * @since 30/04/2014
+ * @since 20/10/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementEditDialogUnitTest {
+@RunWith(MockitoJUnitRunner.class)
+public class EditFormTest {
 
 	@BeforeClass
 	public static void initClass() {
@@ -32,7 +34,7 @@ public class ElementEditDialogUnitTest {
 	 */
 	@Test
 	public void pruebaDeAlta() {
-		ElementEditPanel panel = new ElementEditPanel();
+		ElementEditForm panel = new ElementEditForm();
 		panel.setService(new ElementServiceImpl());
 
 		final DialogContainer dialog = new DialogContainer();
@@ -70,11 +72,10 @@ public class ElementEditDialogUnitTest {
 	 */
 	@Test
 	public void pruebaDeEdicion() {
-		ElementEditPanel panel = new ElementEditPanel();
+		ElementEditForm panel = new ElementEditForm();
 		panel.setService(new ElementServiceImpl());
 
-		Element element = new Element();
-		element.setName("NAME");
+		Element element = new Element(1, "NAME");
 
 		panel.setEntity(element);
 
