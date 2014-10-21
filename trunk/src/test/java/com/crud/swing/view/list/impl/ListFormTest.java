@@ -41,14 +41,6 @@ public class ListFormTest {
 	 */
 	@Test
 	public void testListFormWithoutTableAction() {
-		ElementListForm panel = new ElementListForm() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected Collection<TableAction<Element>> getTableActions() {
-				return null;
-			}
-		};
 		ElementServiceImpl service = new ElementServiceImpl();
 		service.save(new Element("ELEMENTO 1"));
 		service.save(new Element("ELEMENTO 2"));
@@ -60,8 +52,17 @@ public class ListFormTest {
 		service.save(new Element("ELEMENTO 8"));
 		service.save(new Element("ELEMENTO 9"));
 		service.save(new Element("ELEMENTO 0"));
-		panel.setService(service);
-		panel.loadEntities(new BaseFilter<Element, Integer>());
+		
+		ElementListForm panel = new ElementListForm() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Collection<TableAction<Element>> getTableActions() {
+				return null;
+			}
+		};
+
+		panel.setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
 
 		final DialogContainer dialog = new DialogContainer();
 		dialog.getContentPane().removeAll();
@@ -89,6 +90,7 @@ public class ListFormTest {
 		service.save(new Element("ELEMENTO 8"));
 		service.save(new Element("ELEMENTO 9"));
 		service.save(new Element("ELEMENTO 0"));
+		
 		final ElementListForm panel = new ElementListForm() {
 			private static final long serialVersionUID = 1L;
 
@@ -102,7 +104,7 @@ public class ListFormTest {
 							public void run() {
 								setEnabled(false);
 								service.save(new Element("ELEMENTO " + (int) (Math.random() * 1000)));
-								loadEntities(baseFilter);
+								setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
 								setEnabled(true);
 							};
 						}.start();
@@ -126,7 +128,7 @@ public class ListFormTest {
 								for (Element element : tableEvent.getEntities()) {
 									service.delete(element);
 								}
-								loadEntities(baseFilter);
+								setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
 								setEnabled(true);
 							};
 						}.start();
@@ -157,7 +159,7 @@ public class ListFormTest {
 
 					@Override
 					public void fireEvent(final TableEvent<Element> tableEvent) {
-						loadEntities(baseFilter);
+						setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
 					}
 				};
 				ButtonDecorator buttonDecorator4 = new ButtonDecorator() {
@@ -173,8 +175,8 @@ public class ListFormTest {
 						new TableAction<Element>(table, tableListener4, buttonDecorator4));
 			}
 		};
-		panel.setService(service);
-		panel.loadEntities(new BaseFilter<Element, Integer>());
+		
+		panel.setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
 
 		final DialogContainer dialog = new DialogContainer();
 		dialog.getContentPane().removeAll();

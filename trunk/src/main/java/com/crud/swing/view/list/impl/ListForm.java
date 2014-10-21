@@ -13,10 +13,7 @@ import javax.swing.JScrollPane;
 
 import com.common.swing.view.action.TableAction;
 import com.common.swing.view.component.table.BaseTable;
-import com.common.util.business.service.BaseService;
 import com.common.util.business.tool.collection.CollectionUtil;
-import com.common.util.domain.model.Persistence;
-import com.common.util.persistence.filter.BaseFilter;
 import com.crud.swing.view.BaseForm;
 
 /**
@@ -28,16 +25,10 @@ import com.crud.swing.view.BaseForm;
  * 
  * @param <E>
  *            Las clases de las entidades que vamos a manipular dentro de este panel.
- * @param <PK>
- *            La clase que va a hacer de clave primaria de las entidades que vamos a listar.
  */
-public abstract class ListForm<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements BaseForm {
+public abstract class ListForm<E extends Serializable> extends JPanel implements BaseForm {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * El filtro de busqueda.
-	 */
-	protected BaseFilter<E, PK> baseFilter;
 	/**
 	 * La tabla de las entidades.
 	 */
@@ -85,11 +76,6 @@ public abstract class ListForm<E extends Persistence<PK>, PK extends Serializabl
 	}
 
 	@Override
-	public void emptyFields() {
-		this.table.clearTable();
-	}
-	
-	@Override
 	public void setEnabled(boolean enabled) {
 		this.table.setEnabled(enabled);
 		for (JButton button : this.tableActionButton) {
@@ -97,16 +83,20 @@ public abstract class ListForm<E extends Persistence<PK>, PK extends Serializabl
 		}
 	}
 
+	@Override
+	public void emptyFields() {
+		this.table.clearTable();
+	}
+
 	/**
 	 * Permite cargar una lista de entidades dentro de la tabla.
 	 * 
-	 * @param baseFilter
-	 *            El filtro de busqueda de las entidades.
+	 * @param entities
+	 *            La lista de entidades que vamos a cargar. En caso de que la misma sea vacía o <code>null</code> se va a limpiar la misma.
 	 */
-	public void loadEntities(BaseFilter<E, PK> baseFilter) {
-		this.baseFilter = baseFilter;
-		if (this.baseFilter != null) {
-			this.table.setValues(this.getService().findByFilter(this.baseFilter));
+	public void setEntities(Collection<E> entities) {
+		if (CollectionUtil.isNotEmpty(entities)) {
+			this.table.setValues(entities);
 		} else {
 			this.emptyFields();
 		}
@@ -125,13 +115,6 @@ public abstract class ListForm<E extends Persistence<PK>, PK extends Serializabl
 	 * Permite terminar de configurar los elementos del panel del listado.
 	 */
 	protected abstract void afterInit();
-
-	/**
-	 * Se encarga de retornar el servicio que vamos a utilizar para la entidad que tenemos en el panel.
-	 * 
-	 * @return El servicio para la entidad que tenemos en el panel.
-	 */
-	protected abstract BaseService<E, PK> getService();
 
 	/**
 	 * Permite crear la tabla para cargar las entidades.
