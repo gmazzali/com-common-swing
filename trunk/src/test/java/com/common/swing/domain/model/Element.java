@@ -1,4 +1,4 @@
-package com.common.swing.model;
+package com.common.swing.domain.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

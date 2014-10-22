@@ -1,4 +1,4 @@
-package com.crud.swing.view.list;
+package com.crud.swing.view.form.list;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -15,7 +15,7 @@ import javax.swing.event.ListSelectionListener;
 import com.common.swing.view.action.TableAction;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.util.business.tool.collection.CollectionUtil;
-import com.crud.swing.view.BaseForm;
+import com.crud.swing.view.form.BaseForm;
 
 /**
  * La clase que permite definir un panel donde vamos a desplegar una lista de elementos con las acciones correspondiente para las mismas.

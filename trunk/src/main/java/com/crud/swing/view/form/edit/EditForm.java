@@ -1,4 +1,4 @@
-package com.crud.swing.view.form;
+package com.crud.swing.view.form.edit;
 
 import java.awt.Dimension;
 import java.io.Serializable;
@@ -15,9 +15,9 @@ import com.common.swing.view.callback.CallbackForm;
 import com.common.swing.view.notification.Notificaction;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.model.Persistence;
-import com.crud.swing.view.BaseForm;
 import com.crud.swing.view.container.BaseContainer;
-import com.crud.swing.view.util.FormTypeEnum;
+import com.crud.swing.view.form.BaseForm;
+import com.crud.swing.view.form.util.EditFormTypeEnum;
 
 /**
  * La clase que nos permite definir un panel donde vamos a desplegar los atributos de las entidades, ya sea para dar de alta una nueva, modificar
@@ -75,18 +75,18 @@ public abstract class EditForm<E extends Persistence<PK>, PK extends Serializabl
 	 * Se encarga de crear un formulario de acuerdo al tipo recibido y con la entidad que tenemos cargada dentro de esta.
 	 * 
 	 * @param formType
-	 *            El tipo de formulario que vamos a crear, puede ser {@link FormTypeEnum#NEW}, {@link FormTypeEnum#EDIT} o {@link FormTypeEnum#VIEW}
+	 *            El tipo de formulario que vamos a crear, puede ser {@link EditFormTypeEnum#NEW}, {@link EditFormTypeEnum#EDIT} o {@link EditFormTypeEnum#VIEW}
 	 * @param callback
 	 *            El comportamiento que vamos a controlar despues de apretar el boton de aceptar o cancelar. Puede ser <code>null</code>.
 	 * @param container
 	 *            El contenedor donde vamos a colocar el formulario.
 	 */
-	public void createForm(BaseContainer container, FormTypeEnum formType, CallbackForm callback) {
+	public void createForm(BaseContainer container, EditFormTypeEnum formType, CallbackForm callback) {
 		this.callback = callback;
 
 		try {
 			if (formType == null) {
-				formType = FormTypeEnum.VIEW;
+				formType = EditFormTypeEnum.VIEW;
 			}
 			switch (formType) {
 				case NEW:

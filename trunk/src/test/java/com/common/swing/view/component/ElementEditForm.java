@@ -17,10 +17,10 @@ import javax.swing.border.LineBorder;
 
 import com.common.swing.domain.exception.SwingException;
 import com.common.swing.domain.icon.impl.ProgressIcon;
-import com.common.swing.model.Element;
-import com.common.swing.model.ElementServiceImpl;
+import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.util.business.service.BaseService;
-import com.crud.swing.view.form.EditForm;
+import com.crud.swing.view.form.edit.EditForm;
 
 /**
  * La clase que extiende el formulario de edición de entidades.

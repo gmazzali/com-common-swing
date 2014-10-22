@@ -1,4 +1,4 @@
-package com.crud.swing.view;
+package com.crud.swing.view.form;
 
 /**
  * La interfaz que define el comportamiento común para los formularios de entidades.

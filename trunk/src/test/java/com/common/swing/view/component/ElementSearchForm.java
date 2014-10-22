@@ -4,16 +4,16 @@ import java.util.Collection;
 
 import javax.swing.JButton;
 
-import com.common.swing.model.Element;
-import com.common.swing.model.ElementFilter;
-import com.common.swing.model.ElementServiceImpl;
+import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementFilter;
+import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.action.SearchAction;
 import com.common.swing.view.bean.ElementSearchBean;
 import com.common.swing.view.bean.SearchBean;
 import com.common.swing.view.component.panel.BaseSearchPanel;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.util.business.service.BaseService;
-import com.crud.swing.view.search.SearchForm;
+import com.crud.swing.view.form.search.SearchForm;
 
 public class ElementSearchForm extends SearchForm<Element, Integer> {
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.crud.swing.view.list;
+package com.crud.swing.view.form.list;
 
 import java.awt.BorderLayout;
 
@@ -9,12 +9,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.common.swing.model.Element;
-import com.common.swing.model.ElementServiceImpl;
+import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementServiceImpl;
+import com.common.swing.view.Constants;
 import com.common.swing.view.component.ElementListForm;
 import com.common.util.domain.exception.UncheckedException;
 import com.common.util.persistence.filter.BaseFilter;
-import com.crud.swing.Constants;
 import com.crud.swing.view.container.impl.DialogContainer;
 
 /**

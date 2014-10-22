@@ -9,7 +9,7 @@ import com.common.swing.view.bean.SearchBean;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementSearchBean extends SearchBean {
+public class ElementSearchBean implements SearchBean {
 	private static final long serialVersionUID = 1L;
 
 	String name;

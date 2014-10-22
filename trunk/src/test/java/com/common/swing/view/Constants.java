@@ -1,4 +1,4 @@
-package com.crud.swing;
+package com.common.swing.view;
 
 /**
  * La clase que contiene las constantes para las pruebas.
