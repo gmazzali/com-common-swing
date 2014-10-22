@@ -1,4 +1,4 @@
-package com.crud.swing.view.list.impl;
+package com.crud.swing.view.list;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -64,11 +64,7 @@ public abstract class ListForm<E extends Serializable> extends JPanel implements
 
 		this.tableActions = this.getTableActions();
 		if (CollectionUtil.isNotEmpty(this.tableActions)) {
-			JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-			for (TableAction<E> tableAction : this.tableActions) {
-				buttonPanel.add(tableAction.createButton());
-			}
-			this.add(buttonPanel, BorderLayout.SOUTH);
+			this.initTableActionPanel(this);
 		}
 
 		ListSelectionModel cellSelectionModel = this.table.getSelectionModel();
@@ -83,11 +79,24 @@ public abstract class ListForm<E extends Serializable> extends JPanel implements
 						}
 					}
 				}.start();
-
 			}
 		});
 
 		this.afterInit();
+	}
+
+	/**
+	 * Permite cargar el panel de las acciones de la tabla.
+	 * 
+	 * @param panel
+	 *            El panel donde va a cargarse el panel de acciones de la tabla.
+	 */
+	protected void initTableActionPanel(JPanel panel) {
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		for (TableAction<E> tableAction : this.tableActions) {
+			buttonPanel.add(tableAction.createButton());
+		}
+		panel.add(buttonPanel, BorderLayout.SOUTH);
 	}
 
 	@Override
@@ -98,6 +107,16 @@ public abstract class ListForm<E extends Serializable> extends JPanel implements
 				tableAction.getButton().setEnabled(enabled);
 			}
 		}
+	}
+
+	@Override
+	public void enabled() {
+		this.setEnabled(true);
+	}
+
+	@Override
+	public void disabled() {
+		this.setEnabled(false);
 	}
 
 	@Override

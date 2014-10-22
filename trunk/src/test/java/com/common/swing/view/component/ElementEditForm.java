@@ -1,4 +1,4 @@
-package com.crud.swing.view.form;
+package com.common.swing.view.component;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,9 +17,10 @@ import javax.swing.border.LineBorder;
 
 import com.common.swing.domain.exception.SwingException;
 import com.common.swing.domain.icon.impl.ProgressIcon;
+import com.common.swing.model.Element;
+import com.common.swing.model.ElementServiceImpl;
 import com.common.util.business.service.BaseService;
-import com.crud.swing.model.Element;
-import com.crud.swing.model.ElementServiceImpl;
+import com.crud.swing.view.form.EditForm;
 
 /**
  * La clase que extiende el formulario de edición de entidades.

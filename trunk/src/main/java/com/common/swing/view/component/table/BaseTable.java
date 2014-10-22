@@ -361,8 +361,6 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 		new Thread() {
 			public void run() {
 				setEnabled(false);
-
-				// Limpiamos la tabla.
 				clearTable();
 
 				synchronized (tableMutex) {
@@ -385,7 +383,7 @@ public abstract class BaseTable<E extends Serializable> extends JTable {
 							nextIndex++;
 						}
 					}
-					if (firstSelected) {
+					if (firstSelected && CollectionUtil.isNotEmpty(entities)) {
 						setRowSelectionInterval(0, 0);
 					}
 				}

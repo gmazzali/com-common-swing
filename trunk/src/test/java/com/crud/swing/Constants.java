@@ -8,5 +8,6 @@ package com.crud.swing;
  * @version 1.0
  */
 public class Constants {
-	public static Boolean visible = true;
+	public static boolean visible = true;
+	public static boolean alwaysTop = true;
 }

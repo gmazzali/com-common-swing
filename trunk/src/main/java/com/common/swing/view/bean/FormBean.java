@@ -1,4 +1,4 @@
-package com.crud.swing.view.form.bean;
+package com.common.swing.view.bean;
 
 import java.io.Serializable;
 

@@ -1,8 +1,9 @@
-package com.crud.swing.model;
+package com.common.swing.view.component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.common.swing.model.Element;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.component.table.renderer.impl.DateColumnTableRenderer;
 import com.common.swing.view.component.table.renderer.impl.MoneyColumnTableRenderer;

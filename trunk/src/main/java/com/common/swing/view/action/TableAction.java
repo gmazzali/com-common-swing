@@ -18,6 +18,9 @@ import com.common.swing.view.listener.TableListener;
  * @since 20/10/2014
  * @author Guillermo Mazzali
  * @version 1.0
+ * 
+ * @param <E>
+ *            La clase de las entidades que vamos a cargar dentro de la tabla.
  */
 public class TableAction<E extends Serializable> implements Serializable {
 	private static final long serialVersionUID = 1L;

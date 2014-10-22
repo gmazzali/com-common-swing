@@ -1,8 +1,7 @@
 package com.common.swing.domain.notificaction;
 
-import junit.framework.Assert;
-
 import org.apache.log4j.BasicConfigurator;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
