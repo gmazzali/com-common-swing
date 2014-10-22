@@ -1,4 +1,4 @@
-package com.crud.swing.view.form;
+package com.crud.swing.view.form.edit;
 
 import java.awt.BorderLayout;
 
@@ -8,13 +8,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.common.swing.model.Element;
-import com.common.swing.model.ElementServiceImpl;
+import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementServiceImpl;
+import com.common.swing.view.Constants;
 import com.common.swing.view.callback.CallbackForm;
 import com.common.swing.view.component.ElementEditForm;
-import com.crud.swing.Constants;
 import com.crud.swing.view.container.impl.DialogContainer;
-import com.crud.swing.view.util.FormTypeEnum;
+import com.crud.swing.view.form.util.EditFormTypeEnum;
 
 /**
  * La clase de prueba de la ventana de edición de entidades.
@@ -47,7 +47,7 @@ public class EditFormTest {
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(Constants.visible);
 
-		panel.createForm(dialog, FormTypeEnum.NEW, new CallbackForm() {
+		panel.createForm(dialog, EditFormTypeEnum.NEW, new CallbackForm() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -89,7 +89,7 @@ public class EditFormTest {
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(Constants.visible);
 
-		panel.createForm(dialog, FormTypeEnum.EDIT, new CallbackForm() {
+		panel.createForm(dialog, EditFormTypeEnum.EDIT, new CallbackForm() {
 
 			private static final long serialVersionUID = 1L;
 

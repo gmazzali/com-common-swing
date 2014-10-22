@@ -1,7 +1,7 @@
 package com.common.swing.view.callback;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Interface para el manejo de eventos de un formulario de selección.
@@ -13,13 +13,13 @@ import java.util.List;
  * @param <T>
  *            El tipo de elemento que vamos a poder seleccionar.
  */
-public interface CallbackSelectForm<T> extends Serializable {
+public interface CallbackSelect<T extends Serializable> extends Serializable {
 
 	/**
-	 * Se encarga de cargar dentro del formulario de llamada los elementos seleccionados dentro de este.
+	 * Se encarga de mandar los elementos seleccionados.
 	 * 
-	 * @param data
-	 *            El conjunto de datos seleccionados dentro de este formulario.
+	 * @param dataSelected
+	 *            El conjunto de datos seleccionados.
 	 */
-	public abstract void select(List<T> data);
+	public abstract void select(Collection<T> dataSelected);
 }

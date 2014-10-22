@@ -1,4 +1,4 @@
-package com.crud.swing.view.search;
+package com.crud.swing.view.form.search;
 
 import java.awt.BorderLayout;
 import java.util.Collection;
@@ -11,13 +11,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.common.swing.model.Element;
-import com.common.swing.model.ElementServiceImpl;
+import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementServiceImpl;
+import com.common.swing.view.Constants;
 import com.common.swing.view.callback.CallbackFilter;
 import com.common.swing.view.component.ElementSearchForm;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.common.util.persistence.filter.BaseFilter;
-import com.crud.swing.Constants;
 import com.crud.swing.view.container.impl.DialogContainer;
 
 /**

@@ -1,4 +1,4 @@
-package com.common.swing.icon;
+package com.common.swing.domain.icon;
 
 import java.awt.Cursor;
 

@@ -9,6 +9,5 @@ import java.io.Serializable;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public abstract class FormBean implements Serializable {
-	private static final long serialVersionUID = 1L;
+public interface FormBean extends Serializable {
 }

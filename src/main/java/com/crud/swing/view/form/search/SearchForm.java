@@ -1,4 +1,4 @@
-package com.crud.swing.view.search;
+package com.crud.swing.view.form.search;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -22,7 +22,7 @@ import com.common.util.business.service.BaseService;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.common.util.domain.model.Persistence;
 import com.common.util.persistence.filter.BaseFilter;
-import com.crud.swing.view.BaseForm;
+import com.crud.swing.view.form.BaseForm;
 
 /**
  * La clase que implementa la interfaz que nos permite definir los formularios de filtrado para la búsqueda de entidades dentro de un sistema.

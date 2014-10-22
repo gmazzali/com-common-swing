@@ -5,8 +5,8 @@ import java.util.Collection;
 import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 
-import com.common.swing.model.Element;
-import com.common.swing.model.ElementServiceImpl;
+import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.action.TableAction;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.decorator.ButtonDecorator;
@@ -15,7 +15,7 @@ import com.common.swing.view.listener.TableListener;
 import com.common.swing.view.notification.Notificaction;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.common.util.persistence.filter.BaseFilter;
-import com.crud.swing.view.list.ListForm;
+import com.crud.swing.view.form.list.ListForm;
 
 /**
  * La clase que extiende el formulario de listado de entidades.

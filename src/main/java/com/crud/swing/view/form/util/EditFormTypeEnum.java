@@ -1,19 +1,19 @@
-package com.crud.swing.view.util;
+package com.crud.swing.view.form.util;
 
 /**
  * La enumeración que contiene los modos en los que puede ser llamado un formulario de edición de una entidad.
  * 
  * <pre>
- * {@link FormTypeEnum#NEW}
- * {@link FormTypeEnum#EDIT}
- * {@link FormTypeEnum#VIEW}
+ * {@link EditFormTypeEnum#NEW}
+ * {@link EditFormTypeEnum#EDIT}
+ * {@link EditFormTypeEnum#VIEW}
  * </pre>
  * 
  * @since 05/05/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public enum FormTypeEnum {
+public enum EditFormTypeEnum {
 
 	/**
 	 * El tipo de formulario para el alta de una entidad.
