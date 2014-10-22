@@ -9,6 +9,8 @@ import com.common.swing.view.notification.util.ConfirmReturnType;
 import com.common.swing.view.notification.util.ConfirmType;
 import com.common.swing.view.notification.util.NotificactionType;
 import com.common.util.business.holder.HolderMessage;
+import com.common.util.domain.exception.error.ErrorDetail;
+import com.common.util.domain.exception.error.Errors;
 
 /**
  * Nos permite crear los mensajes de notificación de manera personalizadas para los sistemas.
@@ -125,6 +127,57 @@ public class Notificaction {
 	public static void showErrorMessage(Component component, Icon icon, String titleKey, String messageKey, Object... messageParameter) {
 		JOptionPane.showMessageDialog(component, HolderMessage.getMessage(messageKey, messageParameter), HolderMessage.getMessage(titleKey),
 				NotificactionType.ERROR.getType(), icon);
+	}
+
+	/**
+	 * Crea una ventana de error con titulo definido por la clave <code>notification.message.error.title.default</code> y el mensaje definido por los
+	 * errores.
+	 * 
+	 * @param component
+	 *            El <code>Frame</code> sobre el que el mensaje se va a desplegar. Si este es <code>null</code> o si no tiene un <code>Frame</code>,
+	 *            se usa un <code>Frame</code> por default.
+	 * @param errors
+	 *            El conjunto de errores.
+	 */
+	public static void showErrorMessage(Component component, Errors errors) {
+		Notificaction.showErrorMessage(component, "notification.message.error.title.default", errors);
+	}
+
+	/**
+	 * Crea una ventana de error donde vamos a desplegar el mensaje definido por el conjunto de errores.
+	 * 
+	 * @param component
+	 *            El <code>Frame</code> sobre el que el mensaje se va a desplegar. Si este es <code>null</code> o si no tiene un <code>Frame</code>,
+	 *            se usa un <code>Frame</code> por default.
+	 * @param titleKey
+	 *            La clave del título de la ventana.
+	 * @param errors
+	 *            El conjunto de errores.
+	 */
+	public static void showErrorMessage(Component component, String titleKey, Errors errors) {
+		Notificaction.showErrorMessage(component, null, titleKey, errors);
+	}
+
+	/**
+	 * Crea una ventana de error donde vamos a desplegar el mensaje definido por el conjunto de errores.
+	 * 
+	 * @param component
+	 *            El <code>Frame</code> sobre el que el mensaje se va a desplegar. Si este es <code>null</code> o si no tiene un <code>Frame</code>,
+	 *            se usa un <code>Frame</code> por default.
+	 * @param icon
+	 *            El icono que vamos a utilizar dentro de esta ventana.
+	 * @param titleKey
+	 *            La clave del título de la ventana.
+	 * @param errors
+	 *            El conjunto de errores.
+	 */
+	public static void showErrorMessage(Component component, Icon icon, String titleKey, Errors errors) {
+		StringBuffer buffer = new StringBuffer();
+		for (ErrorDetail errorDetail : errors.getErrorDetails()) {
+			buffer.append(HolderMessage.getMessage(errorDetail.getDefaultMessage(), errorDetail.getKeyMessage(), errorDetail.getParameters()));
+			buffer.append("\n");
+		}
+		JOptionPane.showMessageDialog(component, buffer.toString(), HolderMessage.getMessage(titleKey), NotificactionType.ERROR.getType(), icon);
 	}
 
 	/**

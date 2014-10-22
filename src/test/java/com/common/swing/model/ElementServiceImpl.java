@@ -1,4 +1,4 @@
-package com.crud.swing.model;
+package com.common.swing.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +35,6 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 	@Override
 	public Element findById(Integer id) throws UncheckedException {
 		ElementServiceImpl.log.trace("Find by id: " + id);
-
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
 		for (Element e : ElementServiceImpl.elements) {
 			if (id == e.getId()) {
 				return e;
@@ -53,21 +46,13 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 	@Override
 	public void save(Element entity) throws UncheckedException {
 		ElementServiceImpl.log.trace("save: " + entity);
-
 		entity.setId(this.id++);
 		ElementServiceImpl.elements.add(entity);
-
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	public void saveOrUpdate(Element entity) throws UncheckedException {
 		ElementServiceImpl.log.trace("save or update: " + entity);
-
 		Element delete = this.get(entity.getId());
 		if (delete == null) {
 			this.save(entity);
@@ -79,31 +64,17 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 	@Override
 	public void update(Element entity) throws UncheckedException {
 		ElementServiceImpl.log.trace("update: " + entity);
-
 		Element update = this.get(entity.getId());
 		ElementServiceImpl.elements.remove(update);
 		ElementServiceImpl.elements.add(entity);
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	public void delete(Element entity) throws UncheckedException {
 		ElementServiceImpl.log.trace("delete: " + entity);
-
 		Element delete = this.get(entity.getId());
 		if (delete != null) {
 			ElementServiceImpl.elements.remove(delete);
-		}
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 

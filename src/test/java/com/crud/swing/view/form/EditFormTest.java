@@ -8,9 +8,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.common.swing.model.Element;
+import com.common.swing.model.ElementServiceImpl;
 import com.common.swing.view.callback.CallbackForm;
-import com.crud.swing.model.Element;
-import com.crud.swing.model.ElementServiceImpl;
+import com.common.swing.view.component.ElementEditForm;
+import com.crud.swing.Constants;
 import com.crud.swing.view.container.impl.DialogContainer;
 import com.crud.swing.view.util.FormTypeEnum;
 
@@ -41,9 +43,9 @@ public class EditFormTest {
 		dialog.getContentPane().removeAll();
 		dialog.getContentPane().add(panel, BorderLayout.CENTER);
 		dialog.pack();
-		dialog.setResizable(false);
-		dialog.setModal(true);
+		dialog.setAlwaysOnTop(Constants.alwaysTop);
 		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(Constants.visible);
 
 		panel.createForm(dialog, FormTypeEnum.NEW, new CallbackForm() {
 
@@ -83,9 +85,9 @@ public class EditFormTest {
 		dialog.getContentPane().removeAll();
 		dialog.getContentPane().add(panel, BorderLayout.CENTER);
 		dialog.pack();
-		dialog.setResizable(false);
-		dialog.setModal(true);
+		dialog.setAlwaysOnTop(Constants.alwaysTop);
 		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(Constants.visible);
 
 		panel.createForm(dialog, FormTypeEnum.EDIT, new CallbackForm() {
 

@@ -1,10 +1,12 @@
-package com.crud.swing.view.list.impl;
+package com.common.swing.view.component;
 
 import java.util.Collection;
 
 import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 
+import com.common.swing.model.Element;
+import com.common.swing.model.ElementServiceImpl;
 import com.common.swing.view.action.TableAction;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.decorator.ButtonDecorator;
@@ -13,9 +15,7 @@ import com.common.swing.view.listener.TableListener;
 import com.common.swing.view.notification.Notificaction;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.common.util.persistence.filter.BaseFilter;
-import com.crud.swing.model.Element;
-import com.crud.swing.model.ElementServiceImpl;
-import com.crud.swing.model.ElementTable;
+import com.crud.swing.view.list.ListForm;
 
 /**
  * La clase que extiende el formulario de listado de entidades.
@@ -45,16 +45,6 @@ public class ElementListForm extends ListForm<Element> {
 	}
 
 	@Override
-	public void enabled() {
-		this.table.setEnabled(true);
-	}
-
-	@Override
-	public void disabled() {
-		this.table.setEnabled(false);
-	}
-
-	@Override
 	protected void afterInit() {
 		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
@@ -63,21 +53,23 @@ public class ElementListForm extends ListForm<Element> {
 	@SuppressWarnings("unchecked")
 	protected Collection<TableAction<Element>> getTableActions() {
 		TableListener<Element> tableListener1 = new TableListener<Element>() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void fireEvent(final TableEvent<Element> tableEvent) {
 				new Thread() {
 					public void run() {
-						setEnabled(false);
+						disabled();
 						service.save(new Element("ELEMENTO " + (int) (Math.random() * 1000)));
 						setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
-						setEnabled(true);
+						enabled();
 					};
 				}.start();
 			};
 		};
 
 		ButtonDecorator buttonDecorator1 = new ButtonDecorator() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void decorateButton(JButton button) {
@@ -85,22 +77,24 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 		TableListener<Element> tableListener2 = new TableListener<Element>() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void fireEvent(final TableEvent<Element> tableEvent) {
 				new Thread() {
 					public void run() {
-						setEnabled(false);
+						disabled();
 						for (Element element : tableEvent.getEntities()) {
 							service.delete(element);
 						}
 						setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
-						setEnabled(true);
+						enabled();
 					};
 				}.start();
 			}
 		};
 		ButtonDecorator buttonDecorator2 = new ButtonDecorator() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void decorateButton(JButton button) {
@@ -108,6 +102,7 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 		TableListener<Element> tableListener3 = new TableListener<Element>() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void fireEvent(final TableEvent<Element> tableEvent) {
@@ -115,6 +110,7 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 		ButtonDecorator buttonDecorator3 = new ButtonDecorator() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void decorateButton(JButton button) {
@@ -122,6 +118,7 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 		TableListener<Element> tableListener4 = new TableListener<Element>() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void fireEvent(final TableEvent<Element> tableEvent) {
@@ -129,6 +126,7 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 		ButtonDecorator buttonDecorator4 = new ButtonDecorator() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void decorateButton(JButton button) {
@@ -136,6 +134,7 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 		TableListener<Element> tableListener5 = new TableListener<Element>() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void fireEvent(final TableEvent<Element> tableEvent) {
@@ -150,6 +149,7 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 		ButtonDecorator buttonDecorator5 = new ButtonDecorator() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void decorateButton(JButton button) {
@@ -157,24 +157,22 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 
-		return CollectionUtil.newArrayList(new TableAction<Element>(table, tableListener1, buttonDecorator1),
-				new TableAction<Element>(table,	tableListener2, buttonDecorator2) {
-					private static final long serialVersionUID = 1L;
-		
-					@Override
-					public boolean isVivibleAction(Collection<Element> entities) {
-						boolean permiteBorrar = true;
-						for (Element element : entities) {
-							if (element.getFecha() != null) {
-								permiteBorrar = false;
-								break;
-							}
-						}
-						return permiteBorrar;
+		return CollectionUtil.newArrayList(new TableAction<Element>(table, tableListener1, buttonDecorator1), new TableAction<Element>(table,
+				tableListener2, buttonDecorator2) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVivibleAction(Collection<Element> entities) {
+				boolean permiteBorrar = true;
+				for (Element element : entities) {
+					if (element.getFecha() != null) {
+						permiteBorrar = false;
+						break;
 					}
-				}, 
-				new TableAction<Element>(table, tableListener3, buttonDecorator3), 
-				new TableAction<Element>(table, tableListener4, buttonDecorator4),
+				}
+				return permiteBorrar;
+			}
+		}, new TableAction<Element>(table, tableListener3, buttonDecorator3), new TableAction<Element>(table, tableListener4, buttonDecorator4),
 				new TableAction<Element>(table, tableListener5, buttonDecorator5));
 	}
 

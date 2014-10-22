@@ -1,5 +1,7 @@
 package com.common.swing.view.decorator;
 
+import java.io.Serializable;
+
 import javax.swing.JButton;
 
 /**
@@ -9,7 +11,7 @@ import javax.swing.JButton;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public interface ButtonDecorator {
+public interface ButtonDecorator extends Serializable {
 
 	/**
 	 * Permite establecer las propiedades de un botón dado.

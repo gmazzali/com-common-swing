@@ -1,4 +1,4 @@
-package com.crud.swing.model;
+package com.common.swing.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
