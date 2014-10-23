@@ -7,6 +7,9 @@ import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
 
+import com.common.swing.view.bean.FormBean;
+import com.common.swing.view.bean.RowBean;
+import com.common.swing.view.bean.SearchBean;
 import com.common.util.domain.model.Entity;
 
 /**
@@ -16,7 +19,7 @@ import com.common.util.domain.model.Entity;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class Element extends Entity<Integer> {
+public class Element extends Entity<Integer> implements RowBean, SearchBean, FormBean {
 	private static final long serialVersionUID = 1L;
 
 	public interface Attribute extends Entity.Attributes {

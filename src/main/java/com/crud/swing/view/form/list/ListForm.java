@@ -3,7 +3,6 @@ package com.crud.swing.view.form.list;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.io.Serializable;
 import java.util.Collection;
 
 import javax.swing.JPanel;
@@ -13,6 +12,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.common.swing.view.action.TableAction;
+import com.common.swing.view.bean.RowBean;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.crud.swing.view.form.BaseForm;
@@ -27,7 +27,7 @@ import com.crud.swing.view.form.BaseForm;
  * @param <E>
  *            Las clases de las entidades que vamos a manipular dentro de este panel.
  */
-public abstract class ListForm<E extends Serializable> extends JPanel implements BaseForm {
+public abstract class ListForm<E extends RowBean> extends JPanel implements BaseForm {
 	private static final long serialVersionUID = 1L;
 
 	/**

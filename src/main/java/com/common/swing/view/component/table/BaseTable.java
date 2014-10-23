@@ -1,6 +1,5 @@
 package com.common.swing.view.component.table;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ import javax.swing.table.TableModel;
 import org.apache.log4j.Logger;
 
 import com.common.swing.domain.exception.SwingException;
+import com.common.swing.view.bean.RowBean;
 import com.common.swing.view.component.table.model.ReadOnlyTableModel;
 import com.common.swing.view.component.table.renderer.ColumnTableRenderer;
 import com.common.swing.view.component.table.renderer.HeaderTableRenderer;
@@ -34,7 +34,7 @@ import com.common.util.business.tool.collection.CollectionUtil;
  *            La clase de las entidades que vamos a cargar dentro de la tabla.
  */
 @SuppressWarnings("unchecked")
-public abstract class BaseTable<E extends Serializable> extends JTable {
+public abstract class BaseTable<E extends RowBean> extends JTable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(BaseTable.class);
 
