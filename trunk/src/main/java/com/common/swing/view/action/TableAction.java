@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import javax.swing.JButton;
 
+import com.common.swing.view.bean.RowBean;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.swing.view.event.TableEvent;
@@ -22,7 +23,7 @@ import com.common.swing.view.listener.TableListener;
  * @param <E>
  *            La clase de las entidades que vamos a cargar dentro de la tabla.
  */
-public class TableAction<E extends Serializable> implements Serializable {
+public class TableAction<E extends RowBean> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

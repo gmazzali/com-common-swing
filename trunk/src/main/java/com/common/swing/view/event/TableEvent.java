@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.common.swing.view.bean.RowBean;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.util.business.tool.collection.CollectionUtil;
 
@@ -17,9 +18,9 @@ import com.common.util.business.tool.collection.CollectionUtil;
  * @param <E>
  *            La clase de elementos que contiene la tabla que disparo el evento.
  */
-public class TableEvent<E extends Serializable> implements Serializable {
+public class TableEvent<E extends RowBean> implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * La tabla que disparo el evento.
 	 */

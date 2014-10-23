@@ -8,7 +8,6 @@ import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.ElementFilter;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.action.SearchAction;
-import com.common.swing.view.bean.ElementSearchBean;
 import com.common.swing.view.bean.SearchBean;
 import com.common.swing.view.component.panel.BaseSearchPanel;
 import com.common.swing.view.decorator.ButtonDecorator;
@@ -76,7 +75,7 @@ public class ElementSearchForm extends SearchForm<Element, Integer> {
 	@Override
 	protected ElementFilter createFilter(SearchBean filter) {
 		ElementFilter elementFilter = new ElementFilter();
-		elementFilter.setName(((ElementSearchBean) filter).getName());
+		elementFilter.setName(((Element) filter).getName());
 		return elementFilter;
 	}
 }

@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import com.common.swing.domain.exception.SwingException;
-import com.common.swing.view.bean.ElementSearchBean;
+import com.common.swing.domain.model.Element;
 import com.common.swing.view.component.panel.BaseSearchPanel;
 
 /**
@@ -21,7 +21,7 @@ import com.common.swing.view.component.panel.BaseSearchPanel;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementSearchPanel extends BaseSearchPanel<ElementSearchBean> {
+public class ElementSearchPanel extends BaseSearchPanel<Element> {
 	private static final long serialVersionUID = 1L;
 
 	private JTextField textField;
@@ -54,8 +54,8 @@ public class ElementSearchPanel extends BaseSearchPanel<ElementSearchBean> {
 	}
 
 	@Override
-	public ElementSearchBean getFilter() throws SwingException {
-		ElementSearchBean bean = new ElementSearchBean();
+	public Element getFilter() throws SwingException {
+		Element bean = new Element();
 		bean.setName("nombre");
 		return bean;
 	}
