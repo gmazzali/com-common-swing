@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import com.common.util.business.service.impl.BaseServiceImpl;
 import com.common.util.domain.exception.UncheckedException;
 import com.common.util.persistence.filter.BaseFilter;
+import com.common.util.persistence.filter.order.Orders;
 
 /**
  * La clase que da servicios a los elementos Element.
@@ -76,6 +77,16 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 		if (delete != null) {
 			ElementServiceImpl.elements.remove(delete);
 		}
+	}
+
+	@Override
+	public List<Element> findAll(Orders orders) {
+		return elements;
+	}
+
+	@Override
+	public List<Element> findAll() {
+		return elements;
 	}
 
 	@Override

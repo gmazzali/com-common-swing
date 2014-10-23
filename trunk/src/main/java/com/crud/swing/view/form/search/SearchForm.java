@@ -18,10 +18,7 @@ import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.swing.view.event.SearchEvent;
 import com.common.swing.view.listener.SearchListener;
 import com.common.swing.view.notification.Notificaction;
-import com.common.util.business.service.BaseService;
 import com.common.util.business.tool.collection.CollectionUtil;
-import com.common.util.domain.model.Persistence;
-import com.common.util.persistence.filter.BaseFilter;
 import com.crud.swing.view.form.BaseForm;
 
 /**
@@ -32,17 +29,17 @@ import com.crud.swing.view.form.BaseForm;
  * @version 1.0
  * 
  * @param <E>
- *            La clase de las entidades que vamos a filtrar.
+ *            La clase de las entidades que vamos a recuperar.
  * @param <PK>
- *            La clase que utilizamos para identificar las entidades filtradas.
+ *            La clase que utilizamos como filtro de búsqueda.
  */
-public abstract class SearchForm<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements BaseForm {
+public abstract class SearchForm<E extends Serializable, B extends SearchBean> extends JPanel implements BaseForm {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El panel de filtro de búsqueda.
 	 */
-	private BaseSearchPanel<? extends SearchBean> baseSearchPanel;
+	private BaseSearchPanel<B> baseSearchPanel;
 	/**
 	 * El liestado de las acciones del filtro de búsqueda.
 	 */
@@ -166,7 +163,7 @@ public abstract class SearchForm<E extends Persistence<PK>, PK extends Serializa
 				synchronized (searchMutex) {
 					try {
 						disabled();
-						Collection<E> entities = getService().findByFilter(createFilter(baseSearchPanel.getFilter()));
+						Collection<E> entities = search(baseSearchPanel.getFilter());
 						for (CallbackFilter<E> callbackFilter : callbackFilters) {
 							callbackFilter.updateEntities(entities);
 						}
@@ -204,7 +201,7 @@ public abstract class SearchForm<E extends Persistence<PK>, PK extends Serializa
 	 * 
 	 * @return El panel de filtrado.
 	 */
-	protected abstract BaseSearchPanel<? extends SearchBean> createSearchPanel();
+	protected abstract BaseSearchPanel<B> createSearchPanel();
 
 	/**
 	 * Retorna el decorador del botón de busqueda.
@@ -228,18 +225,11 @@ public abstract class SearchForm<E extends Persistence<PK>, PK extends Serializa
 	protected abstract Collection<SearchAction<E>> getFilterActions();
 
 	/**
-	 * Se encarga de retornar el servicio que vamos a utilizar para buscar las entidades con este filtro.
-	 * 
-	 * @return El servicio para la busqueda de entidades.
-	 */
-	protected abstract BaseService<E, PK> getService();
-
-	/**
-	 * Se encarga de crear el filtro de búsqueda a partir del filtro recibido del panel.
+	 * Se encarga de buscar las entidades que corresponden con el filtro creado con los datos recibidos.
 	 * 
 	 * @param filter
 	 *            El filtro que recibimos del panel.
-	 * @return El filtro para la búsqueda.
+	 * @return El listado de las entidades que recuperamos con el filtro.
 	 */
-	protected abstract BaseFilter<E, PK> createFilter(SearchBean filter);
+	protected abstract Collection<E> search(SearchBean filter);
 }

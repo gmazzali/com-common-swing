@@ -17,7 +17,7 @@ import com.common.swing.view.Constants;
 import com.common.swing.view.callback.CallbackFilter;
 import com.common.swing.view.component.ElementSearchForm;
 import com.common.util.business.tool.collection.CollectionUtil;
-import com.common.util.persistence.filter.BaseFilter;
+import com.common.util.persistence.filter.order.Orders;
 import com.crud.swing.view.container.impl.DialogContainer;
 
 /**
@@ -47,12 +47,21 @@ public class SearchFormTest {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public List<Element> findByFilter(BaseFilter<Element, Integer> filter) {
+			public List<Element> findAll() {
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 				}
-				return super.findByFilter(filter);
+				return super.findAll();
+			}
+
+			@Override
+			public List<Element> findAll(Orders orders) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+				return super.findAll(orders);
 			}
 		};
 		service.save(new Element("ELEMENTO 1"));
