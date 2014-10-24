@@ -30,7 +30,7 @@ import com.crud.swing.view.form.BaseForm;
  * 
  * @param <E>
  *            La clase de las entidades que vamos a recuperar.
- * @param <PK>
+ * @param <B>
  *            La clase que utilizamos como filtro de búsqueda.
  */
 public abstract class SearchForm<E extends Serializable, B extends SearchBean> extends JPanel implements BaseForm {
@@ -137,7 +137,7 @@ public abstract class SearchForm<E extends Serializable, B extends SearchBean> e
 
 			@Override
 			public void fireEvent(SearchEvent<E> filterEvent) {
-				search();
+				executeSearch();
 			}
 		};
 		SearchListener<E> clearFilterFilterListener = new SearchListener<E>() {
@@ -156,7 +156,7 @@ public abstract class SearchForm<E extends Serializable, B extends SearchBean> e
 	/**
 	 * Permite realizar la búsqueda y cargarlas dentro de los callback.
 	 */
-	protected void search() {
+	protected void executeSearch() {
 		new Thread() {
 			@Override
 			public void run() {

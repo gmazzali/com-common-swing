@@ -11,6 +11,13 @@ import com.common.swing.view.bean.SearchBean;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.crud.swing.view.form.search.SearchForm;
 
+/**
+ * Permite crear un formulario de búsqueda para pruebas.
+ * 
+ * @since 23/10/2014
+ * @author Guillermo Mazzali
+ * @version 1.0
+ */
 public class ElementSearchForm extends SearchForm<Element, Element> {
 	private static final long serialVersionUID = 1L;
 

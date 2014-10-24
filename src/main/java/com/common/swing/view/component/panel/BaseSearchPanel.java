@@ -12,10 +12,10 @@ import com.common.swing.view.bean.SearchBean;
  * @author Guillermo Mazzali
  * @version 1.0
  * 
- * @param <E>
+ * @param <B>
  *            El bean de búsqueda que vamos a manipular dentro de este panel.
  */
-public abstract class BaseSearchPanel<E extends SearchBean> extends JPanel {
+public abstract class BaseSearchPanel<B extends SearchBean> extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -42,5 +42,5 @@ public abstract class BaseSearchPanel<E extends SearchBean> extends JPanel {
 	 * @throws SwingException
 	 *             En caso de que algún parámetro del filtro no cumpla las condiciones necesarias.
 	 */
-	public abstract E getFilter() throws SwingException;
+	public abstract B getFilter() throws SwingException;
 }
