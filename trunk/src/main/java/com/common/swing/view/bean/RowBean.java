@@ -1,7 +1,5 @@
 package com.common.swing.view.bean;
 
-import java.io.Serializable;
-
 /**
  * Permite definir un bean para una fila de una tabla.
  * 
@@ -9,5 +7,5 @@ import java.io.Serializable;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public interface RowBean extends Serializable {
+public interface RowBean extends FormBean {
 }
