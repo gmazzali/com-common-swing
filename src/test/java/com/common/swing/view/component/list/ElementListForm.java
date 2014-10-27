@@ -156,7 +156,7 @@ public class ElementListForm extends BaseListForm<Element> {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public boolean isVivibleAction(Collection<Element> entities) {
+					public boolean isEnabledAction(Collection<Element> entities) {
 						boolean permiteBorrar = true;
 						for (Element element : entities) {
 							if (element.getFecha() != null) {

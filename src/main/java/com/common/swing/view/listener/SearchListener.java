@@ -19,7 +19,7 @@ public interface SearchListener<E extends Serializable> extends Serializable {
 	/**
 	 * Permite disparar un evento en caso de una acción en un filtro.
 	 * 
-	 * @param tableEvent
+	 * @param filterEvent
 	 *            El evento que vamos a disparar.
 	 */
 	public void fireEvent(SearchEvent<E> filterEvent);

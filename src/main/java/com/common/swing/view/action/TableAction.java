@@ -80,22 +80,33 @@ public class TableAction<E extends RowBean> implements Serializable {
 	}
 
 	/**
+	 * Permite definir si la acción va a estar activa.
+	 * 
+	 * @param entities
+	 *            Las entidades que tenemos seleccionadas dentro del la tabla.
+	 * @return <code>true</code> en caso de que la acción este habilitada para las entidades, en caso contrario, retorna <code>false</code>.
+	 */
+	public boolean isEnabledAction(Collection<E> entities) {
+		return true;
+	}
+
+	/**
+	 * Permite definir si la acción va a estar visible.
+	 * 
+	 * @param entities
+	 *            Las entidades que tenemos seleccionadas dentro del la tabla.
+	 * @return <code>true</code> en caso de que la acción este visible para las entidades, en caso contrario, retorna <code>false</code>.
+	 */
+	public boolean isVisibleAction(Collection<E> entities) {
+		return true;
+	}
+
+	/**
 	 * Permite recuperar el botón de la acción.
 	 * 
 	 * @return El botón de la acción.
 	 */
 	public JButton getButton() {
 		return button;
-	}
-
-	/**
-	 * Permite definir si la acción va a estar activa de acuerdo a la entidad que tenemos seleccionada.
-	 * 
-	 * @param entities
-	 *            Las entidades que tenemos seleccionadas dentro del la tabla.
-	 * @return <code>true</code> en caso de que la acción este habilitada para las entidades, en caso contrario, retorna <code>false</code>.
-	 */
-	public boolean isVivibleAction(Collection<E> entities) {
-		return true;
 	}
 }

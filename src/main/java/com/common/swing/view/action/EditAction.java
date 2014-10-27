@@ -7,26 +7,26 @@ import java.io.Serializable;
 import javax.swing.JButton;
 
 import com.common.swing.view.decorator.ButtonDecorator;
-import com.common.swing.view.event.SearchEvent;
-import com.common.swing.view.listener.SearchListener;
+import com.common.swing.view.event.EditEvent;
+import com.common.swing.view.listener.EditListener;
 
 /**
- * Permite establecer una acción para un filtro de búsqueda.
+ * Permite establecer una acción para un panel de edición.
  * 
- * @since 22/10/2014
+ * @since 27/10/2014
  * @author Guillermo Mazzali
  * @version 1.0
  * 
  * @param <E>
- *            La clase de los elementos que vamos a recuperar con el filtro de búsqueda.
+ *            La clase de los elementos que vamos a editar.
  */
-public class SearchAction<E extends Serializable> implements Serializable {
+public class EditAction<E extends Serializable> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * El escuchador del filtro de búsqueda.
+	 * El escuchador de la edición.
 	 */
-	private SearchListener<E> searchListener;
+	private EditListener<E> editListener;
 	/**
 	 * El botón de la acción.
 	 */
@@ -37,15 +37,15 @@ public class SearchAction<E extends Serializable> implements Serializable {
 	private ButtonDecorator buttonDecorator;
 
 	/**
-	 * El constructor de una acción de un filtro de búsqueda.
+	 * El constructor del escuchador de la edición.
 	 * 
 	 * @param filterListener
-	 *            El escuchador del filtro de búsqueda.
+	 *            El escuchador de la edición.
 	 * @param buttonDecorator
 	 *            El decorador del botón.
 	 */
-	public SearchAction(SearchListener<E> searchListener, ButtonDecorator buttonDecorator) {
-		this.searchListener = searchListener;
+	public EditAction(EditListener<E> editListener, ButtonDecorator buttonDecorator) {
+		this.editListener = editListener;
 		this.buttonDecorator = buttonDecorator;
 	}
 
@@ -62,7 +62,7 @@ public class SearchAction<E extends Serializable> implements Serializable {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					searchListener.fireEvent(new SearchEvent<E>());
+					editListener.fireEvent(new EditEvent<E>());
 				}
 			});
 		}
@@ -72,18 +72,22 @@ public class SearchAction<E extends Serializable> implements Serializable {
 	/**
 	 * Permite definir si la acción va a estar activa.
 	 * 
+	 * @param entity
+	 *            La entidad que tenemos dentro del panel de edición.
 	 * @return <code>true</code> en caso de que la acción este habilitada para la entidad, en caso contrario, retorna <code>false</code>.
 	 */
-	public boolean isEnabledAction() {
+	public boolean isEnabledAction(E entity) {
 		return true;
 	}
 
 	/**
 	 * Permite definir si la acción va a estar visible.
 	 * 
+	 * @param entity
+	 *            La entidad que tenemos dentro del panel de edición.
 	 * @return <code>true</code> en caso de que la acción este visible para la entidad, en caso contrario, retorna <code>false</code>.
 	 */
-	public boolean isVisibleAction() {
+	public boolean isVisibleAction(E entity) {
 		return true;
 	}
 

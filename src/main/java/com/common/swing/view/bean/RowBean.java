@@ -7,5 +7,5 @@ package com.common.swing.view.bean;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public interface RowBean extends FormBean {
+public interface RowBean extends BaseBean {
 }
