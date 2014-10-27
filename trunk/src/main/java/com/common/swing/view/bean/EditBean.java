@@ -8,5 +8,5 @@ package com.common.swing.view.bean;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public interface EditBean extends FormBean {
+public interface EditBean extends BaseBean {
 }

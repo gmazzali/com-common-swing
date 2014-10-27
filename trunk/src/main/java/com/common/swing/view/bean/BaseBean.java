@@ -9,5 +9,5 @@ import java.io.Serializable;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public interface FormBean extends Serializable {
+public interface BaseBean extends Serializable {
 }

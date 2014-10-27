@@ -61,7 +61,8 @@ public abstract class BaseListForm<E extends RowBean> extends JPanel implements 
 					public void run() {
 						synchronized (actionsMutex) {
 							for (TableAction<E> tableAction : tableActions) {
-								tableAction.createButton().setEnabled(tableAction.isVivibleAction(tablePanel.getTable().getSelectedValues()));
+								tableAction.getButton().setVisible(tableAction.isVisibleAction(tablePanel.getTable().getSelectedValues()));
+								tableAction.getButton().setEnabled(tableAction.isEnabledAction(tablePanel.getTable().getSelectedValues()));
 							}
 						}
 					}

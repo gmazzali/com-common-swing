@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.swing.JButton;
 
 import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementFilter;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.action.SearchAction;
 import com.common.swing.view.bean.SearchBean;
@@ -71,6 +72,9 @@ public class ElementSearchForm extends BaseSearchForm<Element, Element> {
 
 	@Override
 	protected Collection<Element> search(SearchBean filter) {
-		return this.service.findAll();
+		Element element = (Element) filter;
+		ElementFilter elementFilter = new ElementFilter();
+		elementFilter.setName(element.getName());
+		return this.service.findByFilter(elementFilter);
 	}
 }

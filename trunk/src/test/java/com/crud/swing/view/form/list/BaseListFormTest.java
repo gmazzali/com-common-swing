@@ -10,11 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementFilter;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.Constants;
 import com.common.swing.view.component.list.ElementListForm;
 import com.common.util.domain.exception.UncheckedException;
-import com.common.util.persistence.filter.BaseFilter;
 import com.crud.swing.view.container.impl.DialogContainer;
 
 /**
@@ -56,7 +56,7 @@ public class BaseListFormTest {
 			@Override
 			public void delete(Element entity) throws UncheckedException {
 				super.delete(entity);
-				
+
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -74,7 +74,7 @@ public class BaseListFormTest {
 		service.save(new Element("ELEMENTO 9"));
 		service.save(new Element("ELEMENTO 0"));
 
-		this.panel.setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
+		this.panel.setEntities(service.findByFilter(new ElementFilter()));
 		this.panel.setService(service);
 
 		final DialogContainer dialog = new DialogContainer();

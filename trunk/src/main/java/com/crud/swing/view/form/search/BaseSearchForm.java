@@ -39,9 +39,9 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	/**
 	 * El panel de filtro de búsqueda.
 	 */
-	private BaseSearchPanel<B> baseSearchPanel;
+	private BaseSearchPanel<B> searchPanel;
 	/**
-	 * El liestado de las acciones del filtro de búsqueda.
+	 * El listado de las acciones del filtro de búsqueda.
 	 */
 	private Collection<SearchAction<E>> searchActions;
 	/**
@@ -67,11 +67,11 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	protected void init() {
 		this.setLayout(new BorderLayout());
 
-		this.baseSearchPanel = this.createSearchPanel();
-		this.add(baseSearchPanel, BorderLayout.CENTER);
+		this.searchPanel = this.createSearchPanel();
+		this.add(searchPanel, BorderLayout.CENTER);
 
-		this.searchActions = this.getdefaultFilterActions();
-		Collection<? extends SearchAction<E>> temporal = this.getFilterActions();
+		this.searchActions = this.getDefaultFilterActions();
+		Collection<SearchAction<E>> temporal = this.getFilterActions();
 		if (CollectionUtil.isNotEmpty(temporal)) {
 			this.searchActions.addAll(temporal);
 		}
@@ -84,7 +84,6 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		this.baseSearchPanel.setEnabled(enabled);
 		for (SearchAction<E> filterAction : this.searchActions) {
 			filterAction.getButton().setEnabled(enabled);
 		}
@@ -92,13 +91,13 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 
 	@Override
 	public void enabled() {
-		this.baseSearchPanel.enabled();
+		this.searchPanel.enabled();
 		this.setEnabled(true);
 	}
 
 	@Override
 	public void disabled() {
-		this.baseSearchPanel.disabled();
+		this.searchPanel.disabled();
 		this.setEnabled(false);
 	}
 
@@ -106,9 +105,18 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	 * Permite vaciar el contenido del filtro de búsqueda.
 	 */
 	public void emptyFields() {
-		if (this.baseSearchPanel != null) {
-			this.baseSearchPanel.emptyFields();
-		}
+		// Actualizamos los botones.
+		new Thread() {
+			public void run() {
+				synchronized (searchMutex) {
+					for (SearchAction<E> searchAction : searchActions) {
+						searchAction.getButton().setVisible(searchAction.isVisibleAction());
+						searchAction.getButton().setEnabled(searchAction.isEnabledAction());
+					}
+				}
+			}
+		}.start();
+		this.searchPanel.emptyFields();
 		synchronized (searchMutex) {
 			for (CallbackFilter<E> callbackFilter : callbackFilters) {
 				callbackFilter.updateEntities(new ArrayList<E>());
@@ -136,7 +144,7 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	 * @return Las acciones por omisión del filtro de búsqueda.
 	 */
 	@SuppressWarnings("unchecked")
-	protected Collection<SearchAction<E>> getdefaultFilterActions() {
+	protected Collection<SearchAction<E>> getDefaultFilterActions() {
 		SearchListener<E> searchFilterListener = new SearchListener<E>() {
 			private static final long serialVersionUID = 1L;
 
@@ -154,8 +162,67 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 			}
 		};
 
-		return CollectionUtil.newArrayList(new SearchAction<E>(searchFilterListener, this.getSearchButtonDecorator()), new SearchAction<E>(
-				clearFilterFilterListener, this.getCleanFilterButtonDecorator()));
+		return CollectionUtil.newArrayList(new SearchAction<E>(searchFilterListener, this.getSearchButtonDecorator()) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabledAction() {
+				return isEnabledSearchButton();
+			};
+
+			@Override
+			public boolean isVisibleAction() {
+				return isVisibleSearchButton();
+			}
+		}, new SearchAction<E>(clearFilterFilterListener, this.getCleanFilterButtonDecorator()) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabledAction() {
+				return isEnabledCleanFilterButton();
+			};
+
+			@Override
+			public boolean isVisibleAction() {
+				return isVisibleCleanFilterButton();
+			}
+		});
+	}
+
+	/**
+	 * Permite saber si va a habilitarse o no el botón de búsqueda.
+	 * 
+	 * @return <code>true</code> en caso que querramos el botón de búsqueda habilitado, en caso contrario, retorna <code>false</code>.
+	 */
+	protected boolean isEnabledSearchButton() {
+		return true;
+	}
+
+	/**
+	 * Permite saber si va a habilitarse o no el botón de limpieza de filtro.
+	 * 
+	 * @return <code>true</code> en caso que querramos el botón de limpieza de filtro habilitado, en caso contrario, retorna <code>false</code>.
+	 */
+	protected boolean isEnabledCleanFilterButton() {
+		return true;
+	}
+
+	/**
+	 * Permite saber si va a visualizarse o no el botón de búsqueda.
+	 * 
+	 * @return <code>true</code> en caso que querramos el botón de búsqueda visualizado, en caso contrario, retorna <code>false</code>.
+	 */
+	protected boolean isVisibleSearchButton() {
+		return true;
+	}
+
+	/**
+	 * Permite saber si va a visualizarse o no el botón de limpieza de filtro.
+	 * 
+	 * @return <code>true</code> en caso que querramos el botón de limpieza de filtro visualizado, en caso contrario, retorna <code>false</code>.
+	 */
+	protected boolean isVisibleCleanFilterButton() {
+		return true;
 	}
 
 	/**
@@ -168,7 +235,7 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 				synchronized (searchMutex) {
 					try {
 						disabled();
-						Collection<E> entities = search(baseSearchPanel.getFilter());
+						Collection<E> entities = search(searchPanel.getFilter());
 						for (CallbackFilter<E> callbackFilter : callbackFilters) {
 							callbackFilter.updateEntities(entities);
 						}

@@ -80,7 +80,7 @@ public class ElementSearchPanel extends BaseSearchPanel<Element> {
 	@Override
 	public Element getFilter() throws SwingException {
 		Element bean = new Element();
-		bean.setName("nombre");
+		bean.setName(this.textField.getText());
 		return bean;
 	}
 }

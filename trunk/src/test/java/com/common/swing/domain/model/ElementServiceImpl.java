@@ -6,6 +6,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.common.util.business.service.impl.BaseServiceImpl;
+import com.common.util.business.tool.StringUtil;
+import com.common.util.business.tool.collection.CollectionUtil;
+import com.common.util.business.tool.collection.Predicate;
 import com.common.util.domain.exception.UncheckedException;
 import com.common.util.persistence.filter.BaseFilter;
 import com.common.util.persistence.filter.order.Orders;
@@ -91,7 +94,18 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 
 	@Override
 	public List<Element> findByFilter(BaseFilter<Element, Integer> filter) {
-		return elements;
+		final ElementFilter elementFilter = (ElementFilter) filter;
+		return (List<Element>) CollectionUtil.select(ElementServiceImpl.elements, new Predicate<Element>() {
+
+			@Override
+			public boolean evaluate(Element item) {
+				if (!StringUtil.isEmpty(elementFilter.getName())) {
+					return item.getName().contains(elementFilter.getName());
+				} else {
+					return true;
+				}
+			}
+		});
 	}
 
 	/**

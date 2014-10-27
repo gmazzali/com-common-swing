@@ -1,4 +1,4 @@
-package com.common.swing.view.component;
+package com.common.swing.view.component.edit;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -28,8 +28,12 @@ public class ElementEditPanel extends BaseEditPanel<Element> {
 	private JTextField textField;
 	private JLabel progressLabel;
 
+	public ElementEditPanel() {
+		this.init();
+	}
+
 	@Override
-	protected void init() {
+	protected void afterInit() {
 		this.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		this.setLayout(null);
 
@@ -61,14 +65,37 @@ public class ElementEditPanel extends BaseEditPanel<Element> {
 	}
 
 	@Override
+	public Integer getHeightSize() {
+		return 75;
+	}
+
+	@Override
+	public Integer getWidthSize() {
+		return 325;
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		this.textField.setEnabled(enabled);
+	}
+
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		this.textField.setEditable(!readOnly);
+	}
+
+	@Override
 	public void emptyFields() {
 		this.textField.setText("");
 	}
 
 	@Override
-	public Element getBean() throws SwingException {
-		Element element = new Element();
-		element.setName(this.textField.getText());
-		return element;
+	protected void fromFieldToBean(Element bean) throws SwingException {
+		bean.setName(this.textField.getText());
+	}
+
+	@Override
+	protected void fromBeanToField(Element bean) throws SwingException {
+		this.textField.setText(bean.getName());
 	}
 }
