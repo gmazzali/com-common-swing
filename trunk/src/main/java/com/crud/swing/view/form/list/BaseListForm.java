@@ -1,19 +1,18 @@
 package com.crud.swing.view.form.list;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.Collection;
 
+import javax.annotation.PostConstruct;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.common.swing.view.action.TableAction;
 import com.common.swing.view.bean.RowBean;
-import com.common.swing.view.component.table.BaseTable;
+import com.common.swing.view.component.panel.BaseListPanel;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.crud.swing.view.form.BaseForm;
 
@@ -27,13 +26,13 @@ import com.crud.swing.view.form.BaseForm;
  * @param <E>
  *            Las clases de las entidades que vamos a manipular dentro de este panel.
  */
-public abstract class ListForm<E extends RowBean> extends JPanel implements BaseForm {
+public abstract class BaseListForm<E extends RowBean> extends JPanel implements BaseForm {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * La tabla de las entidades.
+	 * El panel de la tabla de las entidades.
 	 */
-	protected BaseTable<E> table;
+	protected BaseListPanel<E> tablePanel;
 	/**
 	 * El listado de las acciones y su acceso exclusivo.
 	 */
@@ -41,40 +40,28 @@ public abstract class ListForm<E extends RowBean> extends JPanel implements Base
 	private Object actionsMutex = new Object();
 
 	/**
-	 * El contrustor del panel de listado.
-	 */
-	public ListForm() {
-		this.init();
-	}
-
-	/**
 	 * Metodo que permite iniciar el panel de la tabla.
 	 */
+	@PostConstruct
 	protected void init() {
 		this.setLayout(new BorderLayout());
-		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
 
-		this.table = this.createTable();
-		this.table.setFillsViewportHeight(true);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.add(this.table);
-		scrollPane.setViewportView(this.table);
-		this.add(scrollPane, BorderLayout.CENTER);
+		this.tablePanel = this.createTablePanel();
+		this.add(this.tablePanel, BorderLayout.CENTER);
 
 		this.tableActions = this.getTableActions();
 		if (CollectionUtil.isNotEmpty(this.tableActions)) {
 			this.initTableActionPanel(this);
 		}
 
-		ListSelectionModel cellSelectionModel = this.table.getSelectionModel();
+		ListSelectionModel cellSelectionModel = this.tablePanel.getTable().getSelectionModel();
 		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				new Thread() {
 					public void run() {
 						synchronized (actionsMutex) {
 							for (TableAction<E> tableAction : tableActions) {
-								tableAction.createButton().setEnabled(tableAction.isVivibleAction(table.getSelectedValues()));
+								tableAction.createButton().setEnabled(tableAction.isVivibleAction(tablePanel.getTable().getSelectedValues()));
 							}
 						}
 					}
@@ -101,7 +88,6 @@ public abstract class ListForm<E extends RowBean> extends JPanel implements Base
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		this.table.setEnabled(enabled);
 		synchronized (actionsMutex) {
 			for (TableAction<E> tableAction : this.tableActions) {
 				tableAction.getButton().setEnabled(enabled);
@@ -111,17 +97,19 @@ public abstract class ListForm<E extends RowBean> extends JPanel implements Base
 
 	@Override
 	public void enabled() {
+		this.tablePanel.enabled();
 		this.setEnabled(true);
 	}
 
 	@Override
 	public void disabled() {
+		this.tablePanel.disabled();
 		this.setEnabled(false);
 	}
 
 	@Override
 	public void emptyFields() {
-		this.table.clearTable();
+		this.tablePanel.emptyFields();
 	}
 
 	/**
@@ -132,32 +120,32 @@ public abstract class ListForm<E extends RowBean> extends JPanel implements Base
 	 */
 	public void setEntities(Collection<E> entities) {
 		if (CollectionUtil.isNotEmpty(entities)) {
-			this.table.setValues(entities);
+			this.tablePanel.getTable().setValues(entities);
 		} else {
 			this.emptyFields();
 		}
 	}
 
 	/**
-	 * Permite recuperar la tabla.
+	 * Permite recuperar el panel de la tabla.
 	 * 
-	 * @return La tabla del listado de entidades.
+	 * @return El panel de la tabla.
 	 */
-	public BaseTable<E> getTable() {
-		return table;
+	public BaseListPanel<E> getTablePanel() {
+		return tablePanel;
 	}
 
 	/**
-	 * Permite terminar de configurar los elementos del panel del listado.
+	 * Permite terminar de configurar el formulario.
 	 */
 	protected abstract void afterInit();
 
 	/**
-	 * Permite retornar la instancia la tabla para cargar las entidades.
+	 * Permite recuperar la instancia del panel de la tabla.
 	 * 
-	 * @return La tabla para listar las entidades.
+	 * @return El panel de la tabla para listar las entidades.
 	 */
-	protected abstract BaseTable<E> createTable();
+	protected abstract BaseListPanel<E> createTablePanel();
 
 	/**
 	 * Retorna el listado de las acciones de la tabla.

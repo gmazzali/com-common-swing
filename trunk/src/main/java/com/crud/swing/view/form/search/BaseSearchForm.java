@@ -1,12 +1,12 @@
 package com.crud.swing.view.form.search;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.PostConstruct;
 import javax.swing.JPanel;
 
 import com.common.swing.domain.exception.SwingException;
@@ -33,7 +33,7 @@ import com.crud.swing.view.form.BaseForm;
  * @param <B>
  *            La clase que utilizamos como filtro de búsqueda.
  */
-public abstract class SearchForm<E extends Serializable, B extends SearchBean> extends JPanel implements BaseForm {
+public abstract class BaseSearchForm<E extends Serializable, B extends SearchBean> extends JPanel implements BaseForm {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -56,17 +56,16 @@ public abstract class SearchForm<E extends Serializable, B extends SearchBean> e
 	/**
 	 * Permite crear un panel de filtrado.
 	 */
-	public SearchForm() {
+	public BaseSearchForm() {
 		this.callbackFilters = new ArrayList<CallbackFilter<E>>();
-		this.init();
 	}
 
 	/**
 	 * Inicializa el panel de filtrado.
 	 */
-	private void init() {
+	@PostConstruct
+	protected void init() {
 		this.setLayout(new BorderLayout());
-		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
 
 		this.baseSearchPanel = this.createSearchPanel();
 		this.add(baseSearchPanel, BorderLayout.CENTER);
@@ -79,6 +78,8 @@ public abstract class SearchForm<E extends Serializable, B extends SearchBean> e
 		if (CollectionUtil.isNotEmpty(this.searchActions)) {
 			this.initFilterActionPanel(this);
 		}
+
+		this.afterInit();
 	}
 
 	@Override
@@ -91,18 +92,22 @@ public abstract class SearchForm<E extends Serializable, B extends SearchBean> e
 
 	@Override
 	public void enabled() {
+		this.baseSearchPanel.enabled();
 		this.setEnabled(true);
 	}
 
 	@Override
 	public void disabled() {
+		this.baseSearchPanel.disabled();
 		this.setEnabled(false);
 	}
 
-	@Override
+	/**
+	 * Permite vaciar el contenido del filtro de búsqueda.
+	 */
 	public void emptyFields() {
 		if (this.baseSearchPanel != null) {
-			this.baseSearchPanel.clearFilter();
+			this.baseSearchPanel.emptyFields();
 		}
 		synchronized (searchMutex) {
 			for (CallbackFilter<E> callbackFilter : callbackFilters) {
@@ -168,7 +173,7 @@ public abstract class SearchForm<E extends Serializable, B extends SearchBean> e
 							callbackFilter.updateEntities(entities);
 						}
 					} catch (SwingException e) {
-						Notificaction.showErrorMessage(SearchForm.this, e.getErrors());
+						Notificaction.showErrorMessage(BaseSearchForm.this, e.getErrors());
 					} finally {
 						enabled();
 					}
@@ -195,6 +200,11 @@ public abstract class SearchForm<E extends Serializable, B extends SearchBean> e
 			this.callbackFilters.add(callbackFilter);
 		}
 	}
+
+	/**
+	 * Permite terminar de configurar el formulario.
+	 */
+	protected abstract void afterInit();
 
 	/**
 	 * Permite crear el panel donde se van a desplegar los campos de filtrado.

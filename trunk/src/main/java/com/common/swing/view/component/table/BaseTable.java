@@ -160,8 +160,6 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 		this.firstSelected = firstSelected;
 
 		this.init(visiblePropertiesName, visiblePropertiesWidth);
-		this.loadColumnsRenderer();
-		this.loadHeadersRenderer();
 		this.reloadData(entities);
 	}
 
@@ -281,7 +279,7 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @param renderer
 	 *            El render de la columna propiamente dicha.
 	 */
-	protected void addColumnRenderer(String property, ColumnTableRenderer renderer) {
+	public void addColumnRenderer(String property, ColumnTableRenderer renderer) {
 		// Si el renderer es nulo, lanzamos una excepción.
 		if (renderer == null) {
 			log.warn("The column renderer for the property '" + property + "' cannot be null");
@@ -307,7 +305,7 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @param renderer
 	 *            El render de la cabecera propiamente dicha.
 	 */
-	protected void addHeaderRenderer(String property, HeaderTableRenderer renderer) {
+	public void addHeaderRenderer(String property, HeaderTableRenderer renderer) {
 		// Si el renderer es nulo, lanzamos una excepción.
 		if (renderer == null) {
 			log.warn("The header renderer for the property '" + property + "' cannot be null");
@@ -560,14 +558,4 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 			return selectedValues;
 		}
 	}
-
-	/**
-	 * Permite cargar los generadores de columnas a la tabla.
-	 */
-	protected abstract void loadColumnsRenderer();
-
-	/**
-	 * Permite cargar los generadores de cabeceras columnas a la tabla.
-	 */
-	protected abstract void loadHeadersRenderer();
 }

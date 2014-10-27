@@ -12,11 +12,11 @@ import org.apache.log4j.Logger;
 
 import com.common.swing.domain.exception.SwingException;
 import com.common.swing.view.callback.CallbackForm;
+import com.common.swing.view.component.panel.BasePanel;
 import com.common.swing.view.notification.Notificaction;
 import com.common.util.business.service.BaseService;
 import com.common.util.domain.model.Persistence;
 import com.crud.swing.view.container.BaseContainer;
-import com.crud.swing.view.form.BaseForm;
 import com.crud.swing.view.form.util.EditFormTypeEnum;
 
 /**
@@ -33,7 +33,7 @@ import com.crud.swing.view.form.util.EditFormTypeEnum;
  *            La clase que va a hacer de clave primaria de las entidades que vamos a editar.
  */
 @SuppressWarnings("unchecked")
-public abstract class EditForm<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements BaseForm {
+public abstract class EditForm<E extends Persistence<PK>, PK extends Serializable> extends JPanel implements BasePanel {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(EditForm.class);
 

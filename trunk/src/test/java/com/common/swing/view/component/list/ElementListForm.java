@@ -1,4 +1,4 @@
-package com.common.swing.view.component;
+package com.common.swing.view.component.list;
 
 import java.util.Collection;
 
@@ -8,14 +8,14 @@ import javax.swing.ListSelectionModel;
 import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.action.TableAction;
-import com.common.swing.view.component.table.BaseTable;
+import com.common.swing.view.component.panel.BaseListPanel;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.swing.view.event.TableEvent;
 import com.common.swing.view.listener.TableListener;
 import com.common.swing.view.notification.Notificaction;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.common.util.persistence.filter.BaseFilter;
-import com.crud.swing.view.form.list.ListForm;
+import com.crud.swing.view.form.list.BaseListForm;
 
 /**
  * La clase que extiende el formulario de listado de entidades.
@@ -24,29 +24,23 @@ import com.crud.swing.view.form.list.ListForm;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementListForm extends ListForm<Element> {
+public class ElementListForm extends BaseListForm<Element> {
 	private static final long serialVersionUID = 1L;
 
 	private ElementServiceImpl service;
 
-	@Override
-	public Integer getHeightSize() {
-		return 400;
+	public ElementListForm() {
+		this.init();
 	}
 
 	@Override
-	public Integer getWidthSize() {
-		return 500;
-	}
-
-	@Override
-	protected BaseTable<Element> createTable() {
-		return new ElementTable();
+	protected BaseListPanel<Element> createTablePanel() {
+		return new ElementListPanel();
 	}
 
 	@Override
 	protected void afterInit() {
-		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		this.getTablePanel().getTable().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 
 	@Override
@@ -157,23 +151,24 @@ public class ElementListForm extends ListForm<Element> {
 			}
 		};
 
-		return CollectionUtil.newArrayList(new TableAction<Element>(table, tableListener1, buttonDecorator1), new TableAction<Element>(table,
-				tableListener2, buttonDecorator2) {
-			private static final long serialVersionUID = 1L;
+		return CollectionUtil.newArrayList(new TableAction<Element>(this.getTablePanel().getTable(), tableListener1, buttonDecorator1),
+				new TableAction<Element>(this.getTablePanel().getTable(), tableListener2, buttonDecorator2) {
+					private static final long serialVersionUID = 1L;
 
-			@Override
-			public boolean isVivibleAction(Collection<Element> entities) {
-				boolean permiteBorrar = true;
-				for (Element element : entities) {
-					if (element.getFecha() != null) {
-						permiteBorrar = false;
-						break;
+					@Override
+					public boolean isVivibleAction(Collection<Element> entities) {
+						boolean permiteBorrar = true;
+						for (Element element : entities) {
+							if (element.getFecha() != null) {
+								permiteBorrar = false;
+								break;
+							}
+						}
+						return permiteBorrar;
 					}
-				}
-				return permiteBorrar;
-			}
-		}, new TableAction<Element>(table, tableListener3, buttonDecorator3), new TableAction<Element>(table, tableListener4, buttonDecorator4),
-				new TableAction<Element>(table, tableListener5, buttonDecorator5));
+				}, new TableAction<Element>(this.getTablePanel().getTable(), tableListener3, buttonDecorator3), new TableAction<Element>(this
+						.getTablePanel().getTable(), tableListener4, buttonDecorator4), new TableAction<Element>(this.getTablePanel().getTable(),
+						tableListener5, buttonDecorator5));
 	}
 
 	public void setService(ElementServiceImpl service) {

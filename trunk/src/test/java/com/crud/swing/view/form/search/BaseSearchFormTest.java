@@ -15,7 +15,7 @@ import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.Constants;
 import com.common.swing.view.callback.CallbackFilter;
-import com.common.swing.view.component.ElementSearchForm;
+import com.common.swing.view.component.search.ElementSearchForm;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.common.util.persistence.filter.order.Orders;
 import com.crud.swing.view.container.impl.DialogContainer;
@@ -28,7 +28,7 @@ import com.crud.swing.view.container.impl.DialogContainer;
  * @version 1.0
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SearchFormTest {
+public class BaseSearchFormTest {
 
 	@InjectMocks
 	private ElementSearchForm panel;
