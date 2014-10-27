@@ -1,4 +1,4 @@
-package com.crud.swing.view.form;
+package com.common.swing.view.component.panel;
 
 /**
  * La interfaz que define el comportamiento común para los paneles de los formularios.
@@ -7,7 +7,21 @@ package com.crud.swing.view.form;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public interface BaseForm {
+public interface BasePanel {
+
+	/**
+	 * Se encarga de retornar el alto del formulario.
+	 * 
+	 * @return El alto del formulario que tenemos (en pixeles).
+	 */
+	public Integer getHeightSize();
+
+	/**
+	 * Se encarga de retornar el ancho del formulario.
+	 * 
+	 * @return El ancho del formulario que tenemos (en pixeles).
+	 */
+	public Integer getWidthSize();
 
 	/**
 	 * Se encarga de habilitar este formulario.

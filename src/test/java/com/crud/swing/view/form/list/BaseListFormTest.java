@@ -12,7 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.Constants;
-import com.common.swing.view.component.ElementListForm;
+import com.common.swing.view.component.list.ElementListForm;
 import com.common.util.domain.exception.UncheckedException;
 import com.common.util.persistence.filter.BaseFilter;
 import com.crud.swing.view.container.impl.DialogContainer;
@@ -25,7 +25,7 @@ import com.crud.swing.view.container.impl.DialogContainer;
  * @version 1.0
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ListFormTest {
+public class BaseListFormTest {
 
 	@InjectMocks
 	private ElementListForm panel;

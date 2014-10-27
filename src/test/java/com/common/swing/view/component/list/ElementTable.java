@@ -1,15 +1,13 @@
-package com.common.swing.view.component;
+package com.common.swing.view.component.list;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.common.swing.domain.model.Element;
 import com.common.swing.view.component.table.BaseTable;
-import com.common.swing.view.component.table.renderer.impl.DateColumnTableRenderer;
-import com.common.swing.view.component.table.renderer.impl.MoneyColumnTableRenderer;
 
 /**
- * LA tabla de elementos.
+ * La tabla de elementos.
  * 
  * @since 20/10/2014
  * @author Guillermo Mazzali
@@ -39,15 +37,5 @@ public class ElementTable extends BaseTable<Element> {
 
 	public ElementTable() {
 		super(VISIBLE_PROPERTIES, PROPERTIES_NAME, PROPERTIES_WIDTH, true);
-	}
-
-	@Override
-	protected void loadColumnsRenderer() {
-		this.addColumnRenderer(Element.Attribute.FECHA, new DateColumnTableRenderer("dd/MM/yyyy"));
-		this.addColumnRenderer(Element.Attribute.SALARIO, new MoneyColumnTableRenderer());
-	}
-
-	@Override
-	protected void loadHeadersRenderer() {
 	}
 }

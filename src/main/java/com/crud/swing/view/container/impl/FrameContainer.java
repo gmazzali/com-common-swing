@@ -2,14 +2,14 @@ package com.crud.swing.view.container.impl;
 
 import javax.swing.JFrame;
 
+import com.common.swing.view.component.panel.BasePanel;
 import com.crud.swing.view.container.BaseContainer;
-import com.crud.swing.view.form.BaseForm;
 
 /**
- * La clase que extiende de {@link JFrame} para poder contener un formulario {@link BaseForm}.
+ * La clase que extiende de {@link JFrame} para poder contener un formulario {@link BasePanel}.
  * 
  * @see JFrame
- * @see BaseForm
+ * @see BasePanel
  * @see DialogContainer
  * 
  * @since 30/04/2014

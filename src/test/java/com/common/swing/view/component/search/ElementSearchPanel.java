@@ -1,4 +1,4 @@
-package com.common.swing.view.component;
+package com.common.swing.view.component.search;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -26,8 +26,12 @@ public class ElementSearchPanel extends BaseSearchPanel<Element> {
 
 	private JTextField textField;
 
+	public ElementSearchPanel() {
+		this.init();
+	}
+
 	@Override
-	protected void init() {
+	protected void afterInit() {
 		this.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		this.setLayout(null);
 
@@ -49,8 +53,28 @@ public class ElementSearchPanel extends BaseSearchPanel<Element> {
 	}
 
 	@Override
-	public void clearFilter() {
+	public void emptyFields() {
 		this.textField.setText("");
+	}
+
+	@Override
+	public Integer getHeightSize() {
+		return 100;
+	}
+
+	@Override
+	public Integer getWidthSize() {
+		return 350;
+	}
+
+	@Override
+	public void enabled() {
+		this.textField.setEnabled(true);
+	}
+
+	@Override
+	public void disabled() {
+		this.textField.setEnabled(false);
 	}
 
 	@Override

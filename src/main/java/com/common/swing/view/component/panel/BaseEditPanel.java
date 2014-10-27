@@ -19,13 +19,6 @@ public abstract class BaseEditPanel<B extends EditBean> extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * El constructor de un panel de edición.
-	 */
-	public BaseEditPanel() {
-		this.init();
-	}
-
-	/**
 	 * Permite inicializar el panel.
 	 */
 	protected abstract void init();

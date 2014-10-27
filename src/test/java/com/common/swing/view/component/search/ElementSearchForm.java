@@ -1,4 +1,4 @@
-package com.common.swing.view.component;
+package com.common.swing.view.component.search;
 
 import java.util.Collection;
 
@@ -9,7 +9,7 @@ import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.action.SearchAction;
 import com.common.swing.view.bean.SearchBean;
 import com.common.swing.view.decorator.ButtonDecorator;
-import com.crud.swing.view.form.search.SearchForm;
+import com.crud.swing.view.form.search.BaseSearchForm;
 
 /**
  * Permite crear un formulario de búsqueda para pruebas.
@@ -18,19 +18,17 @@ import com.crud.swing.view.form.search.SearchForm;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementSearchForm extends SearchForm<Element, Element> {
+public class ElementSearchForm extends BaseSearchForm<Element, Element> {
 	private static final long serialVersionUID = 1L;
 
 	private ElementServiceImpl service;
 
-	@Override
-	public Integer getHeightSize() {
-		return 100;
+	public ElementSearchForm() {
+		this.init();
 	}
 
 	@Override
-	public Integer getWidthSize() {
-		return 350;
+	protected void afterInit() {
 	}
 
 	@Override

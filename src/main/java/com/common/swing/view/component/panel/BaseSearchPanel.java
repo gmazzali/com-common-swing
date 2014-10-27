@@ -1,5 +1,8 @@
 package com.common.swing.view.component.panel;
 
+import java.awt.Dimension;
+
+import javax.annotation.PostConstruct;
 import javax.swing.JPanel;
 
 import com.common.swing.domain.exception.SwingException;
@@ -15,25 +18,29 @@ import com.common.swing.view.bean.SearchBean;
  * @param <B>
  *            El bean de búsqueda que vamos a manipular dentro de este panel.
  */
-public abstract class BaseSearchPanel<B extends SearchBean> extends JPanel {
+public abstract class BaseSearchPanel<B extends SearchBean> extends JPanel implements BasePanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * El constructor de un panel de filtro de búsqueda.
+	 * Permite inicializar los componentes del panel.
 	 */
-	public BaseSearchPanel() {
-		this.init();
+	@PostConstruct
+	protected void init() {
+		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
+		this.afterInit();
 	}
-
-	/**
-	 * Permite inicializar el panel.
-	 */
-	protected abstract void init();
 
 	/**
 	 * Permite vaciar el contenido del filtro de búsqueda.
 	 */
-	public abstract void clearFilter();
+	public void clearFilter() {
+		this.emptyFields();
+	}
+
+	/**
+	 * Permite terminar de configurar el panel.
+	 */
+	protected abstract void afterInit();
 
 	/**
 	 * Se encarga de validar y crear el filtro de busqueda de acuerdo a los criterios que tenemos cargado dentro del filtro del panel.
