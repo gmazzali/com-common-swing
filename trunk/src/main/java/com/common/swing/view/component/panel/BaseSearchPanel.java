@@ -26,6 +26,7 @@ public abstract class BaseSearchPanel<B extends SearchBean> extends JPanel imple
 	 */
 	@PostConstruct
 	protected void init() {
+		this.removeAll();
 		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
 		this.afterInit();
 	}

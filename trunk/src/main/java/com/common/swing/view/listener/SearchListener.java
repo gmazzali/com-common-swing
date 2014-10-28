@@ -2,6 +2,7 @@ package com.common.swing.view.listener;
 
 import java.io.Serializable;
 
+import com.common.swing.view.bean.SearchBean;
 import com.common.swing.view.event.SearchEvent;
 
 /**
@@ -14,7 +15,7 @@ import com.common.swing.view.event.SearchEvent;
  * @param <E>
  *            La clase de los elementos que vamos a recuperar con el filtro.
  */
-public interface SearchListener<E extends Serializable> extends Serializable {
+public interface SearchListener<E extends SearchBean> extends Serializable {
 
 	/**
 	 * Permite disparar un evento en caso de una acción en un filtro.

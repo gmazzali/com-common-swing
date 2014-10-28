@@ -2,10 +2,8 @@ package com.common.swing.view.action;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 
-import javax.swing.JButton;
-
+import com.common.swing.view.bean.EditBean;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.swing.view.event.EditEvent;
 import com.common.swing.view.listener.EditListener;
@@ -20,21 +18,13 @@ import com.common.swing.view.listener.EditListener;
  * @param <E>
  *            La clase de los elementos que vamos a editar.
  */
-public class EditAction<E extends Serializable> implements Serializable {
+public class EditAction<E extends EditBean> extends BaseAction<E> {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El escuchador de la edición.
 	 */
 	private EditListener<E> editListener;
-	/**
-	 * El botón de la acción.
-	 */
-	private JButton button;
-	/**
-	 * El decorador del botón.
-	 */
-	private ButtonDecorator buttonDecorator;
 
 	/**
 	 * El constructor del escuchador de la edición.
@@ -45,58 +35,18 @@ public class EditAction<E extends Serializable> implements Serializable {
 	 *            El decorador del botón.
 	 */
 	public EditAction(EditListener<E> editListener, ButtonDecorator buttonDecorator) {
+		super(buttonDecorator);
 		this.editListener = editListener;
-		this.buttonDecorator = buttonDecorator;
 	}
 
-	/**
-	 * Permite crear un botón dado de acuerdo al escuchador y el decorador recibido.
-	 * 
-	 * @return El botón creado.
-	 */
-	public JButton createButton() {
-		if (this.button == null) {
-			this.button = new JButton();
-			this.buttonDecorator.decorateButton(this.button);
-			this.button.addActionListener(new ActionListener() {
+	@Override
+	protected ActionListener getActionListener() {
+		return new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					editListener.fireEvent(new EditEvent<E>());
-				}
-			});
-		}
-		return this.button;
-	}
-
-	/**
-	 * Permite definir si la acción va a estar activa.
-	 * 
-	 * @param entity
-	 *            La entidad que tenemos dentro del panel de edición.
-	 * @return <code>true</code> en caso de que la acción este habilitada para la entidad, en caso contrario, retorna <code>false</code>.
-	 */
-	public boolean isEnabledAction(E entity) {
-		return true;
-	}
-
-	/**
-	 * Permite definir si la acción va a estar visible.
-	 * 
-	 * @param entity
-	 *            La entidad que tenemos dentro del panel de edición.
-	 * @return <code>true</code> en caso de que la acción este visible para la entidad, en caso contrario, retorna <code>false</code>.
-	 */
-	public boolean isVisibleAction(E entity) {
-		return true;
-	}
-
-	/**
-	 * Permite recuperar el botón de la acción.
-	 * 
-	 * @return El botón de la acción.
-	 */
-	public JButton getButton() {
-		return button;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editListener.fireEvent(new EditEvent<E>());
+			}
+		};
 	}
 }

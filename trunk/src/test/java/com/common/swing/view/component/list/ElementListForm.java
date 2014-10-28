@@ -6,15 +6,17 @@ import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 
 import com.common.swing.domain.model.Element;
+import com.common.swing.domain.model.ElementFilter;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.action.TableAction;
+import com.common.swing.view.action.parameter.BaseActionParameter;
+import com.common.swing.view.action.parameter.TableActionParameter;
 import com.common.swing.view.component.panel.BaseListPanel;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.swing.view.event.TableEvent;
 import com.common.swing.view.listener.TableListener;
 import com.common.swing.view.notification.Notificaction;
 import com.common.util.business.tool.collection.CollectionUtil;
-import com.common.util.persistence.filter.BaseFilter;
 import com.crud.swing.view.form.list.BaseListForm;
 
 /**
@@ -55,7 +57,7 @@ public class ElementListForm extends BaseListForm<Element> {
 					public void run() {
 						disabled();
 						service.save(new Element("ELEMENTO " + (int) (Math.random() * 1000)));
-						setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
+						setEntities(service.findByFilter(new ElementFilter()));
 						enabled();
 					};
 				}.start();
@@ -78,10 +80,12 @@ public class ElementListForm extends BaseListForm<Element> {
 				new Thread() {
 					public void run() {
 						disabled();
-						for (Element element : tableEvent.getEntities()) {
+						getTablePanel().getTable().getSelectedValue();
+						Collection<Element> elements = tableEvent.getSelectedEntities();
+						for (Element element : elements) {
 							service.delete(element);
 						}
-						setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
+						setEntities(service.findByFilter(new ElementFilter()));
 						enabled();
 					};
 				}.start();
@@ -116,7 +120,7 @@ public class ElementListForm extends BaseListForm<Element> {
 
 			@Override
 			public void fireEvent(final TableEvent<Element> tableEvent) {
-				setEntities(service.findByFilter(new BaseFilter<Element, Integer>()));
+				setEntities(service.findByFilter(new ElementFilter()));
 			}
 		};
 		ButtonDecorator buttonDecorator4 = new ButtonDecorator() {
@@ -133,7 +137,8 @@ public class ElementListForm extends BaseListForm<Element> {
 			@Override
 			public void fireEvent(final TableEvent<Element> tableEvent) {
 				StringBuffer buffer = new StringBuffer();
-				for (Element element : tableEvent.getEntities()) {
+				Collection<Element> elements = tableEvent.getSelectedEntities();
+				for (Element element : elements) {
 					buffer.append(element.toString());
 					buffer.append("\n");
 				}
@@ -156,9 +161,9 @@ public class ElementListForm extends BaseListForm<Element> {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public boolean isEnabledAction(Collection<Element> entities) {
+					public <P extends BaseActionParameter<Element>> boolean isEnabledAction(P parameter) {
 						boolean permiteBorrar = true;
-						for (Element element : entities) {
+						for (Element element : ((TableActionParameter<Element>) parameter).getEntities()) {
 							if (element.getFecha() != null) {
 								permiteBorrar = false;
 								break;

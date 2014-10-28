@@ -35,6 +35,7 @@ public abstract class BaseEditPanel<B extends EditBean> extends JPanel implement
 	 * Permite inicializar los componentes del panel de edición.
 	 */
 	protected void init() {
+		this.removeAll();
 		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
 		this.afterInit();
 	}

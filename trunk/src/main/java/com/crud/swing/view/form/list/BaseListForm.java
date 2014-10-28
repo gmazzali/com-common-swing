@@ -11,6 +11,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.common.swing.view.action.TableAction;
+import com.common.swing.view.action.parameter.TableActionParameter;
 import com.common.swing.view.bean.RowBean;
 import com.common.swing.view.component.panel.BaseListPanel;
 import com.common.util.business.tool.collection.CollectionUtil;
@@ -44,6 +45,7 @@ public abstract class BaseListForm<E extends RowBean> extends JPanel implements 
 	 */
 	@PostConstruct
 	protected void init() {
+		this.removeAll();
 		this.setLayout(new BorderLayout());
 
 		this.tablePanel = this.createTablePanel();
@@ -61,8 +63,10 @@ public abstract class BaseListForm<E extends RowBean> extends JPanel implements 
 					public void run() {
 						synchronized (actionsMutex) {
 							for (TableAction<E> tableAction : tableActions) {
-								tableAction.getButton().setVisible(tableAction.isVisibleAction(tablePanel.getTable().getSelectedValues()));
-								tableAction.getButton().setEnabled(tableAction.isEnabledAction(tablePanel.getTable().getSelectedValues()));
+								tableAction.getButton().setVisible(
+										tableAction.isVisibleAction(new TableActionParameter<E>(tablePanel.getTable().getSelectedValues())));
+								tableAction.getButton().setEnabled(
+										tableAction.isEnabledAction(new TableActionParameter<E>(tablePanel.getTable().getSelectedValues())));
 							}
 						}
 					}

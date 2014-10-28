@@ -2,10 +2,6 @@ package com.common.swing.view.action;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
-import java.util.Collection;
-
-import javax.swing.JButton;
 
 import com.common.swing.view.bean.RowBean;
 import com.common.swing.view.component.table.BaseTable;
@@ -23,25 +19,17 @@ import com.common.swing.view.listener.TableListener;
  * @param <E>
  *            La clase de las entidades que vamos a cargar dentro de la tabla.
  */
-public class TableAction<E extends RowBean> implements Serializable {
+public class TableAction<E extends RowBean> extends BaseAction<E> {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * La tabla base.
-	 */
-	private BaseTable<E> table;
 	/**
 	 * Es escuchador de la acción.
 	 */
 	private TableListener<E> tableListener;
 	/**
-	 * El botón de la acción.
+	 * La tabla base.
 	 */
-	private JButton button;
-	/**
-	 * El decorador del botón.
-	 */
-	private ButtonDecorator buttonDecorator;
+	protected BaseTable<E> table;
 
 	/**
 	 * El constructor de una acción de una tabla que recibe la misma.
@@ -54,59 +42,19 @@ public class TableAction<E extends RowBean> implements Serializable {
 	 *            El decorador del botón.
 	 */
 	public TableAction(BaseTable<E> table, TableListener<E> tableListener, ButtonDecorator buttonDecorator) {
+		super(buttonDecorator);
 		this.table = table;
 		this.tableListener = tableListener;
-		this.buttonDecorator = buttonDecorator;
 	}
 
-	/**
-	 * Permite crear un botón dado de acuerdo al escuchador y el decorador recibido.
-	 * 
-	 * @return El botón creado.
-	 */
-	public JButton createButton() {
-		if (this.button == null) {
-			this.button = new JButton();
-			this.buttonDecorator.decorateButton(this.button);
-			this.button.addActionListener(new ActionListener() {
+	@Override
+	protected ActionListener getActionListener() {
+		return new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					tableListener.fireEvent(new TableEvent<E>(table).addAllEntity(table.getSelectedValues()));
-				}
-			});
-		}
-		return this.button;
-	}
-
-	/**
-	 * Permite definir si la acción va a estar activa.
-	 * 
-	 * @param entities
-	 *            Las entidades que tenemos seleccionadas dentro del la tabla.
-	 * @return <code>true</code> en caso de que la acción este habilitada para las entidades, en caso contrario, retorna <code>false</code>.
-	 */
-	public boolean isEnabledAction(Collection<E> entities) {
-		return true;
-	}
-
-	/**
-	 * Permite definir si la acción va a estar visible.
-	 * 
-	 * @param entities
-	 *            Las entidades que tenemos seleccionadas dentro del la tabla.
-	 * @return <code>true</code> en caso de que la acción este visible para las entidades, en caso contrario, retorna <code>false</code>.
-	 */
-	public boolean isVisibleAction(Collection<E> entities) {
-		return true;
-	}
-
-	/**
-	 * Permite recuperar el botón de la acción.
-	 * 
-	 * @return El botón de la acción.
-	 */
-	public JButton getButton() {
-		return button;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tableListener.fireEvent(new TableEvent<E>(table));
+			}
+		};
 	}
 }
