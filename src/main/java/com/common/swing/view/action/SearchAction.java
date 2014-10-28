@@ -2,10 +2,8 @@ package com.common.swing.view.action;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 
-import javax.swing.JButton;
-
+import com.common.swing.view.bean.SearchBean;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.swing.view.event.SearchEvent;
 import com.common.swing.view.listener.SearchListener;
@@ -20,21 +18,13 @@ import com.common.swing.view.listener.SearchListener;
  * @param <E>
  *            La clase de los elementos que vamos a recuperar con el filtro de búsqueda.
  */
-public class SearchAction<E extends Serializable> implements Serializable {
+public class SearchAction<E extends SearchBean> extends BaseAction<E> {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El escuchador del filtro de búsqueda.
 	 */
 	private SearchListener<E> searchListener;
-	/**
-	 * El botón de la acción.
-	 */
-	private JButton button;
-	/**
-	 * El decorador del botón.
-	 */
-	private ButtonDecorator buttonDecorator;
 
 	/**
 	 * El constructor de una acción de un filtro de búsqueda.
@@ -45,54 +35,18 @@ public class SearchAction<E extends Serializable> implements Serializable {
 	 *            El decorador del botón.
 	 */
 	public SearchAction(SearchListener<E> searchListener, ButtonDecorator buttonDecorator) {
+		super(buttonDecorator);
 		this.searchListener = searchListener;
-		this.buttonDecorator = buttonDecorator;
 	}
 
-	/**
-	 * Permite crear un botón dado de acuerdo al escuchador y el decorador recibido.
-	 * 
-	 * @return El botón creado.
-	 */
-	public JButton createButton() {
-		if (this.button == null) {
-			this.button = new JButton();
-			this.buttonDecorator.decorateButton(this.button);
-			this.button.addActionListener(new ActionListener() {
+	@Override
+	protected ActionListener getActionListener() {
+		return new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					searchListener.fireEvent(new SearchEvent<E>());
-				}
-			});
-		}
-		return this.button;
-	}
-
-	/**
-	 * Permite definir si la acción va a estar activa.
-	 * 
-	 * @return <code>true</code> en caso de que la acción este habilitada para la entidad, en caso contrario, retorna <code>false</code>.
-	 */
-	public boolean isEnabledAction() {
-		return true;
-	}
-
-	/**
-	 * Permite definir si la acción va a estar visible.
-	 * 
-	 * @return <code>true</code> en caso de que la acción este visible para la entidad, en caso contrario, retorna <code>false</code>.
-	 */
-	public boolean isVisibleAction() {
-		return true;
-	}
-
-	/**
-	 * Permite recuperar el botón de la acción.
-	 * 
-	 * @return El botón de la acción.
-	 */
-	public JButton getButton() {
-		return button;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				searchListener.fireEvent(new SearchEvent<E>());
+			}
+		};
 	}
 }

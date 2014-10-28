@@ -1,6 +1,6 @@
 package com.common.swing.view.event;
 
-import java.io.Serializable;
+import com.common.swing.view.bean.EditBean;
 
 /**
  * Permite definir un evento de un panel de edición.
@@ -12,6 +12,6 @@ import java.io.Serializable;
  * @param <E>
  *            La clase de elementos que contiene el filtro que disparo el evento.
  */
-public class EditEvent<E extends Serializable> implements Serializable {
+public class EditEvent<E extends EditBean> extends BaseEvent<E> {
 	private static final long serialVersionUID = 1L;
 }

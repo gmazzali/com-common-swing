@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 
 import com.common.swing.domain.exception.SwingException;
 import com.common.swing.view.action.EditAction;
+import com.common.swing.view.action.parameter.BaseActionParameter;
+import com.common.swing.view.action.parameter.EditActionParameter;
 import com.common.swing.view.bean.EditBean;
 import com.common.swing.view.callback.CallbackEdit;
 import com.common.swing.view.component.panel.BaseEditPanel;
@@ -128,8 +130,8 @@ public abstract class BaseEditForm<E extends EditBean> extends JPanel implements
 			public void run() {
 				synchronized (editMutex) {
 					for (EditAction<E> editAction : editActions) {
-						editAction.getButton().setVisible(editAction.isVisibleAction(bean));
-						editAction.getButton().setEnabled(editAction.isEnabledAction(bean));
+						editAction.getButton().setVisible(editAction.isVisibleAction(new EditActionParameter<E>(bean)));
+						editAction.getButton().setEnabled(editAction.isEnabledAction(new EditActionParameter<E>(bean)));
 					}
 				}
 			}
@@ -178,25 +180,25 @@ public abstract class BaseEditForm<E extends EditBean> extends JPanel implements
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabledAction(E entity) {
-				return isEnabledConfirmButton(entity);
+			public <P extends BaseActionParameter<E>> boolean isEnabledAction(P parameter) {
+				return isEnabledConfirmButton(((EditActionParameter<E>) parameter).getEntity());
 			}
 
 			@Override
-			public boolean isVisibleAction(E entity) {
-				return isVisibleConfirmButton(entity);
+			public <P extends BaseActionParameter<E>> boolean isVisibleAction(P parameter) {
+				return isVisibleConfirmButton(((EditActionParameter<E>) parameter).getEntity());
 			}
 		}, new EditAction<E>(cancelListener, this.getCancelButtonDecorator()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabledAction(E entity) {
-				return isEnabledCancelButton(entity);
+			public <P extends BaseActionParameter<E>> boolean isEnabledAction(P parameter) {
+				return isEnabledCancelButton(((EditActionParameter<E>) parameter).getEntity());
 			}
 
 			@Override
-			public boolean isVisibleAction(E entity) {
-				return isVisibleCancelButton(entity);
+			public <P extends BaseActionParameter<E>> boolean isVisibleAction(P parameter) {
+				return isVisibleCancelButton(((EditActionParameter<E>) parameter).getEntity());
 			}
 		});
 	}

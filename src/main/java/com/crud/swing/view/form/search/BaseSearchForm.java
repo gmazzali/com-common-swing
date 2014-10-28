@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 
 import com.common.swing.domain.exception.SwingException;
 import com.common.swing.view.action.SearchAction;
+import com.common.swing.view.action.parameter.BaseActionParameter;
+import com.common.swing.view.action.parameter.SearchActionParameter;
 import com.common.swing.view.bean.SearchBean;
 import com.common.swing.view.callback.CallbackFilter;
 import com.common.swing.view.component.panel.BaseSearchPanel;
@@ -28,12 +30,12 @@ import com.crud.swing.view.form.BaseForm;
  * @author Guillermo Mazzali
  * @version 1.0
  * 
- * @param <E>
- *            La clase de las entidades que vamos a recuperar.
  * @param <B>
  *            La clase que utilizamos como filtro de búsqueda.
+ * @param <E>
+ *            La clase de las entidades que vamos a recuperar.
  */
-public abstract class BaseSearchForm<E extends Serializable, B extends SearchBean> extends JPanel implements BaseForm {
+public abstract class BaseSearchForm<B extends SearchBean, E extends Serializable> extends JPanel implements BaseForm {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -43,7 +45,7 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	/**
 	 * El listado de las acciones del filtro de búsqueda.
 	 */
-	private Collection<SearchAction<E>> searchActions;
+	private Collection<SearchAction<B>> searchActions;
 	/**
 	 * Todos los callback de actualización del filtro de búsqueda.
 	 */
@@ -65,13 +67,14 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	 */
 	@PostConstruct
 	protected void init() {
+		this.removeAll();
 		this.setLayout(new BorderLayout());
 
 		this.searchPanel = this.createSearchPanel();
 		this.add(searchPanel, BorderLayout.CENTER);
 
 		this.searchActions = this.getDefaultFilterActions();
-		Collection<SearchAction<E>> temporal = this.getFilterActions();
+		Collection<SearchAction<B>> temporal = this.getFilterActions();
 		if (CollectionUtil.isNotEmpty(temporal)) {
 			this.searchActions.addAll(temporal);
 		}
@@ -84,7 +87,7 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		for (SearchAction<E> filterAction : this.searchActions) {
+		for (SearchAction<B> filterAction : this.searchActions) {
 			filterAction.getButton().setEnabled(enabled);
 		}
 	}
@@ -109,9 +112,9 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 		new Thread() {
 			public void run() {
 				synchronized (searchMutex) {
-					for (SearchAction<E> searchAction : searchActions) {
-						searchAction.getButton().setVisible(searchAction.isVisibleAction());
-						searchAction.getButton().setEnabled(searchAction.isEnabledAction());
+					for (SearchAction<B> searchAction : searchActions) {
+						searchAction.getButton().setVisible(searchAction.isVisibleAction(new SearchActionParameter<B>()));
+						searchAction.getButton().setEnabled(searchAction.isEnabledAction(new SearchActionParameter<B>()));
 					}
 				}
 			}
@@ -132,7 +135,7 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	 */
 	protected void initFilterActionPanel(JPanel panel) {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		for (SearchAction<E> filterAction : this.searchActions) {
+		for (SearchAction<B> filterAction : this.searchActions) {
 			buttonPanel.add(filterAction.createButton());
 		}
 		panel.add(buttonPanel, BorderLayout.SOUTH);
@@ -144,46 +147,46 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	 * @return Las acciones por omisión del filtro de búsqueda.
 	 */
 	@SuppressWarnings("unchecked")
-	protected Collection<SearchAction<E>> getDefaultFilterActions() {
-		SearchListener<E> searchFilterListener = new SearchListener<E>() {
+	protected Collection<SearchAction<B>> getDefaultFilterActions() {
+		SearchListener<B> searchFilterListener = new SearchListener<B>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void fireEvent(SearchEvent<E> filterEvent) {
+			public void fireEvent(SearchEvent<B> filterEvent) {
 				executeSearch();
 			}
 		};
-		SearchListener<E> clearFilterFilterListener = new SearchListener<E>() {
+		SearchListener<B> clearFilterFilterListener = new SearchListener<B>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void fireEvent(SearchEvent<E> filterEvent) {
+			public void fireEvent(SearchEvent<B> filterEvent) {
 				emptyFields();
 			}
 		};
 
-		return CollectionUtil.newArrayList(new SearchAction<E>(searchFilterListener, this.getSearchButtonDecorator()) {
+		return CollectionUtil.newArrayList(new SearchAction<B>(searchFilterListener, this.getSearchButtonDecorator()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabledAction() {
+			public <P extends BaseActionParameter<B>> boolean isEnabledAction(P parameter) {
 				return isEnabledSearchButton();
 			};
 
 			@Override
-			public boolean isVisibleAction() {
+			public <P extends BaseActionParameter<B>> boolean isVisibleAction(P parameter) {
 				return isVisibleSearchButton();
 			}
-		}, new SearchAction<E>(clearFilterFilterListener, this.getCleanFilterButtonDecorator()) {
+		}, new SearchAction<B>(clearFilterFilterListener, this.getCleanFilterButtonDecorator()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isEnabledAction() {
+			public <P extends BaseActionParameter<B>> boolean isEnabledAction(P parameter) {
 				return isEnabledCleanFilterButton();
 			};
 
 			@Override
-			public boolean isVisibleAction() {
+			public <P extends BaseActionParameter<B>> boolean isVisibleAction(P parameter) {
 				return isVisibleCleanFilterButton();
 			}
 		});
@@ -299,7 +302,7 @@ public abstract class BaseSearchForm<E extends Serializable, B extends SearchBea
 	 * 
 	 * @return Las nuevas acciones de filtro que vamos a agregar a este filtro.
 	 */
-	protected abstract Collection<SearchAction<E>> getFilterActions();
+	protected abstract Collection<SearchAction<B>> getFilterActions();
 
 	/**
 	 * Se encarga de buscar las entidades que corresponden con el filtro creado con los datos recibidos.

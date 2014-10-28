@@ -1,6 +1,6 @@
 package com.common.swing.view.event;
 
-import java.io.Serializable;
+import com.common.swing.view.bean.SearchBean;
 
 /**
  * Permite definir un evento de un filtro de búsqueda.
@@ -12,6 +12,6 @@ import java.io.Serializable;
  * @param <E>
  *            La clase de elementos que contiene el filtro que disparo el evento.
  */
-public class SearchEvent<E extends Serializable> implements Serializable {
+public class SearchEvent<E extends SearchBean> extends BaseEvent<E> {
 	private static final long serialVersionUID = 1L;
 }

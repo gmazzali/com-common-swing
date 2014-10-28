@@ -33,6 +33,7 @@ public abstract class BaseListPanel<B extends RowBean> extends JPanel implements
 	 */
 	@PostConstruct
 	protected void init() {
+		this.removeAll();
 		this.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
 

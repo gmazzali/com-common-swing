@@ -17,6 +17,7 @@ import com.common.swing.view.Constants;
 import com.common.swing.view.callback.CallbackFilter;
 import com.common.swing.view.component.search.ElementSearchForm;
 import com.common.util.business.tool.collection.CollectionUtil;
+import com.common.util.persistence.filter.BaseFilter;
 import com.common.util.persistence.filter.order.Orders;
 import com.crud.swing.view.container.impl.DialogContainer;
 
@@ -62,6 +63,15 @@ public class BaseSearchFormTest {
 				} catch (InterruptedException e) {
 				}
 				return super.findAll(orders);
+			}
+
+			@Override
+			public List<Element> findByFilter(BaseFilter<Element, Integer> filter) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+				return super.findByFilter(filter);
 			}
 		};
 		service.save(new Element("ELEMENTO 1"));
