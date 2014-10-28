@@ -1,15 +1,10 @@
 package com.common.swing.view.component.table.renderer.impl;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import com.common.swing.view.component.table.renderer.ColumnTableRenderer;
 
@@ -20,57 +15,38 @@ import com.common.swing.view.component.table.renderer.ColumnTableRenderer;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public abstract class BaseLabelColumnTableRenderer extends JLabel implements ColumnTableRenderer {
+public abstract class BaseLabelColumnTableRenderer extends DefaultTableCellRenderer implements ColumnTableRenderer {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * La alineación del campo.
+	 * Permite crear un render por default.
 	 */
-	private Integer aligment;
+	public BaseLabelColumnTableRenderer() {
+		this(null, null);
+	}
 
 	/**
 	 * El contructor del render que recibe la alineación del campo.
 	 * 
-	 * @param aligment
-	 *            La alineación de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.LEFT}.
+	 * @param horizontalAlignment
+	 *            La alineación horizontal de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.LEFT}.
+	 * @param verticalAlignment
+	 *            La alineación vertical de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.CENTER}.
 	 */
-	public BaseLabelColumnTableRenderer(Integer aligment) {
-		if (aligment != null) {
-			this.aligment = aligment;
-		} else {
-			this.aligment = SwingConstants.LEFT;
+	public BaseLabelColumnTableRenderer(Integer horizontalAlignment, Integer verticalAlignment) {
+		if (horizontalAlignment == null) {
+			horizontalAlignment = SwingConstants.LEFT;
 		}
+		if (verticalAlignment == null) {
+			verticalAlignment = SwingConstants.CENTER;
+		}
+		this.setHorizontalAlignment(horizontalAlignment);
+		this.setVerticalAlignment(verticalAlignment);
 	}
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		JLabel label = new JLabel();
-		label.setFont((Font) UIManager.get("Table.font"));
-		label.setOpaque(true);
-		label.setHorizontalAlignment(this.aligment);
-
-		if (value != null) {
-			label.setText(this.format(value));
-		} else {
-			label.setText(null);
-		}
-
-		if (isSelected) {
-			label.setBackground((Color) UIManager.get("Table.selectionBackground"));
-			label.setForeground((Color) UIManager.get("Table.selectionForeground"));
-
-			if (hasFocus) {
-				label.setBorder((Border) UIManager.get("Table.focusCellHighlightBorder"));
-			} else {
-				label.setBorder(BorderFactory.createEmptyBorder());
-			}
-		} else {
-			label.setForeground((Color) UIManager.get("Table.foreground"));
-			label.setBackground((Color) UIManager.get("Table.background"));
-			label.setBorder(BorderFactory.createEmptyBorder());
-		}
-
-		return label;
+		return super.getTableCellRendererComponent(table, this.format(value), isSelected, hasFocus, row, column);
 	}
 
 	/**
@@ -78,7 +54,7 @@ public abstract class BaseLabelColumnTableRenderer extends JLabel implements Col
 	 * 
 	 * @param value
 	 *            El valor que vamos a formatear. No es <code>null</code>.
-	 * @return La cadena que corresponde a lo que vamos a desplegar en la celda.
+	 * @return El objeto que corresponde a lo que vamos a desplegar en la celda.
 	 */
-	protected abstract String format(Object value);
+	protected abstract Object format(Object value);
 }
