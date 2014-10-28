@@ -1,7 +1,6 @@
 package com.common.swing.view.component.table.renderer.impl;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 
 import javax.swing.SwingConstants;
 
@@ -34,7 +33,7 @@ public class MoneyColumnTableRenderer extends BaseLabelColumnTableRenderer {
 	 *            El patrón de la moneda. No puede ser <code>null</code>.
 	 */
 	public MoneyColumnTableRenderer(String moneyPattern) {
-		this(moneyPattern, SwingConstants.RIGHT);
+		this(moneyPattern, SwingConstants.RIGHT, null);
 	}
 
 	/**
@@ -42,19 +41,18 @@ public class MoneyColumnTableRenderer extends BaseLabelColumnTableRenderer {
 	 * 
 	 * @param moneyPattern
 	 *            El patrón de la moneda.
-	 * @param aligment
-	 *            La alineación de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.RIGHT}.
+	 * @param horizontalAlignment
+	 *            La alineación horizontal de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.LEFT}.
+	 * @param verticalAlignment
+	 *            La alineación vertical de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.CENTER}.
 	 */
-	public MoneyColumnTableRenderer(String moneyPattern, Integer aligment) {
-		super(aligment);
+	public MoneyColumnTableRenderer(String moneyPattern, Integer horizontalAlignment, Integer verticalAlignment) {
+		super(horizontalAlignment, verticalAlignment);
 		this.moneyPattern = moneyPattern;
 	}
 
 	@Override
-	protected String format(Object value) {
-		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-		symbols.setDecimalSeparator(',');
-		symbols.setGroupingSeparator('.');
-		return new DecimalFormat(this.moneyPattern, symbols).format(value);
+	protected Object format(Object value) {
+		return new DecimalFormat(this.moneyPattern).format(value);
 	}
 }

@@ -27,7 +27,7 @@ public class DateColumnTableRenderer extends BaseLabelColumnTableRenderer {
 	 *            El patrón de la fecha. No puede ser <code>null</code>.
 	 */
 	public DateColumnTableRenderer(String datePattern) {
-		this(datePattern, null);
+		this(datePattern, null, null);
 	}
 
 	/**
@@ -35,17 +35,19 @@ public class DateColumnTableRenderer extends BaseLabelColumnTableRenderer {
 	 * 
 	 * @param datePattern
 	 *            El patrón de la fecha.
-	 * @param aligment
-	 *            La alineación de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.LEFT}.
+	 * @param horizontalAlignment
+	 *            La alineación horizontal de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.LEFT}.
+	 * @param verticalAlignment
+	 *            La alineación vertical de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.CENTER}.
 	 */
-	public DateColumnTableRenderer(String datePattern, Integer aligment) {
-		super(aligment);
+	public DateColumnTableRenderer(String datePattern, Integer horizontalAlignment, Integer verticalAlignment) {
+		super(horizontalAlignment, verticalAlignment);
 		this.datePattern = datePattern;
 	}
 
 	@Override
-	protected String format(Object value) {
+	protected Object format(Object value) {
 		Date fecha = (Date) value;
-		return new SimpleDateFormat(this.datePattern).format(fecha);
+		return fecha != null ? new SimpleDateFormat(this.datePattern).format(fecha) : "";
 	}
 }

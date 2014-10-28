@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.apache.log4j.Logger;
 
@@ -70,6 +71,10 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * El modelo de la tabla.
 	 */
 	protected DefaultTableModel tableModel;
+	/**
+	 * El ordenador de la tabla.
+	 */
+	protected TableRowSorter<DefaultTableModel> rowSorter;
 	/**
 	 * Los objectos de exclusion de fila y de tabla.
 	 */
@@ -193,7 +198,8 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 		this.createColumns(visiblePropertiesName, visiblePropertiesWidth);
 
 		// Creamos el ordenador de las filas por omisión.
-		this.setAutoCreateRowSorter(true);
+		this.rowSorter = new TableRowSorter<DefaultTableModel>(this.tableModel);
+		this.setRowSorter(this.rowSorter);
 	}
 
 	/**
