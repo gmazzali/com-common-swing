@@ -1,4 +1,7 @@
 package com.common.swing.view.component.table.model;
+
+import java.util.Vector;
+
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,5 +17,16 @@ public class ReadOnlyTableModel extends DefaultTableModel {
 	@Override
 	public boolean isCellEditable(int row, int column) {
 		return false;
-	}	
+	}
+
+	@Override
+	public Object getValueAt(int row, int column) {
+		if (dataVector.size() > row) {
+			Vector<?> rowVector = (Vector<?>) dataVector.elementAt(row);
+			if (rowVector.size() > column) {
+				return rowVector.elementAt(column);
+			}
+		}
+		return null;
+	}
 }

@@ -15,13 +15,13 @@ import com.common.swing.view.component.table.renderer.ColumnTableRenderer;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public abstract class BaseLabelColumnTableRenderer extends DefaultTableCellRenderer implements ColumnTableRenderer {
+public abstract class BaseColumnTableRenderer extends DefaultTableCellRenderer implements ColumnTableRenderer {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Permite crear un render por default.
 	 */
-	public BaseLabelColumnTableRenderer() {
+	public BaseColumnTableRenderer() {
 		this(null, null);
 	}
 
@@ -33,7 +33,7 @@ public abstract class BaseLabelColumnTableRenderer extends DefaultTableCellRende
 	 * @param verticalAlignment
 	 *            La alineación vertical de la columna. Puede ser <code>null</code> y en ese caso, toma el valor de {@link SwingConstants.CENTER}.
 	 */
-	public BaseLabelColumnTableRenderer(Integer horizontalAlignment, Integer verticalAlignment) {
+	public BaseColumnTableRenderer(Integer horizontalAlignment, Integer verticalAlignment) {
 		if (horizontalAlignment == null) {
 			horizontalAlignment = SwingConstants.LEFT;
 		}
