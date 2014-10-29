@@ -3,6 +3,7 @@ package com.common.swing.view.component.list;
 import com.common.swing.domain.model.Element;
 import com.common.swing.view.component.panel.BaseListPanel;
 import com.common.swing.view.component.table.BaseTable;
+import com.common.swing.view.component.table.editor.impl.StringCellEditor;
 import com.common.swing.view.component.table.renderer.impl.DateColumnTableRenderer;
 import com.common.swing.view.component.table.renderer.impl.MoneyColumnTableRenderer;
 
@@ -40,12 +41,17 @@ public class ElementListPanel extends BaseListPanel<Element> {
 	}
 
 	@Override
-	protected void loadColumnsRenderer(BaseTable<Element> table) {
+	protected void loadColumnRenderers(BaseTable<Element> table) {
 		table.addColumnRenderer(Element.Attribute.FECHA, new DateColumnTableRenderer("dd/MM/yyyy"));
 		table.addColumnRenderer(Element.Attribute.SALARIO, new MoneyColumnTableRenderer());
 	}
 
 	@Override
-	protected void loadHeadersRenderer(BaseTable<Element> table) {
+	protected void loadHeaderRenderers(BaseTable<Element> table) {
+	}
+
+	@Override
+	protected void loadCellEditor(BaseTable<Element> table) {
+		table.addColumnEditor(Element.Attribute.NAME, new StringCellEditor());
 	}
 }

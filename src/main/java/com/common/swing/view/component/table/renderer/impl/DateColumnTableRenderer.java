@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class DateColumnTableRenderer extends BaseLabelColumnTableRenderer {
+public class DateColumnTableRenderer extends BaseColumnTableRenderer {
 	private static final long serialVersionUID = 1L;
 
 	/**

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.common.swing.domain.model.Element;
 import com.common.swing.view.component.table.BaseTable;
+import com.common.swing.view.component.table.model.BaseTableModel;
+import com.common.swing.view.component.table.model.ReadOnlyBaseTableModel;
 
 /**
  * La tabla de elementos.
@@ -37,5 +39,17 @@ public class ElementTable extends BaseTable<Element> {
 
 	public ElementTable() {
 		super(VISIBLE_PROPERTIES, PROPERTIES_NAME, PROPERTIES_WIDTH, true);
+	}
+
+	@Override
+	protected BaseTableModel<Element> createModel(String[] visibleProperties, Map<String, String> visiblePropertiesName) {
+		return new ReadOnlyBaseTableModel<Element>(visibleProperties, visiblePropertiesName) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected String[] getEditableProperties() {
+				return new String[] {Element.Attribute.NAME};
+			}
+		};
 	}
 }

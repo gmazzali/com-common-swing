@@ -1,7 +1,5 @@
 package com.common.swing.view.component.table;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -18,9 +15,14 @@ import org.apache.log4j.Logger;
 
 import com.common.swing.domain.exception.SwingException;
 import com.common.swing.view.bean.RowBean;
-import com.common.swing.view.component.table.model.ReadOnlyTableModel;
+import com.common.swing.view.component.table.editor.BaseTableCellEditor;
+import com.common.swing.view.component.table.editor.impl.StringCellEditor;
+import com.common.swing.view.component.table.model.BaseTableModel;
 import com.common.swing.view.component.table.renderer.ColumnTableRenderer;
 import com.common.swing.view.component.table.renderer.HeaderTableRenderer;
+import com.common.swing.view.component.table.renderer.impl.StringColumnTableRenderer;
+import com.common.swing.view.component.table.sorter.BaseRowSorter;
+import com.common.util.business.tool.VerifierUtil;
 import com.common.util.business.tool.collection.CollectionUtil;
 
 /**
@@ -29,28 +31,15 @@ import com.common.util.business.tool.collection.CollectionUtil;
  * 
  * @since 23/04/2014
  * @author Guillermo Mazzali
- * @version 1.0
+ * @version 1.1
  * 
- * @param <E>
+ * @param <B>
  *            La clase de las entidades que vamos a cargar dentro de la tabla.
  */
-@SuppressWarnings("unchecked")
-public abstract class BaseTable<E extends RowBean> extends JTable {
+public abstract class BaseTable<B extends RowBean> extends JTable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(BaseTable.class);
 
-	/**
-	 * La clase de entidades que vamos a tener dentro de la tabla y el conjunto de getters de las propiedades que vamos a mostrar.
-	 */
-	protected Class<E> entityClass;
-	/**
-	 * El mapa de las entidades que tenemos desplegadas en la tabla.
-	 */
-	protected Map<Integer, E> entityMap;
-	/**
-	 * El indice del proximo elemento que vamos a agregar a la tabla.
-	 */
-	protected Integer nextIndex = 0;
 	/**
 	 * El valor booleano que nos indica si va a seleccionarse o no la primer fila cuando se carguen datos.
 	 */
@@ -59,10 +48,6 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * Las propiedades que vamos a mostrar en al tabla.
 	 */
 	protected String[] visibleProperties;
-	/*
-	 * Los métodos getters que vamos a ocupar de las entidades.
-	 */
-	protected Map<String, Method> propertiesGetter;
 	/**
 	 * Las columnas de la tabla.
 	 */
@@ -70,11 +55,11 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	/**
 	 * El modelo de la tabla.
 	 */
-	protected DefaultTableModel tableModel;
+	protected BaseTableModel<B> tableModel;
 	/**
 	 * El ordenador de la tabla.
 	 */
-	protected TableRowSorter<DefaultTableModel> rowSorter;
+	protected TableRowSorter<BaseTableModel<B>> rowSorter;
 	/**
 	 * Los objectos de exclusion de fila y de tabla.
 	 */
@@ -133,7 +118,7 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 */
 	public BaseTable(String[] visibleProperty, Map<String, String> visiblePropertyName, Map<String, Integer> visiblePropertiesWidth,
 			boolean firstSelected) {
-		this(new ArrayList<E>(), visibleProperty, visiblePropertyName, visiblePropertiesWidth, firstSelected);
+		this(new ArrayList<B>(), visibleProperty, visiblePropertyName, visiblePropertiesWidth, firstSelected);
 	}
 
 	/**
@@ -151,20 +136,10 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @param firstSelected
 	 *            El valor booleano que nos va a indicar si va a seleccionarse o no la primer fila cuando se carguen datos.
 	 */
-	public BaseTable(List<E> entities, String[] visibleProperties, Map<String, String> visiblePropertiesName,
+	public BaseTable(List<B> entities, String[] visibleProperties, Map<String, String> visiblePropertiesName,
 			Map<String, Integer> visiblePropertiesWidth, boolean firstSelected) {
-		super();
-		try {
-			this.entityClass = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		} catch (Exception ex) {
-			log.error("The generic parameter of this class cannot be empty", ex);
-			throw new SwingException("The generic parameter of this class cannot be empty", "swing.component.basetable.error.parameter.empty");
-		}
-
-		this.visibleProperties = visibleProperties;
 		this.firstSelected = firstSelected;
-
-		this.init(visiblePropertiesName, visiblePropertiesWidth);
+		this.init(visibleProperties, visiblePropertiesName, visiblePropertiesWidth);
 		this.reloadData(entities);
 	}
 
@@ -176,59 +151,42 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	/**
 	 * Inicializa la tabla y sus componentes.
 	 * 
+	 * @param visibleProperties
+	 *            Las propiedades que vamos a mostrar en al tabla.
 	 * @param visiblePropertyName
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 * @param visiblePropertiesWidth
 	 *            El mapa de los anchos que va a tener cada una de las columnas.
 	 */
-	protected void init(Map<String, String> visiblePropertiesName, Map<String, Integer> visiblePropertiesWidth) {
-		// Creamos el modelo de la tabla.
-		this.tableModel = this.createModel();
-
-		// Verificamos que las propiedades no sean nulas o vacias.
-		if (this.visibleProperties == null || this.visibleProperties.length == 0) {
+	protected void init(String[] visibleProperties, Map<String, String> visiblePropertiesName, Map<String, Integer> visiblePropertiesWidth) {
+		if (visibleProperties == null || visibleProperties.length == 0) {
 			log.warn("The list of visibles properties must least have one");
 			throw new SwingException("The list of visibles properties must least have one", "swing.component.basetable.error.properties.null");
 		}
+		this.visibleProperties = visibleProperties;
 
-		// Creamos los getters de las propiedades de la entidad que vamos a mostrar.
-		this.createPropertiesGetters();
+		// Creamos el modelo de la tabla.
+		this.tableModel = this.createModel(visibleProperties, visiblePropertiesName);
+		super.setModel(this.tableModel);
 
 		// Creamos las columnas para la tabla.
-		this.createColumns(visiblePropertiesName, visiblePropertiesWidth);
+		this.setColumns(visiblePropertiesName, visiblePropertiesWidth);
 
 		// Creamos el ordenador de las filas por omisión.
-		this.rowSorter = new TableRowSorter<DefaultTableModel>(this.tableModel);
+		this.rowSorter = new BaseRowSorter<BaseTableModel<B>>(this.tableModel);
 		this.setRowSorter(this.rowSorter);
 	}
 
 	/**
 	 * Se encarga de crear el modelo de la tabla.
 	 * 
+	 * @param visibleProperties
+	 *            Las propiedades que vamos a mostrar en al tabla.
+	 * @param visiblePropertiesName
+	 *            Los nombres que van a recibir cada una de esas columnas.
 	 * @return El modelo que vamos a colocar dentro de la tabla.
 	 */
-	protected DefaultTableModel createModel() {
-		return new ReadOnlyTableModel();
-	}
-
-	/**
-	 * Se encargada de crear los metodos getters de las propiedades de la entidad que estamos manejando dentro de la tabla.
-	 */
-	protected void createPropertiesGetters() {
-		// Obtenemos los getters de las propiedades.
-		this.propertiesGetter = new HashMap<String, Method>();
-		for (String property : this.visibleProperties) {
-			try {
-				String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
-				Method getter = this.entityClass.getDeclaredMethod(methodName);
-				this.propertiesGetter.put(property, getter);
-			} catch (Exception e) {
-				log.warn("Not found the getter for the property '" + property + "' in the class '" + this.entityClass.getSimpleName() + "'");
-				throw new SwingException("Not found the getter for the property '" + property + "' in the class '" + this.entityClass.getSimpleName()
-						+ "'", "swing.component.basetable.getter.missing", property, this.entityClass.getSimpleName());
-			}
-		}
-	}
+	protected abstract BaseTableModel<B> createModel(String[] visibleProperties, Map<String, String> visiblePropertiesName);
 
 	/**
 	 * Crea las columnas que vamos a desplegar dentro de la tabla.
@@ -238,19 +196,7 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @param visiblePropertiesWidth
 	 *            Los anchos que van a recibir cada una de esas columnas.
 	 */
-	protected void createColumns(Map<String, String> visiblePropertiesName, Map<String, Integer> visiblePropertiesWidth) {
-		// Cargamos los nombres de las columnas dentro de la tabla.
-		for (String property : this.visibleProperties) {
-			if (visiblePropertiesName != null && visiblePropertiesName.containsKey(property)) {
-				this.tableModel.addColumn(visiblePropertiesName.get(property));
-			} else {
-				this.tableModel.addColumn(property);
-			}
-		}
-
-		// Seteamos el modelo a la tabla.
-		super.setModel(this.tableModel);
-
+	protected void setColumns(Map<String, String> visiblePropertiesName, Map<String, Integer> visiblePropertiesWidth) {
 		// Recuperamos las columnas.
 		this.propertiesColumn = new HashMap<String, TableColumn>();
 		for (int i = 0; i < this.visibleProperties.length; i++) {
@@ -274,6 +220,13 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 					}
 				}
 			}
+
+			// Cargamos el editor y el render por default para Strings.
+			for (String property : this.visibleProperties) {
+				TableColumn column = this.propertiesColumn.get(property);
+				column.setCellEditor(new StringCellEditor());
+				column.setCellRenderer(new StringColumnTableRenderer(null, null));
+			}
 		}
 	}
 
@@ -286,20 +239,11 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 *            El render de la columna propiamente dicha.
 	 */
 	public void addColumnRenderer(String property, ColumnTableRenderer renderer) {
-		// Si el renderer es nulo, lanzamos una excepción.
-		if (renderer == null) {
-			log.warn("The column renderer for the property '" + property + "' cannot be null");
-			throw new SwingException("The column renderer for the property '" + property + "' cannot be null",
-					"swing.component.basetable.error.columnrenderer.null", property);
-		}
-
-		// Cargamos el renderer en el mapa de las columnas.
+		VerifierUtil.checkNotNull(renderer, "The column renderer for the property '" + property + "' cannot be null");
 		if (this.propertiesColumn.containsKey(property)) {
 			this.propertiesColumn.get(property).setCellRenderer(renderer);
 		} else {
 			log.warn("Don't exist the column for the property '" + property + "'");
-			throw new SwingException("Don't exist the column for the property '" + property + "'",
-					"swing.component.basetable.error.columnrenderer.nonexist", property);
 		}
 	}
 
@@ -312,20 +256,28 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 *            El render de la cabecera propiamente dicha.
 	 */
 	public void addHeaderRenderer(String property, HeaderTableRenderer renderer) {
-		// Si el renderer es nulo, lanzamos una excepción.
-		if (renderer == null) {
-			log.warn("The header renderer for the property '" + property + "' cannot be null");
-			throw new SwingException("The header renderer for the property '" + property + "' cannot be null",
-					"swing.component.basetable.error.headerrenderer.null", property);
-		}
-
-		// Cargamos el renderer en el mapa de las columnas.
+		VerifierUtil.checkNotNull(renderer, "The header renderer for the property '" + property + "' cannot be null");
 		if (this.propertiesColumn.containsKey(property)) {
 			this.propertiesColumn.get(property).setHeaderRenderer(renderer);
 		} else {
 			log.warn("Don't exist the header for the property '" + property + "'");
-			throw new SwingException("Don't exist the header for the property '" + property + "'",
-					"swing.component.basetable.error.headerrenderer.nonexist", property);
+		}
+	}
+
+	/**
+	 * Permite cargarle a la tabla un editor para cada una de las columnas de los atributos.
+	 * 
+	 * @param property
+	 *            La propiedad a la que vamos a cargarle el editor de la columna.
+	 * @param cellEditor
+	 *            El editor de la columna propiamente dicha.
+	 */
+	public void addColumnEditor(String property, BaseTableCellEditor cellEditor) {
+		VerifierUtil.checkNotNull(cellEditor, "The column editor for the property '" + property + "' cannot be null");
+		if (this.propertiesColumn.containsKey(property)) {
+			this.propertiesColumn.get(property).setCellEditor(cellEditor);
+		} else {
+			log.warn("Don't exist the column for the property '" + property + "'");
 		}
 	}
 
@@ -335,7 +287,7 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @return <code>true</code> en caso de que la tabla no contenga ninguna entidad, en caso contrario, retorna <code>false</code>.
 	 */
 	public boolean isEmpty() {
-		return this.entityMap.isEmpty();
+		return this.tableModel.isEmpty();
 	}
 
 	/**
@@ -344,13 +296,7 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	public void clearTable() {
 		synchronized (tableMutex) {
 			synchronized (rowMutex) {
-				this.entityMap = new HashMap<Integer, E>();
-				Integer size = this.tableModel.getDataVector().size();
-				if (size > 0) {
-					this.tableModel.getDataVector().clear();
-					this.tableModel.fireTableRowsDeleted(0, size - 1);
-				}
-				this.nextIndex = 0;
+				this.tableModel.clear();
 			}
 		}
 	}
@@ -361,106 +307,22 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @param entities
 	 *            La lista de entidades que vamos a almacenar en la tabla.
 	 */
-	protected void reloadData(final Collection<E> entities) {
+	protected void reloadData(final Collection<B> entities) {
 		new Thread() {
 			public void run() {
 				setEnabled(false);
 				clearTable();
-
 				synchronized (tableMutex) {
-					// Tomamos las entidades y las cargamos fila por fila.
-					for (E entity : entities) {
-						// Creamos la fila y la cargamos.
-						List<Object> row = new ArrayList<Object>();
-						for (String property : visibleProperties) {
-							try {
-								row.add(propertiesGetter.get(property).invoke(entity));
-							} catch (Exception e) {
-							}
-						}
-
+					for (B entity : entities) {
 						synchronized (rowMutex) {
-							// Cargamos la fila al modelo de la tabla.
-							tableModel.addRow(row.toArray());
-							// Agregamos la entidad al listado interno.
-							entityMap.put(nextIndex, entity);
-							nextIndex++;
+							tableModel.addRow(entity);
 						}
 					}
-					if (firstSelected && CollectionUtil.isNotEmpty(entities)) {
+					if (firstSelected && !tableModel.isEmpty()) {
 						setRowSelectionInterval(0, 0);
 					}
 				}
 				setEnabled(true);
-			}
-		}.start();
-	}
-
-	/**
-	 * Permite cargar dentro de la tabla y del mapa la entidad que recibimos.
-	 * 
-	 * @param entity
-	 *            La entidad que vamos a almacenar en el mapa y la tabla.
-	 */
-	protected void addEntity(final E entity) {
-		new Thread() {
-			public void run() {
-				try {
-					// Creamos la fila y la cargamos.
-					List<Object> row = new ArrayList<Object>();
-					for (String property : visibleProperties) {
-						row.add(propertiesGetter.get(property).invoke(entity));
-					}
-
-					synchronized (rowMutex) {
-						// Cargamos la fila al modelo de la tabla.
-						tableModel.addRow(row.toArray());
-
-						// Agregamos la entidad al listado interno.
-						entityMap.put(nextIndex, entity);
-						nextIndex++;
-					}
-				} catch (Exception e) {
-				}
-			}
-		}.start();
-	}
-
-	/**
-	 * Permite quitar de la tabla y del mapa la entidad que recibimos.
-	 * 
-	 * @param entity
-	 *            La entidad que vamos a quitar del mapa y la tabla.
-	 */
-	protected void removeEntity(final E entity) {
-		new Thread() {
-			public void run() {
-				synchronized (rowMutex) {
-					// Buscamos el indice de la entidad que queremos borrar.
-					Integer removeRowKey = null;
-					for (Integer entityRowKey : entityMap.keySet()) {
-						if (entityMap.get(entityRowKey).equals(entity)) {
-							removeRowKey = entityRowKey;
-							break;
-						}
-					}
-
-					// Si encontramos el indice, eliminamos.
-					if (removeRowKey != null) {
-						// Quitamos la entidad de la tabla y del mapa de entidades.
-						entityMap.remove(removeRowKey);
-						tableModel.removeRow(removeRowKey);
-
-						// Bajamos en 1 la cantidad de entidades en la tabla.
-						nextIndex--;
-
-						// Ahora tenemos que actualizar el mapa de las entidades a partir del índice eliminado, solo corriendo las entidades.
-						for (Integer i = removeRowKey; i < nextIndex; i++) {
-							entityMap.put(i, entityMap.get(i + 1));
-						}
-						entityMap.remove(nextIndex);
-					}
-				}
 			}
 		}.start();
 	}
@@ -472,7 +334,7 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @param entities
 	 *            El listado de las entidades. Puede estar vacía o ser <code>null</code>.
 	 */
-	public void setValues(Collection<E> entities) {
+	public void setValues(Collection<B> entities) {
 		if (CollectionUtil.isNotEmpty(entities)) {
 			this.reloadData(entities);
 		} else {
@@ -486,10 +348,14 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @param entity
 	 *            La entidad que vamos a agregar a las que ya tenemos-
 	 */
-	public void addValue(E entity) {
-		synchronized (this.nextIndex) {
-			this.addEntity(entity);
-		}
+	public void addValue(final B entity) {
+		new Thread() {
+			public void run() {
+				synchronized (rowMutex) {
+					tableModel.addRow(entity);
+				}
+			}
+		}.start();
 	}
 
 	/**
@@ -498,10 +364,14 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @param entity
 	 *            La entidad que queremos quitar de la tabla.
 	 */
-	public void removeValue(E entity) {
-		synchronized (this.nextIndex) {
-			this.removeEntity(entity);
-		}
+	public void removeValue(final B entity) {
+		new Thread() {
+			public void run() {
+				synchronized (rowMutex) {
+					tableModel.removeRow(tableModel.getIndex(entity));
+				}
+			}
+		}.start();
 	}
 
 	/**
@@ -511,8 +381,8 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 *            La entidad sobre la que vamos a preguntar si esta cargada dentro de la tabla.
 	 * @return <i>true</i> en caso de que la entidad se encuentra cargada dentro de la tabla, en caso contrario retorna <i>false</i>.
 	 */
-	public boolean containValue(E entity) {
-		return this.entityMap.containsValue(entity);
+	public boolean containValue(B entity) {
+		return this.tableModel.contains(entity);
 	}
 
 	/**
@@ -520,13 +390,13 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * 
 	 * @return La entidad que se encuentra seleccionada en la tabla, en caso de que no se encuentre ninguna seleccionada, retornamos un valor nulo.
 	 */
-	public E getSelectedValue() {
+	public B getSelectedValue() {
 		synchronized (this.rowMutex) {
 			// Otenemos el indice seleccinado.
 			Integer index = this.getSelectedRow();
 			if (index != -1) {
-				Integer realIndex = this.convertRowIndexToModel(index);
-				return this.entityMap.get(realIndex);
+				int realIndex = this.convertRowIndexToModel(index);
+				return tableModel.getRow(realIndex);
 			}
 			return null;
 		}
@@ -539,7 +409,7 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 	 * @return El listado de las entidades que se encuentran seleccionadas en la tabla, en caso de que no se encuentre ninguna seleccionada,
 	 *         retornamos una lista vacia.
 	 */
-	public Collection<E> getSelectedValues() {
+	public Collection<B> getSelectedValues() {
 		synchronized (this.tableMutex) {
 			// Obtenemos los indices seleccionados.
 			int[] indexs = this.getSelectedRows();
@@ -551,15 +421,11 @@ public abstract class BaseTable<E extends RowBean> extends JTable {
 					realIndexs[i] = this.convertRowIndexToModel(indexs[i]);
 				}
 			}
-
 			// Otenemos las entidades de esos indices.
-			Collection<E> selectedValues = new ArrayList<E>();
+			Collection<B> selectedValues = new ArrayList<B>();
 			for (Integer realIndex : realIndexs) {
-				if (this.entityMap.containsKey(realIndex)) {
-					selectedValues.add(this.entityMap.get(realIndex));
-				}
+				selectedValues.add(this.tableModel.getRow(realIndex));
 			}
-
 			// Recuperamos esos objetos y los devolvemos.
 			return selectedValues;
 		}

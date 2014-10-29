@@ -45,8 +45,9 @@ public abstract class BaseListPanel<B extends RowBean> extends JPanel implements
 		scrollPane.setViewportView(this.table);
 		this.add(scrollPane, BorderLayout.CENTER);
 
-		this.loadColumnsRenderer(this.table);
-		this.loadHeadersRenderer(this.table);
+		this.loadColumnRenderers(this.table);
+		this.loadHeaderRenderers(this.table);
+		this.loadCellEditor(this.table);
 
 		this.afterInit();
 	}
@@ -93,7 +94,7 @@ public abstract class BaseListPanel<B extends RowBean> extends JPanel implements
 	 * @param table
 	 *            La tabla a la que le vamos a cargar el render de las columnas.
 	 */
-	protected abstract void loadColumnsRenderer(BaseTable<B> table);
+	protected abstract void loadColumnRenderers(BaseTable<B> table);
 
 	/**
 	 * Permite cargar los generadores de cabeceras columnas a la tabla.
@@ -101,5 +102,13 @@ public abstract class BaseListPanel<B extends RowBean> extends JPanel implements
 	 * @param table
 	 *            La tabla a la que le vamos a cargar el render de las cabeceras.
 	 */
-	protected abstract void loadHeadersRenderer(BaseTable<B> table);
+	protected abstract void loadHeaderRenderers(BaseTable<B> table);
+
+	/**
+	 * Permite cargar los editores de las columnas a la tabla.
+	 * 
+	 * @param table
+	 *            La tabla a la que le vamos a cargar el editor de las columnas.
+	 */
+	protected abstract void loadCellEditor(BaseTable<B> table);
 }

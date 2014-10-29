@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class MoneyColumnTableRenderer extends BaseLabelColumnTableRenderer {
+public class MoneyColumnTableRenderer extends BaseColumnTableRenderer {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -53,6 +53,6 @@ public class MoneyColumnTableRenderer extends BaseLabelColumnTableRenderer {
 
 	@Override
 	protected Object format(Object value) {
-		return new DecimalFormat(this.moneyPattern).format(value);
+		return value != null ? new DecimalFormat(this.moneyPattern).format(value) : "";
 	}
 }
