@@ -176,5 +176,14 @@
 
 		<!-- /COMMON -->
 
+		<!-- ADD-ON -->
+		
+		<dependency>
+			<groupId>com.toedter</groupId>
+			<artifactId>jcalendar</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<!-- /ADD_ON -->
 	</dependencies>
 </project>

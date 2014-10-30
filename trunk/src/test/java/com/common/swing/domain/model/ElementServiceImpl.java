@@ -19,7 +19,7 @@ import com.common.util.persistence.filter.order.Orders;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
+public class ElementServiceImpl extends BaseServiceImpl<Element, Long> {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(ElementServiceImpl.class);
 
@@ -30,14 +30,14 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 	/**
 	 * El id.
 	 */
-	private Integer id = 1;
+	private Long id = 1L;
 
 	@Override
 	public void validate(Element entity) throws UncheckedException {
 	}
 
 	@Override
-	public Element findById(Integer id) throws UncheckedException {
+	public Element findById(Long id) throws UncheckedException {
 		ElementServiceImpl.log.trace("Find by id: " + id);
 		for (Element e : ElementServiceImpl.elements) {
 			if (id == e.getId()) {
@@ -50,7 +50,7 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 	@Override
 	public void save(Element entity) throws UncheckedException {
 		ElementServiceImpl.log.trace("save: " + entity);
-		entity.setId(this.id++);
+		entity.setCode(this.id++);
 		ElementServiceImpl.elements.add(entity);
 	}
 
@@ -93,7 +93,7 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 	}
 
 	@Override
-	public List<Element> findByFilter(BaseFilter<Element, Integer> filter) {
+	public List<Element> findByFilter(BaseFilter<Element, Long> filter) {
 		final ElementFilter elementFilter = (ElementFilter) filter;
 		return (List<Element>) CollectionUtil.select(ElementServiceImpl.elements, new Predicate<Element>() {
 
@@ -115,7 +115,7 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Integer> {
 	 *            El identificador del elemento.
 	 * @return El elemento de ese id.
 	 */
-	private Element get(Integer id) {
+	private Element get(Long id) {
 		for (Element e : ElementServiceImpl.elements) {
 			if (id == e.getId()) {
 				return e;

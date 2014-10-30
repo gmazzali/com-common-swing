@@ -10,5 +10,5 @@ import javax.swing.table.TableCellRenderer;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public interface HeaderTableRenderer extends TableCellRenderer, Serializable {
+public interface HeaderRenderer extends TableCellRenderer, Serializable {
 }

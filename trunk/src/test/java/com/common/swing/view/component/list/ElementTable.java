@@ -19,22 +19,24 @@ public class ElementTable extends BaseTable<Element> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] VISIBLE_PROPERTIES = new String[] { Element.Attribute.ID, Element.Attribute.NAME, Element.Attribute.FECHA,
-			Element.Attribute.SALARIO };
+	private static final String[] VISIBLE_PROPERTIES = new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.FECHA,
+			Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
 
 	private static final Map<String, String> PROPERTIES_NAME = new HashMap<String, String>();
 
 	private static final Map<String, Integer> PROPERTIES_WIDTH = new HashMap<String, Integer>();
 
 	static {
-		PROPERTIES_NAME.put(Element.Attribute.ID, "Cód.");
+		PROPERTIES_NAME.put(Element.Attribute.CODE, "Cód.");
 		PROPERTIES_NAME.put(Element.Attribute.NAME, "Nombre");
 		PROPERTIES_NAME.put(Element.Attribute.FECHA, "Fecha Nac");
 		PROPERTIES_NAME.put(Element.Attribute.SALARIO, "Salario");
-		PROPERTIES_WIDTH.put(Element.Attribute.ID, 100);
+		PROPERTIES_NAME.put(Element.Attribute.ACTIVO, "Activo");
+		PROPERTIES_WIDTH.put(Element.Attribute.CODE, 100);
 		PROPERTIES_WIDTH.put(Element.Attribute.NAME, 200);
 		PROPERTIES_WIDTH.put(Element.Attribute.FECHA, 100);
 		PROPERTIES_WIDTH.put(Element.Attribute.SALARIO, 100);
+		PROPERTIES_WIDTH.put(Element.Attribute.ACTIVO, 75);
 	}
 
 	public ElementTable() {
@@ -45,10 +47,11 @@ public class ElementTable extends BaseTable<Element> {
 	protected BaseTableModel<Element> createModel(String[] visibleProperties, Map<String, String> visiblePropertiesName) {
 		return new ReadOnlyBaseTableModel<Element>(visibleProperties, visiblePropertiesName) {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			protected String[] getEditableProperties() {
-				return new String[] {Element.Attribute.NAME};
+				return new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.FECHA, Element.Attribute.SALARIO,
+						Element.Attribute.ACTIVO };
 			}
 		};
 	}

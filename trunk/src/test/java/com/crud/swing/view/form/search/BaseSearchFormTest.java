@@ -66,7 +66,7 @@ public class BaseSearchFormTest {
 			}
 
 			@Override
-			public List<Element> findByFilter(BaseFilter<Element, Integer> filter) {
+			public List<Element> findByFilter(BaseFilter<Element, Long> filter) {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
