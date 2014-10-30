@@ -19,20 +19,26 @@ import com.common.util.domain.model.Entity;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class Element extends Entity<Integer> implements RowBean, SearchBean, EditBean {
+public class Element extends Entity<Long> implements RowBean, SearchBean, EditBean {
 	private static final long serialVersionUID = 1L;
 
-	public interface Attribute extends Entity.Attributes {
+	public interface Attribute {
+		public static final String CODE = "code";
 		public static final String NAME = "name";
 		public static final String FECHA = "fecha";
 		public static final String SALARIO = "salario";
+		public static final String ACTIVO = "activo";
 	}
+
+	private Long code;
 
 	private String name;
 
 	private Date fecha;
 
 	private BigDecimal salario;
+
+	private boolean activo;
 
 	public Element() {
 		this("");
@@ -42,16 +48,17 @@ public class Element extends Entity<Integer> implements RowBean, SearchBean, Edi
 		this(null, name);
 	}
 
-	public Element(Integer id, String name) {
-		this.id = id;
+	public Element(Long code, String name) {
+		this.code = code;
 		this.name = name;
 		this.fecha = Math.random() > 0.4 ? new Date((long) (10000000000000L * Math.random())) : null;
 		this.salario = new BigDecimal(100000L * Math.random()).setScale(2, RoundingMode.FLOOR);
+		this.activo = this.salario.compareTo(new BigDecimal(50000)) > 0;
 	}
 
 	@Override
 	public String toString() {
-		return "Element [name=" + this.name + ", salario=" + this.salario + ", fecha="
+		return "Element [id=" + this.code + ", name=" + this.name + ", salario=" + this.salario + ", fecha="
 				+ (this.fecha != null ? new SimpleDateFormat("dd/MM/yyyy").format(this.fecha) : "") + "]";
 	}
 
@@ -64,8 +71,16 @@ public class Element extends Entity<Integer> implements RowBean, SearchBean, Edi
 	}
 
 	@Override
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
+	}
+
+	public Long getCode() {
+		return code;
+	}
+
+	public void setCode(Long code) {
+		this.code = code;
 	}
 
 	public void setName(String name) {
@@ -90,5 +105,13 @@ public class Element extends Entity<Integer> implements RowBean, SearchBean, Edi
 
 	public void setSalario(BigDecimal salario) {
 		this.salario = salario;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 }

@@ -125,7 +125,7 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 			String property = this.properties.get(columnIndex);
 			LOGGER.debug("Get column class for property: " + property);
 			if (this.propertiesFields.containsKey(property)) {
-				return this.propertiesFields.get(property).getDeclaringClass();
+				return this.propertiesFields.get(property).getType();
 			} else {
 				return Object.class;
 			}

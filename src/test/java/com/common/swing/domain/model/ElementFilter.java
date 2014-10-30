@@ -9,7 +9,7 @@ import com.common.util.persistence.filter.BaseFilter;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementFilter extends BaseFilter<Element, Integer> {
+public class ElementFilter extends BaseFilter<Element, Long> {
 	private static final long serialVersionUID = 1L;
 
 	private String name;

@@ -15,12 +15,10 @@ import org.apache.log4j.Logger;
 
 import com.common.swing.domain.exception.SwingException;
 import com.common.swing.view.bean.RowBean;
-import com.common.swing.view.component.table.editor.BaseTableCellEditor;
-import com.common.swing.view.component.table.editor.impl.StringCellEditor;
+import com.common.swing.view.component.table.formatter.CellFormatter;
+import com.common.swing.view.component.table.formatter.impl.StringCellFormatter;
 import com.common.swing.view.component.table.model.BaseTableModel;
-import com.common.swing.view.component.table.renderer.ColumnTableRenderer;
-import com.common.swing.view.component.table.renderer.HeaderTableRenderer;
-import com.common.swing.view.component.table.renderer.impl.StringColumnTableRenderer;
+import com.common.swing.view.component.table.renderer.HeaderRenderer;
 import com.common.swing.view.component.table.sorter.BaseRowSorter;
 import com.common.util.business.tool.VerifierUtil;
 import com.common.util.business.tool.collection.CollectionUtil;
@@ -221,29 +219,10 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 				}
 			}
 
-			// Cargamos el editor y el render por default para Strings.
+			// Cargamos el formateador por default para Strings.
 			for (String property : this.visibleProperties) {
-				TableColumn column = this.propertiesColumn.get(property);
-				column.setCellEditor(new StringCellEditor());
-				column.setCellRenderer(new StringColumnTableRenderer(null, null));
+				this.addCellFormatter(property, new StringCellFormatter());
 			}
-		}
-	}
-
-	/**
-	 * Permite cargarle a la tabla un render para cada una de las columnas de los atributos.
-	 * 
-	 * @param property
-	 *            La propiedad a la que vamos a cargarle el render de la columna.
-	 * @param renderer
-	 *            El render de la columna propiamente dicha.
-	 */
-	public void addColumnRenderer(String property, ColumnTableRenderer renderer) {
-		VerifierUtil.checkNotNull(renderer, "The column renderer for the property '" + property + "' cannot be null");
-		if (this.propertiesColumn.containsKey(property)) {
-			this.propertiesColumn.get(property).setCellRenderer(renderer);
-		} else {
-			log.warn("Don't exist the column for the property '" + property + "'");
 		}
 	}
 
@@ -255,7 +234,7 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	 * @param renderer
 	 *            El render de la cabecera propiamente dicha.
 	 */
-	public void addHeaderRenderer(String property, HeaderTableRenderer renderer) {
+	public void addHeaderRenderer(String property, HeaderRenderer renderer) {
 		VerifierUtil.checkNotNull(renderer, "The header renderer for the property '" + property + "' cannot be null");
 		if (this.propertiesColumn.containsKey(property)) {
 			this.propertiesColumn.get(property).setHeaderRenderer(renderer);
@@ -265,17 +244,18 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	}
 
 	/**
-	 * Permite cargarle a la tabla un editor para cada una de las columnas de los atributos.
+	 * Permite cargarle a la tabla un formateador para cada una de las columnas de los atributos.
 	 * 
 	 * @param property
-	 *            La propiedad a la que vamos a cargarle el editor de la columna.
-	 * @param cellEditor
-	 *            El editor de la columna propiamente dicha.
+	 *            La propiedad a la que vamos a cargarle el formateador de la columna.
+	 * @param cellFormatter
+	 *            El formateador de la columna propiamente dicha.
 	 */
-	public void addColumnEditor(String property, BaseTableCellEditor cellEditor) {
-		VerifierUtil.checkNotNull(cellEditor, "The column editor for the property '" + property + "' cannot be null");
+	public void addCellFormatter(String property, CellFormatter cellFormatter) {
+		VerifierUtil.checkNotNull(cellFormatter, "The column formatter for the property '" + property + "' cannot be null");
 		if (this.propertiesColumn.containsKey(property)) {
-			this.propertiesColumn.get(property).setCellEditor(cellEditor);
+			this.propertiesColumn.get(property).setCellRenderer(cellFormatter);
+			this.propertiesColumn.get(property).setCellEditor(cellFormatter);
 		} else {
 			log.warn("Don't exist the column for the property '" + property + "'");
 		}
