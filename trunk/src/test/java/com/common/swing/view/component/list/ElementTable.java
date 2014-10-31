@@ -19,8 +19,8 @@ public class ElementTable extends BaseTable<Element> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] VISIBLE_PROPERTIES = new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.FECHA,
-			Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
+	private static final String[] VISIBLE_PROPERTIES = new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO,
+			Element.Attribute.FECHA, Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
 
 	private static final Map<String, String> PROPERTIES_NAME = new HashMap<String, String>();
 
@@ -29,11 +29,13 @@ public class ElementTable extends BaseTable<Element> {
 	static {
 		PROPERTIES_NAME.put(Element.Attribute.CODE, "Cód.");
 		PROPERTIES_NAME.put(Element.Attribute.NAME, "Nombre");
+		PROPERTIES_NAME.put(Element.Attribute.SEXO, "Sexo");
 		PROPERTIES_NAME.put(Element.Attribute.FECHA, "Fecha Nac");
 		PROPERTIES_NAME.put(Element.Attribute.SALARIO, "Salario");
 		PROPERTIES_NAME.put(Element.Attribute.ACTIVO, "Activo");
 		PROPERTIES_WIDTH.put(Element.Attribute.CODE, 100);
 		PROPERTIES_WIDTH.put(Element.Attribute.NAME, 200);
+		PROPERTIES_WIDTH.put(Element.Attribute.SEXO, 100);
 		PROPERTIES_WIDTH.put(Element.Attribute.FECHA, 100);
 		PROPERTIES_WIDTH.put(Element.Attribute.SALARIO, 100);
 		PROPERTIES_WIDTH.put(Element.Attribute.ACTIVO, 75);
@@ -50,8 +52,8 @@ public class ElementTable extends BaseTable<Element> {
 
 			@Override
 			protected String[] getEditableProperties() {
-				return new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.FECHA, Element.Attribute.SALARIO,
-						Element.Attribute.ACTIVO };
+				return new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO, Element.Attribute.FECHA,
+						Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
 			}
 		};
 	}

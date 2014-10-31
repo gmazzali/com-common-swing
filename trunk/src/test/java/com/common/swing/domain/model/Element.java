@@ -26,6 +26,7 @@ public class Element extends Entity<Long> implements RowBean, SearchBean, EditBe
 		public static final String CODE = "code";
 		public static final String NAME = "name";
 		public static final String FECHA = "fecha";
+		public static final String SEXO = "sexo";
 		public static final String SALARIO = "salario";
 		public static final String ACTIVO = "activo";
 	}
@@ -35,6 +36,8 @@ public class Element extends Entity<Long> implements RowBean, SearchBean, EditBe
 	private String name;
 
 	private Date fecha;
+
+	private Sexo sexo;
 
 	private BigDecimal salario;
 
@@ -97,6 +100,14 @@ public class Element extends Entity<Long> implements RowBean, SearchBean, EditBe
 
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+	}
+
+	public Sexo getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(Sexo sexo) {
+		this.sexo = sexo;
 	}
 
 	public BigDecimal getSalario() {

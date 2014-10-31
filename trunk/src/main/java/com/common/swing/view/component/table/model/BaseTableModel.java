@@ -141,9 +141,9 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if (rowIndex < this.getRowCount()) {
-			B bean = this.rowBeans.get(rowIndex);
-			if (columnIndex < this.getColumnCount()) {
+		B bean = this.getRow(rowIndex);
+		if (bean != null) {
+			if (columnIndex >= 0 && columnIndex < this.getColumnCount()) {
 				String property = this.properties.get(columnIndex);
 				try {
 					return this.propertiesFields.get(property).get(bean);
@@ -157,9 +157,9 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		if (rowIndex < this.getRowCount()) {
-			B bean = this.rowBeans.get(rowIndex);
-			if (columnIndex < this.getColumnCount()) {
+		B bean = this.getRow(rowIndex);
+		if (bean != null) {
+			if (columnIndex >= 0 && columnIndex < this.getColumnCount()) {
 				String property = this.properties.get(columnIndex);
 				try {
 					Field field = this.propertiesFields.get(property);
@@ -169,7 +169,7 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 				}
 			}
 		}
-		this.fireTableCellUpdated(rowIndex, columnIndex);
+		this.fireTableRowsUpdated(rowIndex, rowIndex);
 	}
 
 	/**
