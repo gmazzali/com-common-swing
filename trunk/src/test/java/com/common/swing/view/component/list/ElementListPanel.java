@@ -10,7 +10,7 @@ import com.common.swing.view.component.panel.BaseListPanel;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.component.table.formatter.CellFormatter;
 import com.common.swing.view.component.table.formatter.impl.BigDecimalCellFormatter;
-import com.common.swing.view.component.table.formatter.impl.BooleanCellFormatter;
+import com.common.swing.view.component.table.formatter.impl.BooleanComboCellFormatter;
 import com.common.swing.view.component.table.formatter.impl.DateCellFormatter;
 import com.common.swing.view.component.table.formatter.impl.EnumCellFormatter;
 import com.common.swing.view.component.table.formatter.impl.LongCellFormatter;
@@ -63,7 +63,7 @@ public class ElementListPanel extends BaseListPanel<Element> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void updateEditComponent(RowBean rowBean, JComboBox<Sexo> componentEditor, JLabel componentViewer) {
+			protected void beforeEdit(RowBean rowBean, JComboBox<Sexo> componentEditor, JLabel componentViewer) {
 				Element element = (Element) rowBean;
 				if (element.getFecha() != null) {
 					componentEditor.setEnabled(true);
@@ -77,9 +77,17 @@ public class ElementListPanel extends BaseListPanel<Element> {
 					componentEditor.setEnabled(false);
 				}
 			}
+
+			@Override
+			protected void afterEdit(RowBean rowBean, JComboBox<Sexo> componentEditor, JLabel componentViewer) {
+				Element element = (Element) rowBean;
+				if (element.isActivo() && element.getSexo() != null) {
+					element.setSexo(Sexo.MASCULINO);
+				}
+			}
 		};
 		final CellFormatter salarioFormatter = new BigDecimalCellFormatter();
-		final CellFormatter activoFormatter = new BooleanCellFormatter();
+		final CellFormatter activoFormatter = new BooleanComboCellFormatter();
 
 		table.addCellFormatter(Element.Attribute.CODE, codeFormatter);
 		table.addCellFormatter(Element.Attribute.NAME, nameFormatter);
