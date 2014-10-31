@@ -5,11 +5,15 @@ import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import com.common.swing.view.bean.RowBean;
+import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.component.table.formatter.CellFormatter;
+import com.common.swing.view.component.table.model.BaseTableModel;
 
 /**
  * La clase base para los formateadores de las celdas, ya sea para visualización o edición de las mismas.
@@ -30,9 +34,9 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * El render base para visulización.
+	 * El componente de visualización.
 	 */
-	private DefaultTableCellRenderer renderer;
+	protected JLabel componentViewer;
 	/**
 	 * El componente para editar.
 	 */
@@ -60,15 +64,15 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	 */
 	public BaseCellFormatter(C editor, Integer horizontalAlignment, Integer verticalAlignment) {
 		this.componentEditor = editor;
-		this.renderer = new DefaultTableCellRenderer();
+		this.componentViewer = new DefaultTableCellRenderer();
 		if (horizontalAlignment == null) {
 			horizontalAlignment = SwingConstants.LEFT;
 		}
 		if (verticalAlignment == null) {
 			verticalAlignment = SwingConstants.CENTER;
 		}
-		this.renderer.setHorizontalAlignment(horizontalAlignment);
-		this.renderer.setVerticalAlignment(verticalAlignment);
+		this.componentViewer.setHorizontalAlignment(horizontalAlignment);
+		this.componentViewer.setVerticalAlignment(verticalAlignment);
 	}
 
 	/**
@@ -106,7 +110,8 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	 */
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		return this.renderer.getTableCellRendererComponent(table, this.format(value), isSelected, hasFocus, row, column);
+		return ((DefaultTableCellRenderer) this.componentViewer).getTableCellRendererComponent(table, this.format(value), isSelected, hasFocus, row,
+				column);
 	}
 
 	/**
@@ -114,8 +119,44 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	 */
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+		if (table instanceof BaseTable<?>) {
+			table = (BaseTable<?>) table;
+			this.updateEditComponent(((BaseTableModel<?>) table.getModel()).getRow(table.convertRowIndexToModel(row)), this.componentEditor,
+					this.componentViewer);
+		}
 		this.setValueToEditComponent(value, this.componentEditor);
 		return this.componentEditor;
+	}
+
+	/**
+	 * Permite actualizar componente de acuerdo al bean de la fila.
+	 * 
+	 * @param rowBean
+	 *            El bean de la fila que estamos editando.
+	 * @param componentEditor
+	 *            El componente de edición.
+	 * @param componentViewer
+	 *            El componente de visualización.
+	 */
+	protected void updateEditComponent(RowBean rowBean, C componentEditor, JLabel componentViewer) {
+	}
+
+	/**
+	 * Permite recuperar el componente de visualización.
+	 * 
+	 * @return El componente de visualización.
+	 */
+	public Component getComponentViewer() {
+		return componentViewer;
+	}
+
+	/**
+	 * Permite recuperar el componente de edición.
+	 * 
+	 * @return El componente de edición.
+	 */
+	public C getComponentEditor() {
+		return componentEditor;
 	}
 
 	/**
