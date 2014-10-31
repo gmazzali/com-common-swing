@@ -110,6 +110,11 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	 */
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		if (table instanceof BaseTable<?>) {
+			table = (BaseTable<?>) table;
+			this.afterEdit(((BaseTableModel<?>) table.getModel()).getRow(table.convertRowIndexToModel(row)), this.componentEditor,
+					this.componentViewer);
+		}
 		return ((DefaultTableCellRenderer) this.componentViewer).getTableCellRendererComponent(table, this.format(value), isSelected, hasFocus, row,
 				column);
 	}
@@ -121,7 +126,7 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		if (table instanceof BaseTable<?>) {
 			table = (BaseTable<?>) table;
-			this.updateEditComponent(((BaseTableModel<?>) table.getModel()).getRow(table.convertRowIndexToModel(row)), this.componentEditor,
+			this.beforeEdit(((BaseTableModel<?>) table.getModel()).getRow(table.convertRowIndexToModel(row)), this.componentEditor,
 					this.componentViewer);
 		}
 		this.setValueToEditComponent(value, this.componentEditor);
@@ -129,7 +134,8 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	}
 
 	/**
-	 * Permite actualizar componente de acuerdo al bean de la fila.
+	 * Permite actualizar el componente de acuerdo al bean de la fila. Este método va a ejecutarse antes de cargar la celda con el componente de
+	 * edición.
 	 * 
 	 * @param rowBean
 	 *            El bean de la fila que estamos editando.
@@ -138,7 +144,20 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	 * @param componentViewer
 	 *            El componente de visualización.
 	 */
-	protected void updateEditComponent(RowBean rowBean, C componentEditor, JLabel componentViewer) {
+	protected void beforeEdit(RowBean rowBean, C componentEditor, JLabel componentViewer) {
+	}
+
+	/**
+	 * Permite actualizar el bean de acuerdo al contenido del componente. Este método va a ejecutarse al momento de finalizar la edición de la celda.
+	 * 
+	 * @param rowBean
+	 *            El bean de la fila que estamos terminando de editar.
+	 * @param componentEditor
+	 *            El componente de edición.
+	 * @param componentViewer
+	 *            El componente de visualización.
+	 */
+	protected void afterEdit(RowBean rowBean, C componentEditor, JLabel componentViewer) {
 	}
 
 	/**
@@ -162,6 +181,10 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	/**
 	 * Permite formatear el objeto que corresponde a la celda. Previamente ya se valida que el mismo no sea <code>null</code>.
 	 * 
+	 * <pre>
+	 * BEAN -> format -> CELL VIEW
+	 * </pre>
+	 * 
 	 * @param beanValue
 	 *            El valor que vamos a formatear. Puede ser <code>null</code>.
 	 * @return El objeto que corresponde a lo que vamos a desplegar en la celda.
@@ -170,6 +193,10 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 
 	/**
 	 * Permite parsear el valor ingreado en la celda al valor de la variable.
+	 * 
+	 * <pre>
+	 * CELL EDIT -> parse -> BEAN
+	 * </pre>
 	 * 
 	 * @param editComponent
 	 *            El componente de la celda donde estamos editando.
@@ -180,6 +207,10 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 
 	/**
 	 * Permite cargar dentro del campo de edición el valor de la variable.
+	 * 
+	 * <pre>
+	 * BEAN -> setValue -> CELL EDIT
+	 * </pre>
 	 * 
 	 * @param beanValue
 	 *            El valor de la variable.
