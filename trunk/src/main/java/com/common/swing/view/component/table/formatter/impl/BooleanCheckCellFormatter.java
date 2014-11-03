@@ -58,7 +58,7 @@ public class BooleanCheckCellFormatter extends BaseCellFormatter<JCheckBox> {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		if (value != null) {
-			this.viewCheckBox.setSelected((boolean) this.format(value));
+			this.viewCheckBox.setSelected((Boolean) this.format(value));
 		}
 		this.viewCheckBox.setEnabled(table.isCellEditable(row, column));
 
@@ -87,7 +87,7 @@ public class BooleanCheckCellFormatter extends BaseCellFormatter<JCheckBox> {
 
 	@Override
 	public Object parse(JCheckBox editComponent) {
-		return (Boolean) editComponent.isSelected();
+		return editComponent.isSelected();
 	}
 
 	@Override

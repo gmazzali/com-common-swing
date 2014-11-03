@@ -50,7 +50,9 @@ public class ElementServiceImpl extends BaseServiceImpl<Element, Long> {
 	@Override
 	public void save(Element entity) throws UncheckedException {
 		ElementServiceImpl.log.trace("save: " + entity);
-		entity.setCode(this.id++);
+		entity.setId(this.id);
+		entity.setCode(this.id);
+		this.id++;
 		ElementServiceImpl.elements.add(entity);
 	}
 

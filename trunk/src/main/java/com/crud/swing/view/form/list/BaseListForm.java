@@ -35,9 +35,12 @@ public abstract class BaseListForm<E extends RowBean> extends JPanel implements 
 	 */
 	protected BaseListPanel<E> tablePanel;
 	/**
-	 * El listado de las acciones y su acceso exclusivo.
+	 * El listado de las acciones.
 	 */
 	protected Collection<TableAction<E>> tableActions;
+	/**
+	 * El objecto que permite el acceso exclusivo a las acciones.
+	 */
 	private Object actionsMutex = new Object();
 
 	/**
@@ -58,8 +61,10 @@ public abstract class BaseListForm<E extends RowBean> extends JPanel implements 
 
 		ListSelectionModel cellSelectionModel = this.tablePanel.getTable().getSelectionModel();
 		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				new Thread() {
+					@Override
 					public void run() {
 						synchronized (actionsMutex) {
 							for (TableAction<E> tableAction : tableActions) {

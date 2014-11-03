@@ -11,7 +11,7 @@ import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.component.table.formatter.CellFormatter;
 import com.common.swing.view.component.table.formatter.impl.BigDecimalCellFormatter;
 import com.common.swing.view.component.table.formatter.impl.BooleanComboCellFormatter;
-import com.common.swing.view.component.table.formatter.impl.DateCellFormatter;
+import com.common.swing.view.component.table.formatter.impl.DateChooserCellFormatter;
 import com.common.swing.view.component.table.formatter.impl.EnumCellFormatter;
 import com.common.swing.view.component.table.formatter.impl.LongCellFormatter;
 import com.common.swing.view.component.table.formatter.impl.StringCellFormatter;
@@ -58,7 +58,7 @@ public class ElementListPanel extends BaseListPanel<Element> {
 	protected void loadCellFormatter(BaseTable<Element> table) {
 		final CellFormatter codeFormatter = new LongCellFormatter();
 		final CellFormatter nameFormatter = new StringCellFormatter();
-		final CellFormatter fechaFormatter = new DateCellFormatter("dd/MM/yyyy");
+		final CellFormatter fechaFormatter = new DateChooserCellFormatter("dd/MM/yyyy");
 		final CellFormatter sexoFormatter = new EnumCellFormatter<Sexo>() {
 			private static final long serialVersionUID = 1L;
 
