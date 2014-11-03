@@ -1,6 +1,8 @@
 package com.common.swing.view.component.list;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
@@ -16,7 +18,6 @@ import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.swing.view.event.TableEvent;
 import com.common.swing.view.listener.TableListener;
 import com.common.swing.view.notification.Notificaction;
-import com.common.util.business.tool.collection.CollectionUtil;
 import com.crud.swing.view.form.list.BaseListForm;
 
 /**
@@ -46,9 +47,18 @@ public class ElementListForm extends BaseListForm<Element> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Collection<TableAction<Element>> getTableActions() {
-		TableListener<Element> tableListener1 = new TableListener<Element>() {
+		List<TableAction<Element>> actions = new ArrayList<TableAction<Element>>();
+		actions.add(this.getNuevoAction());
+		actions.add(this.getBorrarAction());
+		actions.add(this.getLimpiarAction());
+		actions.add(this.getCargarAction());
+		actions.add(this.getVerAction());
+		return actions;
+	}
+
+	protected TableAction<Element> getNuevoAction() {
+		TableListener<Element> tableListener = new TableListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -64,7 +74,7 @@ public class ElementListForm extends BaseListForm<Element> {
 			};
 		};
 
-		ButtonDecorator buttonDecorator1 = new ButtonDecorator() {
+		ButtonDecorator buttonDecorator = new ButtonDecorator() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -72,7 +82,11 @@ public class ElementListForm extends BaseListForm<Element> {
 				button.setText("AGREGAR");
 			}
 		};
-		TableListener<Element> tableListener2 = new TableListener<Element>() {
+		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator);
+	}
+
+	protected TableAction<Element> getBorrarAction() {
+		TableListener<Element> tableListener = new TableListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -91,7 +105,7 @@ public class ElementListForm extends BaseListForm<Element> {
 				}.start();
 			}
 		};
-		ButtonDecorator buttonDecorator2 = new ButtonDecorator() {
+		ButtonDecorator buttonDecorator = new ButtonDecorator() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -99,7 +113,25 @@ public class ElementListForm extends BaseListForm<Element> {
 				button.setText("BORRAR");
 			}
 		};
-		TableListener<Element> tableListener3 = new TableListener<Element>() {
+		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public <P extends BaseActionParameter<Element>> boolean isEnabledAction(P parameter) {
+				boolean permiteBorrar = true;
+				for (Element element : ((TableActionParameter<Element>) parameter).getEntities()) {
+					if (element.getFecha() != null) {
+						permiteBorrar = false;
+						break;
+					}
+				}
+				return permiteBorrar;
+			}
+		};
+	}
+
+	protected TableAction<Element> getLimpiarAction() {
+		TableListener<Element> tableListener = new TableListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -107,7 +139,7 @@ public class ElementListForm extends BaseListForm<Element> {
 				emptyFields();
 			}
 		};
-		ButtonDecorator buttonDecorator3 = new ButtonDecorator() {
+		ButtonDecorator buttonDecorator = new ButtonDecorator() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -115,7 +147,11 @@ public class ElementListForm extends BaseListForm<Element> {
 				button.setText("LIMPIAR");
 			}
 		};
-		TableListener<Element> tableListener4 = new TableListener<Element>() {
+		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator);
+	}
+
+	protected TableAction<Element> getCargarAction() {
+		TableListener<Element> tableListener = new TableListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -123,7 +159,7 @@ public class ElementListForm extends BaseListForm<Element> {
 				setEntities(service.findByFilter(new ElementFilter()));
 			}
 		};
-		ButtonDecorator buttonDecorator4 = new ButtonDecorator() {
+		ButtonDecorator buttonDecorator = new ButtonDecorator() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -131,7 +167,11 @@ public class ElementListForm extends BaseListForm<Element> {
 				button.setText("CARGAR");
 			}
 		};
-		TableListener<Element> tableListener5 = new TableListener<Element>() {
+		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator);
+	}
+
+	protected TableAction<Element> getVerAction() {
+		TableListener<Element> tableListener = new TableListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -147,7 +187,7 @@ public class ElementListForm extends BaseListForm<Element> {
 				}
 			}
 		};
-		ButtonDecorator buttonDecorator5 = new ButtonDecorator() {
+		ButtonDecorator buttonDecorator = new ButtonDecorator() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -155,25 +195,7 @@ public class ElementListForm extends BaseListForm<Element> {
 				button.setText("VER");
 			}
 		};
-
-		return CollectionUtil.newArrayList(new TableAction<Element>(this.getTablePanel().getTable(), tableListener1, buttonDecorator1),
-				new TableAction<Element>(this.getTablePanel().getTable(), tableListener2, buttonDecorator2) {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public <P extends BaseActionParameter<Element>> boolean isEnabledAction(P parameter) {
-						boolean permiteBorrar = true;
-						for (Element element : ((TableActionParameter<Element>) parameter).getEntities()) {
-							if (element.getFecha() != null) {
-								permiteBorrar = false;
-								break;
-							}
-						}
-						return permiteBorrar;
-					}
-				}, new TableAction<Element>(this.getTablePanel().getTable(), tableListener3, buttonDecorator3), new TableAction<Element>(this
-						.getTablePanel().getTable(), tableListener4, buttonDecorator4), new TableAction<Element>(this.getTablePanel().getTable(),
-						tableListener5, buttonDecorator5));
+		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator);
 	}
 
 	public void setService(ElementServiceImpl service) {
