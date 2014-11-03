@@ -4,9 +4,10 @@ import javax.swing.JDialog;
 
 import com.common.swing.view.component.panel.BasePanel;
 import com.crud.swing.view.container.BaseContainer;
+import com.crud.swing.view.form.BaseForm;
 
 /**
- * La clase que extiende de {@link JDialog} para poder contener un formulario {@link BasePanel}.
+ * La clase que extiende de {@link JDialog} para poder contener un formulario {@link BaseForm}.
  * 
  * @see JDialog
  * @see BasePanel

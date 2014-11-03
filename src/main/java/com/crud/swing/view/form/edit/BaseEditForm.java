@@ -42,15 +42,15 @@ public abstract class BaseEditForm<E extends EditBean> extends JPanel implements
 	/**
 	 * El panel de edición.
 	 */
-	private BaseEditPanel<E> editPanel;
+	protected BaseEditPanel<E> editPanel;
 	/**
 	 * El listado de las acciones del panel de edición.
 	 */
-	private Collection<EditAction<E>> editActions;
+	protected Collection<EditAction<E>> editActions;
 	/**
 	 * El callback de edición.
 	 */
-	private CallbackEdit<E> callbackEdit;
+	protected CallbackEdit<E> callbackEdit;
 	/**
 	 * Los títulos de la ventana.
 	 */
@@ -127,6 +127,7 @@ public abstract class BaseEditForm<E extends EditBean> extends JPanel implements
 		}
 		// Actualizamos los botones.
 		new Thread() {
+			@Override
 			public void run() {
 				synchronized (editMutex) {
 					for (EditAction<E> editAction : editActions) {

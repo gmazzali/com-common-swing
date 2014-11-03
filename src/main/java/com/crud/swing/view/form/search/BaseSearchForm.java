@@ -41,19 +41,19 @@ public abstract class BaseSearchForm<B extends SearchBean, E extends Serializabl
 	/**
 	 * El panel de filtro de búsqueda.
 	 */
-	private BaseSearchPanel<B> searchPanel;
+	protected BaseSearchPanel<B> searchPanel;
 	/**
 	 * El listado de las acciones del filtro de búsqueda.
 	 */
-	private Collection<SearchAction<B>> searchActions;
+	protected Collection<SearchAction<B>> searchActions;
 	/**
 	 * Todos los callback de actualización del filtro de búsqueda.
 	 */
-	private Collection<CallbackFilter<E>> callbackFilters;
+	protected Collection<CallbackFilter<E>> callbackFilters;
 	/**
 	 * El elemento de exclusividad de la busqueda.
 	 */
-	private Object searchMutex = new Object();
+	protected Object searchMutex = new Object();
 
 	/**
 	 * Permite crear un panel de filtrado.
@@ -107,9 +107,11 @@ public abstract class BaseSearchForm<B extends SearchBean, E extends Serializabl
 	/**
 	 * Permite vaciar el contenido del filtro de búsqueda.
 	 */
+	@Override
 	public void emptyFields() {
 		// Actualizamos los botones.
 		new Thread() {
+			@Override
 			public void run() {
 				synchronized (searchMutex) {
 					for (SearchAction<B> searchAction : searchActions) {

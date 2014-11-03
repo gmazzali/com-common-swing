@@ -61,8 +61,8 @@ public class Element extends Entity<Long> implements RowBean, SearchBean, EditBe
 
 	@Override
 	public String toString() {
-		return "Element [id=" + this.code + ", name=" + this.name + ", salario=" + this.salario + ", fecha="
-				+ (this.fecha != null ? new SimpleDateFormat("dd/MM/yyyy").format(this.fecha) : "") + "]";
+		return "Element [code=" + this.code + ", name=" + this.name + ", sexo=" + this.sexo + ", salario=" + this.salario + ", fecha="
+				+ (this.fecha != null ? new SimpleDateFormat("dd/MM/yyyy").format(this.fecha) : "") + ", activo=" + this.activo + "]";
 	}
 
 	@Override

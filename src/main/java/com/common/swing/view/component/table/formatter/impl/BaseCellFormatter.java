@@ -111,9 +111,11 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		if (table instanceof BaseTable<?>) {
-			table = (BaseTable<?>) table;
-			this.afterEdit(((BaseTableModel<?>) table.getModel()).getRow(table.convertRowIndexToModel(row)), this.componentEditor,
-					this.componentViewer);
+			RowBean rowBean = ((BaseTableModel<?>) table.getModel()).getRow(table.convertRowIndexToModel(row));
+			if (rowBean != null) {
+				this.afterEdit(rowBean, this.componentEditor, this.componentViewer);
+				table.repaint();
+			}
 		}
 		return ((DefaultTableCellRenderer) this.componentViewer).getTableCellRendererComponent(table, this.format(value), isSelected, hasFocus, row,
 				column);
@@ -125,7 +127,6 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		if (table instanceof BaseTable<?>) {
-			table = (BaseTable<?>) table;
 			this.beforeEdit(((BaseTableModel<?>) table.getModel()).getRow(table.convertRowIndexToModel(row)), this.componentEditor,
 					this.componentViewer);
 		}

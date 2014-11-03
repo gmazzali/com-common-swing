@@ -4,9 +4,10 @@ import javax.swing.JFrame;
 
 import com.common.swing.view.component.panel.BasePanel;
 import com.crud.swing.view.container.BaseContainer;
+import com.crud.swing.view.form.BaseForm;
 
 /**
- * La clase que extiende de {@link JFrame} para poder contener un formulario {@link BasePanel}.
+ * La clase que extiende de {@link JFrame} para poder contener un formulario {@link BaseForm}.
  * 
  * @see JFrame
  * @see BasePanel
