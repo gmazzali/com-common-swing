@@ -42,18 +42,17 @@ public class ElementTable extends BaseTable<Element> {
 	}
 
 	public ElementTable() {
-		super(VISIBLE_PROPERTIES, PROPERTIES_NAME, PROPERTIES_WIDTH, true);
+		super(VISIBLE_PROPERTIES, new String[] {}, PROPERTIES_NAME, PROPERTIES_WIDTH, true);
 	}
 
 	@Override
-	protected BaseTableModel<Element> createModel(String[] visibleProperties, Map<String, String> visiblePropertiesName) {
+	protected BaseTableModel<Element> createModel(String[] visibleProperties, String[] editableProperties, Map<String, String> visiblePropertiesName) {
 		return new ReadOnlyBaseTableModel<Element>(visibleProperties, visiblePropertiesName) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected String[] getEditableProperties() {
-				return new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO, Element.Attribute.FECHA,
-						Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
+				return editableProperties;
 			}
 		};
 	}
