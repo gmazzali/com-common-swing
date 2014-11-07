@@ -61,7 +61,7 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	 * @param visiblePropertiesName
 	 *            Los nombre de las columnas, discriminados por propiedades.
 	 */
-	public BaseTableModel(String[] visibleProperties, Map<String, String> visiblePropertiesName) {
+	public BaseTableModel(String[] visibleProperties,String[] editableProperties, Map<String, String> visiblePropertiesName) {
 		Class<?> entityClass = null;
 		try {
 			entityClass = (Class<?>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -81,9 +81,8 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 				this.properties.add(property);
 				this.propertiesFields.put(property, field);
 			}
-			String[] editables = this.getEditableProperties();
-			if (ArrayUtil.isNotEmpty(editables)) {
-				for (String editableProperty : editables) {
+			if (ArrayUtil.isNotEmpty(editableProperties)) {
+				for (String editableProperty : editableProperties) {
 					this.editableProperties.add(editableProperty);
 				}
 			}
@@ -280,11 +279,4 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 		}
 		return INDEX_NOT_FOUND;
 	}
-
-	/**
-	 * Retorna el listado de las columnas / propiedades que pueden ser editables dentro del modelo de la tabla.
-	 * 
-	 * @return El listado de las columnas / propiedades que van a ser editables.
-	 */
-	protected abstract String[] getEditableProperties();
 }
