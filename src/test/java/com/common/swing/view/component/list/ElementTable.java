@@ -6,7 +6,6 @@ import java.util.Map;
 import com.common.swing.domain.model.Element;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.component.table.model.BaseTableModel;
-import com.common.swing.view.component.table.model.ReadOnlyBaseTableModel;
 
 /**
  * La tabla de elementos.
@@ -20,6 +19,9 @@ public class ElementTable extends BaseTable<Element> {
 	private static final long serialVersionUID = 1L;
 
 	private static final String[] VISIBLE_PROPERTIES = new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO,
+			Element.Attribute.FECHA, Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
+
+	private static final String[] EDITABLE_PROPERTIES = new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO,
 			Element.Attribute.FECHA, Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
 
 	private static final Map<String, String> PROPERTIES_NAME = new HashMap<String, String>();
@@ -42,18 +44,14 @@ public class ElementTable extends BaseTable<Element> {
 	}
 
 	public ElementTable() {
-		super(VISIBLE_PROPERTIES, new String[] {}, PROPERTIES_NAME, PROPERTIES_WIDTH, true);
+		super(VISIBLE_PROPERTIES, EDITABLE_PROPERTIES, PROPERTIES_NAME, PROPERTIES_WIDTH, true);
 	}
 
 	@Override
-	protected BaseTableModel<Element> createModel(String[] visibleProperties, String[] editableProperties, Map<String, String> visiblePropertiesName) {
-		return new ReadOnlyBaseTableModel<Element>(visibleProperties, visiblePropertiesName) {
+	protected BaseTableModel<Element> createModel(String[] visibleProperties, final String[] editableProperties,
+			Map<String, String> visiblePropertiesName) {
+		return new BaseTableModel<Element>(visibleProperties, editableProperties, visiblePropertiesName) {
 			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected String[] getEditableProperties() {
-				return editableProperties;
-			}
 		};
 	}
 }
