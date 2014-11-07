@@ -64,7 +64,7 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	public BaseTableModel(String[] visibleProperties, Map<String, String> visiblePropertiesName) {
 		Class<?> entityClass = null;
 		try {
-			entityClass = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+			entityClass = (Class<?>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 		} catch (Exception ex) {
 			LOGGER.error("The generic parameter of this class cannot be empty", ex);
 			throw new SwingException(ex);

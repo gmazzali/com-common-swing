@@ -36,7 +36,7 @@ import com.common.util.business.tool.collection.CollectionUtil;
  */
 public abstract class BaseTable<B extends RowBean> extends JTable {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(BaseTable.class);
+	private static final Logger LOGGER = Logger.getLogger(BaseTable.class);
 
 	/**
 	 * El valor booleano que nos indica si va a seleccionarse o no la primer fila cuando se carguen datos.
@@ -67,56 +67,80 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	/**
 	 * Constructor de una tabla que recibe las propiedades de las entidades que vamos a listar.
 	 * 
-	 * @param visibleProperty
+	 * @param visibleProperties
 	 *            El listado de las propiedades que vamos a listar.
 	 */
-	public BaseTable(String[] visibleProperty) {
-		this(visibleProperty, null);
+	public BaseTable(String[] visibleProperties) {
+		this(visibleProperties, null);
 	}
 
 	/**
 	 * Constructor de una tabla que recibe las propiedades de las entidades que vamos a listar y los nombres que van a recibir cada una de ellas.
 	 * 
-	 * @param visibleProperty
+	 * @param visibleProperties
 	 *            El listado de las propiedades que vamos a listar.
-	 * @param visiblePropertyName
+	 * @param visiblePropertiesName
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 */
-	public BaseTable(String[] visibleProperty, Map<String, String> visiblePropertyName) {
-		this(visibleProperty, visiblePropertyName, null);
+	public BaseTable(String[] visibleProperties, Map<String, String> visiblePropertiesName) {
+		this(visibleProperties, visiblePropertiesName, null);
 	}
 
 	/**
 	 * Constructor de una tabla que recibe las propiedades de las entidades que vamos a listar, los nombres que van a recibir cada una de ellas y el
 	 * ancho de cada una.
 	 * 
-	 * @param visibleProperty
+	 * @param visibleProperties
 	 *            El listado de las propiedades que vamos a listar.
-	 * @param visiblePropertyName
+	 * @param editableProperties
+	 *            El listado de las propiedades que vamos a poder editar dentro de la tabla.
+	 * @param visiblePropertiesName
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 * @param visiblePropertiesWidth
 	 *            Los anchos que va a tener cada una de las columnas.
 	 */
-	public BaseTable(String[] visibleProperty, Map<String, String> visiblePropertyName, Map<String, Integer> visiblePropertiesWidth) {
-		this(visibleProperty, visiblePropertyName, visiblePropertiesWidth, true);
+	public BaseTable(String[] visibleProperties, Map<String, String> visiblePropertiesName, Map<String, Integer> visiblePropertiesWidth) {
+		this(visibleProperties, new String[] {}, visiblePropertiesName, visiblePropertiesWidth, true);
+	}
+
+	/**
+	 * Constructor de una tabla que recibe las propiedades de las entidades que vamos a listar, los nombres que van a recibir cada una de ellas y el
+	 * ancho de cada una.
+	 * 
+	 * @param visibleProperties
+	 *            El listado de las propiedades que vamos a listar.
+	 * @param editableProperties
+	 *            El listado de las propiedades que vamos a poder editar dentro de la tabla.
+	 * @param editableProperties
+	 *            El listado de las propiedades que vamos a poder editar dentro de la tabla.
+	 * @param visiblePropertiesName
+	 *            El mapa de los nombres de las propiedades que vamos a listar.
+	 * @param visiblePropertiesWidth
+	 *            Los anchos que va a tener cada una de las columnas.
+	 */
+	public BaseTable(String[] visibleProperties, String[] editableProperties, Map<String, String> visiblePropertiesName,
+			Map<String, Integer> visiblePropertiesWidth) {
+		this(visibleProperties, editableProperties, visiblePropertiesName, visiblePropertiesWidth, true);
 	}
 
 	/**
 	 * Constructor de una tabla que recibe las propiedades de las entidades que vamos a listar, los nombres que van a recibir cada una de ellas y el
 	 * ancho de cada una, como asi tambien si va a seleccionarse la primer fila o no cuando se carguen datos.
 	 * 
-	 * @param visibleProperty
+	 * @param visibleProperties
 	 *            El listado de las propiedades que vamos a listar.
-	 * @param visiblePropertyName
+	 * @param editableProperties
+	 *            El listado de las propiedades que vamos a poder editar dentro de la tabla.
+	 * @param visiblePropertiesName
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 * @param visiblePropertiesWidth
 	 *            El mapa de los anchos que va a tener cada una de las columnas.
 	 * @param firstSelected
 	 *            El valor booleano que nos va a indicar si va a seleccionarse o no la primer fila cuando se carguen datos.
 	 */
-	public BaseTable(String[] visibleProperty, Map<String, String> visiblePropertyName, Map<String, Integer> visiblePropertiesWidth,
-			boolean firstSelected) {
-		this(new ArrayList<B>(), visibleProperty, visiblePropertyName, visiblePropertiesWidth, firstSelected);
+	public BaseTable(String[] visibleProperties, String[] editableProperties, Map<String, String> visiblePropertiesName,
+			Map<String, Integer> visiblePropertiesWidth, boolean firstSelected) {
+		this(new ArrayList<B>(), visibleProperties, editableProperties, visiblePropertiesName, visiblePropertiesWidth, firstSelected);
 	}
 
 	/**
@@ -125,46 +149,46 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	 * 
 	 * @param entities
 	 *            Las entidades que vamos a cargar dentro de la tabla.
-	 * @param visibleProperty
+	 * @param visibleProperties
 	 *            El listado de las propiedades que vamos a listar.
-	 * @param visiblePropertyName
+	 * @param editableProperties
+	 *            El listado de las propiedades que vamos a poder editar dentro de la tabla.
+	 * @param visiblePropertiesName
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 * @param visiblePropertiesWidth
 	 *            El mapa de los anchos que va a tener cada una de las columnas.
 	 * @param firstSelected
 	 *            El valor booleano que nos va a indicar si va a seleccionarse o no la primer fila cuando se carguen datos.
 	 */
-	public BaseTable(List<B> entities, String[] visibleProperties, Map<String, String> visiblePropertiesName,
+	public BaseTable(List<B> entities, String[] visibleProperties, String[] editableProperties, Map<String, String> visiblePropertiesName,
 			Map<String, Integer> visiblePropertiesWidth, boolean firstSelected) {
 		this.firstSelected = firstSelected;
-		this.init(visibleProperties, visiblePropertiesName, visiblePropertiesWidth);
+		this.init(visibleProperties, editableProperties, visiblePropertiesName, visiblePropertiesWidth);
 		this.reloadData(entities);
-	}
-
-	@Override
-	public void setModel(TableModel tableModel) {
-		// No se le carga ningun modelo a la tabla, ya que se lo creamos nosotros al mismo.
 	}
 
 	/**
 	 * Inicializa la tabla y sus componentes.
 	 * 
 	 * @param visibleProperties
-	 *            Las propiedades que vamos a mostrar en al tabla.
-	 * @param visiblePropertyName
+	 *            El listado de las propiedades que vamos a listar.
+	 * @param editableProperties
+	 *            El listado de las propiedades que vamos a poder editar dentro de la tabla.
+	 * @param visiblePropertiesName
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 * @param visiblePropertiesWidth
 	 *            El mapa de los anchos que va a tener cada una de las columnas.
 	 */
-	protected void init(String[] visibleProperties, Map<String, String> visiblePropertiesName, Map<String, Integer> visiblePropertiesWidth) {
+	protected void init(String[] visibleProperties, String[] editableProperties, Map<String, String> visiblePropertiesName,
+			Map<String, Integer> visiblePropertiesWidth) {
 		if (visibleProperties == null || visibleProperties.length == 0) {
-			log.warn("The list of visibles properties must least have one");
+			LOGGER.warn("The list of visibles properties must least have one");
 			throw new SwingException("The list of visibles properties must least have one", "swing.component.basetable.error.properties.null");
 		}
 		this.visibleProperties = visibleProperties;
 
 		// Creamos el modelo de la tabla.
-		this.tableModel = this.createModel(visibleProperties, visiblePropertiesName);
+		this.tableModel = this.createModel(visibleProperties, editableProperties, visiblePropertiesName);
 		super.setModel(this.tableModel);
 
 		// Creamos las columnas para la tabla.
@@ -175,16 +199,24 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 		this.setRowSorter(this.rowSorter);
 	}
 
+	@Override
+	public void setModel(TableModel tableModel) {
+		// No se le carga ningun modelo a la tabla, ya que se lo creamos nosotros al mismo.
+	}
+
 	/**
 	 * Se encarga de crear el modelo de la tabla.
 	 * 
 	 * @param visibleProperties
 	 *            Las propiedades que vamos a mostrar en al tabla.
+	 * @param editableProperties
+	 *            El listado de las propiedades que vamos a poder editar dentro de la tabla.
 	 * @param visiblePropertiesName
 	 *            Los nombres que van a recibir cada una de esas columnas.
 	 * @return El modelo que vamos a colocar dentro de la tabla.
 	 */
-	protected abstract BaseTableModel<B> createModel(String[] visibleProperties, Map<String, String> visiblePropertiesName);
+	protected abstract BaseTableModel<B> createModel(String[] visibleProperties, String[] editableProperties,
+			Map<String, String> visiblePropertiesName);
 
 	/**
 	 * Crea las columnas que vamos a desplegar dentro de la tabla.
@@ -239,7 +271,7 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 		if (this.propertiesColumn.containsKey(property)) {
 			this.propertiesColumn.get(property).setHeaderRenderer(renderer);
 		} else {
-			log.warn("Don't exist the header for the property '" + property + "'");
+			LOGGER.warn("Don't exist the header for the property '" + property + "'");
 		}
 	}
 
@@ -257,7 +289,7 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 			this.propertiesColumn.get(property).setCellRenderer(cellFormatter);
 			this.propertiesColumn.get(property).setCellEditor(cellFormatter);
 		} else {
-			log.warn("Don't exist the column for the property '" + property + "'");
+			LOGGER.warn("Don't exist the column for the property '" + property + "'");
 		}
 	}
 
