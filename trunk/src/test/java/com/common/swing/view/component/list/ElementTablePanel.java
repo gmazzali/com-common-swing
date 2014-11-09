@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.Sexo;
 import com.common.swing.view.bean.RowBean;
-import com.common.swing.view.component.panel.BaseListPanel;
+import com.common.swing.view.component.panel.BaseTablePanel;
 import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.component.table.formatter.CellFormatter;
 import com.common.swing.view.component.table.formatter.impl.BigDecimalCellFormatter;
@@ -24,10 +24,10 @@ import com.common.util.business.tool.collection.CollectionUtil;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementListPanel extends BaseListPanel<Element> {
+public class ElementTablePanel extends BaseTablePanel<Element> {
 	private static final long serialVersionUID = 1L;
 
-	public ElementListPanel() {
+	public ElementTablePanel() {
 		this.init();
 	}
 

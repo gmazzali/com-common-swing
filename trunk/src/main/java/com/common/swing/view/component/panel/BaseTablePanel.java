@@ -20,7 +20,7 @@ import com.common.swing.view.component.table.BaseTable;
  * @param <B>
  *            El bean de tabla que vamos a manipular dentro de este panel.
  */
-public abstract class BaseListPanel<B extends RowBean> extends JPanel implements BasePanel {
+public abstract class BaseTablePanel<B extends RowBean> extends JPanel implements BasePanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
