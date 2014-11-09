@@ -13,7 +13,7 @@ import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.ElementFilter;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.Constants;
-import com.common.swing.view.component.list.ElementListForm;
+import com.common.swing.view.component.list.ElementTableForm;
 import com.common.util.domain.exception.UncheckedException;
 import com.crud.swing.view.container.impl.DialogContainer;
 
@@ -25,10 +25,10 @@ import com.crud.swing.view.container.impl.DialogContainer;
  * @version 1.0
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BaseListFormTest {
+public class BaseTableFormTest {
 
 	@InjectMocks
-	private ElementListForm panel;
+	private ElementTableForm panel;
 
 	@BeforeClass
 	public static void initClass() {

@@ -321,6 +321,7 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	 */
 	protected void reloadData(final Collection<B> entities) {
 		new Thread() {
+			@Override
 			public void run() {
 				setEnabled(false);
 				clearTable();
@@ -362,6 +363,7 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	 */
 	public void addValue(final B entity) {
 		new Thread() {
+			@Override
 			public void run() {
 				synchronized (rowMutex) {
 					tableModel.addRow(entity);
@@ -378,6 +380,7 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	 */
 	public void removeValue(final B entity) {
 		new Thread() {
+			@Override
 			public void run() {
 				synchronized (rowMutex) {
 					tableModel.removeRow(tableModel.getIndex(entity));

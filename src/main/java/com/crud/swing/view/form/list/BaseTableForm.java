@@ -13,7 +13,7 @@ import javax.swing.event.ListSelectionListener;
 import com.common.swing.view.action.TableAction;
 import com.common.swing.view.action.parameter.TableActionParameter;
 import com.common.swing.view.bean.RowBean;
-import com.common.swing.view.component.panel.BaseListPanel;
+import com.common.swing.view.component.panel.BaseTablePanel;
 import com.common.util.business.tool.collection.CollectionUtil;
 import com.crud.swing.view.form.BaseForm;
 
@@ -27,13 +27,13 @@ import com.crud.swing.view.form.BaseForm;
  * @param <E>
  *            Las clases de las entidades que vamos a manipular dentro de este panel.
  */
-public abstract class BaseListForm<E extends RowBean> extends JPanel implements BaseForm {
+public abstract class BaseTableForm<E extends RowBean> extends JPanel implements BaseForm {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * El panel de la tabla de las entidades.
 	 */
-	protected BaseListPanel<E> tablePanel;
+	protected BaseTablePanel<E> tablePanel;
 	/**
 	 * El listado de las acciones.
 	 */
@@ -141,7 +141,7 @@ public abstract class BaseListForm<E extends RowBean> extends JPanel implements 
 	 * 
 	 * @return El panel de la tabla.
 	 */
-	public BaseListPanel<E> getTablePanel() {
+	public BaseTablePanel<E> getTablePanel() {
 		return tablePanel;
 	}
 
@@ -155,7 +155,7 @@ public abstract class BaseListForm<E extends RowBean> extends JPanel implements 
 	 * 
 	 * @return El panel de la tabla para listar las entidades.
 	 */
-	protected abstract BaseListPanel<E> createTablePanel();
+	protected abstract BaseTablePanel<E> createTablePanel();
 
 	/**
 	 * Retorna el listado de las acciones de la tabla.

@@ -13,12 +13,12 @@ import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.action.TableAction;
 import com.common.swing.view.action.parameter.BaseActionParameter;
 import com.common.swing.view.action.parameter.TableActionParameter;
-import com.common.swing.view.component.panel.BaseListPanel;
+import com.common.swing.view.component.panel.BaseTablePanel;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.common.swing.view.event.TableEvent;
 import com.common.swing.view.listener.TableListener;
 import com.common.swing.view.notification.Notificaction;
-import com.crud.swing.view.form.list.BaseListForm;
+import com.crud.swing.view.form.list.BaseTableForm;
 
 /**
  * La clase que extiende el formulario de listado de entidades.
@@ -27,18 +27,18 @@ import com.crud.swing.view.form.list.BaseListForm;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementListForm extends BaseListForm<Element> {
+public class ElementTableForm extends BaseTableForm<Element> {
 	private static final long serialVersionUID = 1L;
 
 	private ElementServiceImpl service;
 
-	public ElementListForm() {
+	public ElementTableForm() {
 		this.init();
 	}
 
 	@Override
-	protected BaseListPanel<Element> createTablePanel() {
-		return new ElementListPanel();
+	protected BaseTablePanel<Element> createTablePanel() {
+		return new ElementTablePanel();
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class ElementListForm extends BaseListForm<Element> {
 					buffer.append("\n");
 				}
 				if (buffer.toString().length() != 0) {
-					Notificaction.showMessage(ElementListForm.this, buffer.toString());
+					Notificaction.showMessage(ElementTableForm.this, buffer.toString());
 				}
 			}
 		};

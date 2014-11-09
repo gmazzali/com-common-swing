@@ -18,11 +18,13 @@ public class ElementTable extends BaseTable<Element> {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] VISIBLE_PROPERTIES = new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO,
-			Element.Attribute.FECHA, Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
+	private static final String[] VISIBLE_PROPERTIES = new String[]
+		{ Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO, Element.Attribute.FECHA, Element.Attribute.SALARIO,
+				Element.Attribute.ACTIVO };
 
-	private static final String[] EDITABLE_PROPERTIES = new String[] { Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO,
-			Element.Attribute.FECHA, Element.Attribute.SALARIO, Element.Attribute.ACTIVO };
+	private static final String[] EDITABLE_PROPERTIES = new String[]
+		{ Element.Attribute.CODE, Element.Attribute.NAME, Element.Attribute.SEXO, Element.Attribute.FECHA, Element.Attribute.SALARIO,
+				Element.Attribute.ACTIVO };
 
 	private static final Map<String, String> PROPERTIES_NAME = new HashMap<String, String>();
 
