@@ -1,4 +1,4 @@
-package com.common.swing.view.component.list;
+package com.common.swing.view.component.table;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -67,7 +67,7 @@ public class ElementTablePanel extends BaseTablePanel<Element> {
 				Element element = (Element) rowBean;
 				if (element.getFecha() != null) {
 					componentEditor.setEnabled(true);
-					if (element.isActivo()) {
+					if (element.getActivo()) {
 						this.setComboBoxData(componentEditor, CollectionUtil.newArrayList(Sexo.MASCULINO));
 					} else {
 						this.setComboBoxData(componentEditor, CollectionUtil.newArrayList(Sexo.MASCULINO, Sexo.FEMENINO));
@@ -81,7 +81,7 @@ public class ElementTablePanel extends BaseTablePanel<Element> {
 			@Override
 			protected void afterEdit(RowBean rowBean, JComboBox<Sexo> componentEditor, JLabel componentViewer) {
 				Element element = (Element) rowBean;
-				if (element.isActivo() && element.getSexo() != null) {
+				if (element.getActivo() && element.getSexo() != null) {
 					element.setSexo(Sexo.MASCULINO);
 				}
 			}

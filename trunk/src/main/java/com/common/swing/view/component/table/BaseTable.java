@@ -405,7 +405,7 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	 * 
 	 * @return La entidad que se encuentra seleccionada en la tabla, en caso de que no se encuentre ninguna seleccionada, retornamos un valor nulo.
 	 */
-	public B getSelectedValue() {
+	public B getValue() {
 		synchronized (this.rowMutex) {
 			// Otenemos el indice seleccinado.
 			Integer index = this.getSelectedRow();
@@ -424,7 +424,7 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	 * @return El listado de las entidades que se encuentran seleccionadas en la tabla, en caso de que no se encuentre ninguna seleccionada,
 	 *         retornamos una lista vacia.
 	 */
-	public Collection<B> getSelectedValues() {
+	public Collection<B> getValues() {
 		synchronized (this.tableMutex) {
 			// Obtenemos los indices seleccionados.
 			int[] indexs = this.getSelectedRows();

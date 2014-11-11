@@ -13,22 +13,23 @@ import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.ElementFilter;
 import com.common.swing.domain.model.ElementServiceImpl;
 import com.common.swing.view.Constants;
-import com.common.swing.view.component.table.ElementTableForm;
+import com.common.swing.view.component.list.ElementListForm;
 import com.common.util.domain.exception.UncheckedException;
 import com.crud.swing.view.container.impl.DialogContainer;
+
 
 /**
  * La clase de prueba de la ventana de listado de entidades.
  * 
- * @since 20/10/2014
+ * @since 10/11/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BaseTableFormTest {
+public class BaseListFormTest {
 
 	@InjectMocks
-	private ElementTableForm panel;
+	private ElementListForm panel;
 
 	@BeforeClass
 	public static void initClass() {

@@ -5,50 +5,52 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.ListSelectionModel;
 
 import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.ElementFilter;
 import com.common.swing.domain.model.ElementServiceImpl;
-import com.common.swing.view.action.TableAction;
+import com.common.swing.view.action.ListAction;
 import com.common.swing.view.action.parameter.BaseActionParameter;
 import com.common.swing.view.action.parameter.TableActionParameter;
-import com.common.swing.view.component.panel.BaseTablePanel;
+import com.common.swing.view.component.panel.BaseListPanel;
 import com.common.swing.view.decorator.ButtonDecorator;
-import com.common.swing.view.event.TableEvent;
-import com.common.swing.view.listener.TableListener;
+import com.common.swing.view.event.ListEvent;
+import com.common.swing.view.listener.ListListener;
 import com.common.swing.view.notification.Notificaction;
-import com.crud.swing.view.form.list.BaseTableForm;
+import com.crud.swing.view.form.list.BaseListForm;
 
 /**
  * La clase que extiende el formulario de listado de entidades.
  * 
- * @since 20/10/2014
+ * @since 10/10/2014
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class ElementTableForm extends BaseTableForm<Element> {
+public class ElementListForm extends BaseListForm<Element> {
 	private static final long serialVersionUID = 1L;
 
 	private ElementServiceImpl service;
 
-	public ElementTableForm() {
+	public ElementListForm() {
 		this.init();
 	}
-
-	@Override
-	protected BaseTablePanel<Element> createTablePanel() {
-		return new ElementTablePanel();
-	}
-
+	
 	@Override
 	protected void afterInit() {
-		this.getTablePanel().getTable().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 
 	@Override
-	protected Collection<TableAction<Element>> getTableActions() {
-		List<TableAction<Element>> actions = new ArrayList<TableAction<Element>>();
+	protected BaseListPanel<Element> createListPanel() {
+		return new ElementListPanel();
+	}
+
+	public void setService(ElementServiceImpl service) {
+		this.service = service;
+	}
+
+	@Override
+	protected Collection<ListAction<Element>> getListActions() {
+		List<ListAction<Element>> actions = new ArrayList<ListAction<Element>>();
 		actions.add(this.getNuevoAction());
 		actions.add(this.getBorrarAction());
 		actions.add(this.getLimpiarAction());
@@ -57,12 +59,12 @@ public class ElementTableForm extends BaseTableForm<Element> {
 		return actions;
 	}
 
-	protected TableAction<Element> getNuevoAction() {
-		TableListener<Element> tableListener = new TableListener<Element>() {
+	protected ListAction<Element> getNuevoAction() {
+		ListListener<Element> tableListener = new ListListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void fireEvent(final TableEvent<Element> tableEvent) {
+			public void fireEvent(final ListEvent<Element> tableEvent) {
 				new Thread() {
 					public void run() {
 						disabled();
@@ -82,19 +84,18 @@ public class ElementTableForm extends BaseTableForm<Element> {
 				button.setText("AGREGAR");
 			}
 		};
-		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator);
+		return new ListAction<Element>(this.getListPanel().getList(), tableListener, buttonDecorator);
 	}
 
-	protected TableAction<Element> getBorrarAction() {
-		TableListener<Element> tableListener = new TableListener<Element>() {
+	protected ListAction<Element> getBorrarAction() {
+		ListListener<Element> tableListener = new ListListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void fireEvent(final TableEvent<Element> tableEvent) {
+			public void fireEvent(final ListEvent<Element> tableEvent) {
 				new Thread() {
 					public void run() {
 						disabled();
-						getTablePanel().getTable().getSelectedValue();
 						Collection<Element> elements = tableEvent.getSelectedEntities();
 						for (Element element : elements) {
 							service.delete(element);
@@ -113,7 +114,7 @@ public class ElementTableForm extends BaseTableForm<Element> {
 				button.setText("BORRAR");
 			}
 		};
-		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator) {
+		return new ListAction<Element>(this.getListPanel().getList(), tableListener, buttonDecorator) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -130,12 +131,12 @@ public class ElementTableForm extends BaseTableForm<Element> {
 		};
 	}
 
-	protected TableAction<Element> getLimpiarAction() {
-		TableListener<Element> tableListener = new TableListener<Element>() {
+	protected ListAction<Element> getLimpiarAction() {
+		ListListener<Element> tableListener = new ListListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void fireEvent(final TableEvent<Element> tableEvent) {
+			public void fireEvent(final ListEvent<Element> tableEvent) {
 				emptyFields();
 			}
 		};
@@ -147,15 +148,15 @@ public class ElementTableForm extends BaseTableForm<Element> {
 				button.setText("LIMPIAR");
 			}
 		};
-		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator);
+		return new ListAction<Element>(this.getListPanel().getList(), tableListener, buttonDecorator);
 	}
 
-	protected TableAction<Element> getCargarAction() {
-		TableListener<Element> tableListener = new TableListener<Element>() {
+	protected ListAction<Element> getCargarAction() {
+		ListListener<Element> tableListener = new ListListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void fireEvent(final TableEvent<Element> tableEvent) {
+			public void fireEvent(final ListEvent<Element> tableEvent) {
 				setEntities(service.findByFilter(new ElementFilter()));
 			}
 		};
@@ -167,15 +168,15 @@ public class ElementTableForm extends BaseTableForm<Element> {
 				button.setText("CARGAR");
 			}
 		};
-		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator);
+		return new ListAction<Element>(this.getListPanel().getList(), tableListener, buttonDecorator);
 	}
 
-	protected TableAction<Element> getVerAction() {
-		TableListener<Element> tableListener = new TableListener<Element>() {
+	protected ListAction<Element> getVerAction() {
+		ListListener<Element> tableListener = new ListListener<Element>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void fireEvent(final TableEvent<Element> tableEvent) {
+			public void fireEvent(final ListEvent<Element> tableEvent) {
 				StringBuffer buffer = new StringBuffer();
 				Collection<Element> elements = tableEvent.getSelectedEntities();
 				for (Element element : elements) {
@@ -183,7 +184,7 @@ public class ElementTableForm extends BaseTableForm<Element> {
 					buffer.append("\n");
 				}
 				if (buffer.toString().length() != 0) {
-					Notificaction.showMessage(ElementTableForm.this, buffer.toString());
+					Notificaction.showMessage(ElementListForm.this, buffer.toString());
 				}
 			}
 		};
@@ -195,10 +196,6 @@ public class ElementTableForm extends BaseTableForm<Element> {
 				button.setText("VER");
 			}
 		};
-		return new TableAction<Element>(this.getTablePanel().getTable(), tableListener, buttonDecorator);
-	}
-
-	public void setService(ElementServiceImpl service) {
-		this.service = service;
+		return new ListAction<Element>(this.getListPanel().getList(), tableListener, buttonDecorator);
 	}
 }
