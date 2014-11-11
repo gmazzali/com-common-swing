@@ -24,7 +24,7 @@ import com.common.util.business.tool.collection.CollectionUtil;
  * 
  * @since 23/04/2014
  * @author Guillermo Mazzali
- * @version 1.0
+ * @version 1.1
  * 
  * @param <B>
  *            La clase de beans que vamos a tener dentro de este modelo.
