@@ -118,7 +118,7 @@ public class Element extends Entity<Long> implements RowBean, SearchBean, EditBe
 		this.salario = salario;
 	}
 
-	public boolean isActivo() {
+	public boolean getActivo() {
 		return activo;
 	}
 

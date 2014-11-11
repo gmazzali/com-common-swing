@@ -1,8 +1,10 @@
 package com.common.swing.view.component.table.model;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import com.common.swing.domain.exception.SwingException;
 import com.common.swing.view.bean.RowBean;
 import com.common.util.business.tool.ReflectUtil;
 import com.common.util.business.tool.collection.ArrayUtil;
+import com.common.util.business.tool.collection.CollectionUtil;
 
 /**
  * Define un modelo de una tabla de base.
@@ -42,16 +45,23 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	/**
 	 * Los identificadores de las columnas y las que van a ser editables.
 	 */
-	protected List<String> properties;
-	protected List<String> editableProperties;
+	protected List<String> visibleProperties;
 	/**
 	 * El nombre de las columnas.
 	 */
-	protected Map<String, String> propertiesNames;
-	/*
-	 * Los campos de los beans.
+	protected Map<String, String> visiblePropertiesNames;
+	/**
+	 * Los tipos de parámetros.
 	 */
-	protected Map<String, Field> propertiesFields;
+	protected Map<String, Class<?>> classProperties;
+	/**
+	 * Los getters para las propiedades.
+	 */
+	protected Map<String, Method> getterProperties;
+	/**
+	 * Los setters para las propiedades editables.
+	 */
+	protected Map<String, Method> setterProperties;
 
 	/**
 	 * Constructor de un modelo de una tabla de base.
@@ -61,7 +71,7 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	 * @param visiblePropertiesName
 	 *            Los nombre de las columnas, discriminados por propiedades.
 	 */
-	public BaseTableModel(String[] visibleProperties,String[] editableProperties, Map<String, String> visiblePropertiesName) {
+	public BaseTableModel(String[] visibleProperties, String[] editableProperties, Map<String, String> visiblePropertiesName) {
 		Class<?> entityClass = null;
 		try {
 			entityClass = (Class<?>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -70,27 +80,29 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 			throw new SwingException(ex);
 		}
 		this.rowBeans = new ArrayList<B>();
-		this.properties = new ArrayList<String>();
-		this.editableProperties = new ArrayList<String>();
-		this.propertiesFields = new HashMap<String, Field>();
+		this.visibleProperties = new ArrayList<String>();
+		this.classProperties = new HashMap<String, Class<?>>();
+		this.getterProperties = new HashMap<String, Method>();
+		this.setterProperties = new HashMap<String, Method>();
 		try {
 			Map<String, Field> fields = ReflectUtil.getAllDeclaratedFields(entityClass);
 			for (String property : visibleProperties) {
 				Field field = fields.get(property);
-				field.setAccessible(true);
-				this.properties.add(property);
-				this.propertiesFields.put(property, field);
+				this.visibleProperties.add(property);
+				this.classProperties.put(property, field.getType());
+				this.getterProperties.put(property, ReflectUtil.getGetter(entityClass, property));
 			}
 			if (ArrayUtil.isNotEmpty(editableProperties)) {
 				for (String editableProperty : editableProperties) {
-					this.editableProperties.add(editableProperty);
+					this.setterProperties.put(editableProperty,
+							ReflectUtil.getSetter(entityClass, editableProperty, this.classProperties.get(editableProperty)));
 				}
 			}
 		} catch (Exception ex) {
 			LOGGER.error("The visible properties cannot be initialize", ex);
 			throw new SwingException(ex);
 		}
-		this.propertiesNames = visiblePropertiesName;
+		this.visiblePropertiesNames = visiblePropertiesName;
 	}
 
 	@Override
@@ -100,16 +112,16 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 
 	@Override
 	public int getColumnCount() {
-		return this.properties.size();
+		return this.visibleProperties.size();
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
 		if (columnIndex < this.getColumnCount()) {
-			String property = this.properties.get(columnIndex);
+			String property = this.visibleProperties.get(columnIndex);
 			LOGGER.debug("Get column name for property: " + property);
-			if (this.propertiesNames.containsKey(property)) {
-				return this.propertiesNames.get(property);
+			if (this.visiblePropertiesNames.containsKey(property)) {
+				return this.visiblePropertiesNames.get(property);
 			} else {
 				return property;
 			}
@@ -121,21 +133,17 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		if (columnIndex < this.getColumnCount()) {
-			String property = this.properties.get(columnIndex);
+			String property = this.visibleProperties.get(columnIndex);
 			LOGGER.debug("Get column class for property: " + property);
-			if (this.propertiesFields.containsKey(property)) {
-				return this.propertiesFields.get(property).getType();
-			} else {
-				return Object.class;
-			}
+			return this.classProperties.get(property);
 		}
 		LOGGER.debug("Get column class overflow");
-		return null;
+		return Object.class;
 	}
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return this.editableProperties.contains(this.getColumnProperty(columnIndex));
+		return this.setterProperties.keySet().contains(this.getColumnProperty(columnIndex));
 	}
 
 	@Override
@@ -143,9 +151,9 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 		B bean = this.getRow(rowIndex);
 		if (bean != null) {
 			if (columnIndex >= 0 && columnIndex < this.getColumnCount()) {
-				String property = this.properties.get(columnIndex);
+				String property = this.visibleProperties.get(columnIndex);
 				try {
-					return this.propertiesFields.get(property).get(bean);
+					return this.getterProperties.get(property).invoke(bean);
 				} catch (Exception e) {
 					LOGGER.warn("Fail get value", e);
 				}
@@ -159,10 +167,9 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 		B bean = this.getRow(rowIndex);
 		if (bean != null) {
 			if (columnIndex >= 0 && columnIndex < this.getColumnCount()) {
-				String property = this.properties.get(columnIndex);
+				String property = this.visibleProperties.get(columnIndex);
 				try {
-					Field field = this.propertiesFields.get(property);
-					field.set(bean, value);
+					this.setterProperties.get(property).invoke(bean, value);
 				} catch (Exception e) {
 					LOGGER.warn("Fail set value", e);
 				}
@@ -192,7 +199,7 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	 */
 	public String getColumnProperty(int columnIndex) {
 		if (columnIndex < this.getColumnCount()) {
-			return this.properties.get(columnIndex);
+			return this.visibleProperties.get(columnIndex);
 		}
 		return null;
 	}
@@ -208,6 +215,24 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 			int size = this.getRowCount();
 			this.rowBeans.add(rowBean);
 			this.fireTableRowsInserted(size, size);
+		}
+	}
+
+	/**
+	 * Permite agregar una lista de beans al modelo de la tabla.
+	 * 
+	 * @param rowBeans
+	 *            El listado de los beans que vamos a agregar al modelo. En caso que este valor sea <code>null</code> o este vacia la lista, no se va
+	 *            a insertar nada.
+	 */
+	public void addRows(Collection<B> rowBeans) {
+		if (CollectionUtil.isNotEmpty(rowBeans)) {
+			int from = this.getRowCount();
+			for (B rowBean : rowBeans) {
+				this.rowBeans.add(rowBean);
+			}
+			int to = this.getRowCount();
+			this.fireTableRowsInserted(from, to);
 		}
 	}
 
@@ -239,6 +264,19 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	}
 
 	/**
+	 * Permite quitar una linea dentro de la tabla.
+	 * 
+	 * @param rowBean
+	 *            La fila dentro de la tabla quer vamos a quitar.
+	 */
+	public void removeRow(B rowBean) {
+		int index = this.getIndex(rowBean);
+		if (index != INDEX_NOT_FOUND) {
+			this.removeRow(index);
+		}
+	}
+
+	/**
 	 * Permite saber si un bean se encuentra dentro del modelo o no.
 	 * 
 	 * @param rowBean
@@ -263,7 +301,7 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	 * Permite recuperar el indice del modelo en el que se encuentra el bean que tenemos.
 	 * 
 	 * @param rowBean
-	 *            El bean del que queremos saber el indice. En caso que sea <code>null</code> retornamos -1.
+	 *            El bean del que queremos saber el indice. En caso que sea <code>null</code> retornamos {@link BaseTableModel#INDEX_NOT_FOUND}.
 	 * @return El indice (comenzando desde 0) donde se encuentra el bean dentro del modelo, en caso de el bean sea <code>null</code> o no se
 	 *         encuentre, retornamos -1.
 	 */

@@ -40,7 +40,7 @@ public class TableEvent<E extends RowBean> extends BaseEvent<E> {
 	 * @return Las entidades.
 	 */
 	public Collection<E> getSelectedEntities() {
-		return Collections.unmodifiableCollection(this.table.getSelectedValues());
+		return Collections.unmodifiableCollection(this.table.getValues());
 	}
 
 	/**

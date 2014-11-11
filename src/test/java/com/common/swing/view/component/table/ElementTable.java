@@ -1,4 +1,4 @@
-package com.common.swing.view.component.list;
+package com.common.swing.view.component.table;
 
 import java.util.HashMap;
 import java.util.Map;
