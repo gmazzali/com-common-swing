@@ -1,6 +1,6 @@
 package com.common.swing.domain.exception;
 
-import com.common.util.domain.exception.UncheckedException;
+import com.common.util.domain.exception.ViewException;
 import com.common.util.domain.exception.error.ErrorDetail;
 import com.common.util.domain.exception.error.Errors;
 
@@ -11,7 +11,7 @@ import com.common.util.domain.exception.error.Errors;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class SwingException extends UncheckedException {
+public class SwingException extends ViewException {
 	private static final long serialVersionUID = 1L;
 
 	/**
