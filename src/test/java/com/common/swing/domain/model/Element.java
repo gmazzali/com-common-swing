@@ -10,7 +10,7 @@ import org.springframework.beans.BeanUtils;
 import com.common.swing.view.bean.EditBean;
 import com.common.swing.view.bean.RowBean;
 import com.common.swing.view.bean.SearchBean;
-import com.common.util.domain.model.Entity;
+import com.common.util.domain.model.entity.Entity;
 
 /**
  * La clase de pruebas.
