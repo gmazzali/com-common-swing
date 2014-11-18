@@ -19,7 +19,7 @@ import com.common.util.domain.model.entity.Entity;
  * @author Guillermo Mazzali
  * @version 1.0
  */
-public class Element extends Entity<Long> implements RowBean, SearchBean, EditBean {
+public class Element extends Entity<Long> implements RowBean, SearchBean, EditBean<Element> {
 	private static final long serialVersionUID = 1L;
 
 	public interface Attribute {
@@ -76,6 +76,18 @@ public class Element extends Entity<Long> implements RowBean, SearchBean, EditBe
 	@Override
 	public Long getId() {
 		return this.id;
+	}
+
+	@Override
+	public void initialize() {
+		this.name = "";
+	}
+
+	@Override
+	public Element getEntity() {
+		Element element = new Element();
+		BeanUtils.copyProperties(this, element);
+		return element;
 	}
 
 	public Long getCode() {

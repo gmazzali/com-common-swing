@@ -18,7 +18,7 @@ import com.common.swing.view.listener.EditListener;
  * @param <E>
  *            La clase de los elementos que vamos a editar.
  */
-public class EditAction<E extends EditBean> extends BaseAction<E> {
+public class EditAction<E extends EditBean<?>> extends BaseAction<E> {
 	private static final long serialVersionUID = 1L;
 
 	/**

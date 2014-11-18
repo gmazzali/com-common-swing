@@ -36,7 +36,7 @@ import com.crud.swing.view.form.util.EditType;
  * @param <E>
  *            La clase de beans que vamos a desplegar dentro de este panel.
  */
-public abstract class BaseEditForm<E extends EditBean> extends JPanel implements BaseForm {
+public abstract class BaseEditForm<E extends EditBean<?>> extends JPanel implements BaseForm {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -58,7 +58,7 @@ public abstract class BaseEditForm<E extends EditBean> extends JPanel implements
 	/**
 	 * El elemento de exclusividad de la busqueda.
 	 */
-	private Object editMutex = new Object();
+	private final Object editMutex = new Object();
 
 	/**
 	 * Permite inicializar los componentes del panel.
@@ -88,6 +88,18 @@ public abstract class BaseEditForm<E extends EditBean> extends JPanel implements
 		this.afterInit();
 	}
 
+	public void initNewForm(BaseContainer baseContainer, CallbackEdit<E> callbackEdit, final E newBean) {
+		this.initForm(baseContainer, callbackEdit, newBean, EditType.NEW);
+	}
+
+	public void initEditForm(BaseContainer baseContainer, CallbackEdit<E> callbackEdit, final E editBean) {
+		this.initForm(baseContainer, callbackEdit, editBean, EditType.EDIT);
+	}
+
+	public void initViewForm(BaseContainer baseContainer, CallbackEdit<E> callbackEdit, final E viewBean) {
+		this.initForm(baseContainer, callbackEdit, viewBean, EditType.VIEW);
+	}
+
 	/**
 	 * Se encarga de inicializar el formulario de acuerdo al bean recibido y al tipo que queremos.
 	 * 
@@ -96,35 +108,36 @@ public abstract class BaseEditForm<E extends EditBean> extends JPanel implements
 	 * @param callbackEdit
 	 *            El callback de edición.
 	 * @param bean
-	 *            El elemento que vamos a tener dentro de este panel.
+	 *            El elemento que vamos a tener dentro de este panel. Si es un panel de alta, se debe recibir un elemento nuevo.
 	 * @param type
 	 *            El tipo de formulario que vamos a inicializar, puede ser {@link EditType#NEW}, {@link EditType#EDIT} o {@link EditType#VIEW}
 	 */
-	public void initForm(BaseContainer baseContainer, CallbackEdit<E> callbackEdit, final E bean, EditType type) {
+	protected void initForm(BaseContainer baseContainer, CallbackEdit<E> callbackEdit, final E bean, EditType type) {
 		VerifierUtil.checkNotNull(bean, "The bean cannot be null");
 		VerifierUtil.checkNotNull(callbackEdit, "The callback cannot be null");
+		type = type != null ? type : EditType.VIEW;
 
 		synchronized (editMutex) {
 			this.callbackEdit = callbackEdit;
 			this.editPanel.emptyFields();
 			this.editPanel.setBean(bean);
 
-			if (type == null) {
-				this.editPanel.setType(EditType.VIEW);
-			} else {
-				this.editPanel.setType(type);
-			}
-
-			if (this.editPanel.getType() == EditType.VIEW) {
+			if (type == EditType.VIEW) {
 				this.editPanel.setReadOnly(true);
 			} else {
 				this.editPanel.setReadOnly(false);
 			}
 
 			if (baseContainer != null) {
-				baseContainer.setTitle(this.titles.get(this.editPanel.getType()));
+				baseContainer.setTitle(this.titles.get(type));
 			}
 		}
+	}
+
+	/**
+	 * Permite actualizar los estados de los botones de las acciones de acuerdo al bean que tenemos aca dentro.
+	 */
+	protected void updateActionButtons(final E bean) {
 		// Actualizamos los botones.
 		new Thread() {
 			@Override
@@ -158,7 +171,6 @@ public abstract class BaseEditForm<E extends EditBean> extends JPanel implements
 	 * 
 	 * @return Las acciones por omisión para la edición.
 	 */
-	@SuppressWarnings("unchecked")
 	protected Collection<EditAction<E>> getDefaultEditActions() {
 		EditListener<E> confirmListener = new EditListener<E>() {
 			private static final long serialVersionUID = 1L;

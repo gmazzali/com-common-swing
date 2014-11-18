@@ -15,7 +15,7 @@ import com.common.swing.view.event.EditEvent;
  * @param <E>
  *            La clase de los elementos que vamos a tener dentro del panel de edición.
  */
-public interface EditListener<E extends EditBean> extends Serializable {
+public interface EditListener<E extends EditBean<?>> extends Serializable {
 
 	/**
 	 * Permite disparar un evento en caso de una acción en la edición.

@@ -14,7 +14,7 @@ import com.common.swing.view.bean.EditBean;
  * @param <E>
  *            El tipo de objeto que vamos a editar.
  */
-public interface CallbackEdit<E extends EditBean> extends Serializable {
+public interface CallbackEdit<E extends EditBean<?>> extends Serializable {
 
 	/**
 	 * Permite confirmar un formulario de alta / modificación / visualización.

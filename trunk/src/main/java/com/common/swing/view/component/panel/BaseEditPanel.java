@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import com.common.swing.domain.exception.SwingException;
 import com.common.swing.view.bean.EditBean;
 import com.common.util.business.tool.VerifierUtil;
-import com.crud.swing.view.form.util.EditType;
 
 /**
  * La clase que permite definir un panel donde vamos a desplegar los campos para la edición o visualización de datos.
@@ -19,13 +18,9 @@ import com.crud.swing.view.form.util.EditType;
  * @param <B>
  *            El bean de edición que vamos a manipular dentro de este panel.
  */
-public abstract class BaseEditPanel<B extends EditBean> extends JPanel implements BasePanel {
+public abstract class BaseEditPanel<B extends EditBean<?>> extends JPanel implements BasePanel {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * El tipo de panel.
-	 */
-	private EditType type;
 	/**
 	 * El bean que vamos a editar.
 	 */
@@ -65,25 +60,6 @@ public abstract class BaseEditPanel<B extends EditBean> extends JPanel implement
 		VerifierUtil.checkNotNull(bean, "The bean cannot be null");
 		this.bean = bean;
 		this.fromBeanToField(this.bean);
-	}
-
-	/**
-	 * Permite recuperar el tipo de formulario.
-	 * 
-	 * @return El tipo de formulario.
-	 */
-	public EditType getType() {
-		return type;
-	}
-
-	/**
-	 * Permite cargar el tipo de panel.
-	 * 
-	 * @param type
-	 *            El tipo de panel.
-	 */
-	public void setType(EditType type) {
-		this.type = type;
 	}
 
 	/**
