@@ -148,7 +148,6 @@ public abstract class BaseSearchForm<B extends SearchBean, E extends Serializabl
 	 * 
 	 * @return Las acciones por omisión del filtro de búsqueda.
 	 */
-	@SuppressWarnings("unchecked")
 	protected Collection<SearchAction<B>> getDefaultFilterActions() {
 		SearchListener<B> searchFilterListener = new SearchListener<B>() {
 			private static final long serialVersionUID = 1L;

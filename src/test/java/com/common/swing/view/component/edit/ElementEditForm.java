@@ -9,7 +9,6 @@ import com.common.swing.view.action.EditAction;
 import com.common.swing.view.component.panel.BaseEditPanel;
 import com.common.swing.view.decorator.ButtonDecorator;
 import com.crud.swing.view.form.edit.BaseEditForm;
-import com.crud.swing.view.form.util.EditType;
 
 /**
  * El formulario de edición de entidades.
@@ -80,6 +79,6 @@ public class ElementEditForm extends BaseEditForm<Element> {
 
 	@Override
 	protected boolean isEnabledConfirmButton(Element entity) {
-		return this.getEditPanel().getType() != EditType.VIEW;
+		return true;
 	}
 }

@@ -12,6 +12,6 @@ import com.common.swing.view.bean.EditBean;
  * @param <E>
  *            La clase de elementos que contiene el filtro que disparo el evento.
  */
-public class EditEvent<E extends EditBean> extends BaseEvent<E> {
+public class EditEvent<E extends EditBean<?>> extends BaseEvent<E> {
 	private static final long serialVersionUID = 1L;
 }

@@ -12,13 +12,13 @@ import com.common.swing.view.bean.EditBean;
  * @param <E>
  *            El bean de edición.
  */
-public class EditActionParameter<E extends EditBean> extends BaseActionParameter<E> {
+public class EditActionParameter<E extends EditBean<?>> extends BaseActionParameter<E> {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * La entidad de edición.
 	 */
-	private E entity;
+	private final E entity;
 
 	/**
 	 * El constructor de un parámetro.
