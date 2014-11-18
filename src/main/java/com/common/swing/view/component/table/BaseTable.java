@@ -92,8 +92,6 @@ public abstract class BaseTable<B extends RowBean> extends JTable {
 	 * 
 	 * @param visibleProperties
 	 *            El listado de las propiedades que vamos a listar.
-	 * @param editableProperties
-	 *            El listado de las propiedades que vamos a poder editar dentro de la tabla.
 	 * @param visiblePropertiesName
 	 *            El mapa de los nombres de las propiedades que vamos a listar.
 	 * @param visiblePropertiesWidth

@@ -24,12 +24,12 @@ public class SearchAction<E extends SearchBean> extends BaseAction<E> {
 	/**
 	 * El escuchador del filtro de búsqueda.
 	 */
-	private SearchListener<E> searchListener;
+	private final SearchListener<E> searchListener;
 
 	/**
 	 * El constructor de una acción de un filtro de búsqueda.
 	 * 
-	 * @param filterListener
+	 * @param searchListener
 	 *            El escuchador del filtro de búsqueda.
 	 * @param buttonDecorator
 	 *            El decorador del botón.

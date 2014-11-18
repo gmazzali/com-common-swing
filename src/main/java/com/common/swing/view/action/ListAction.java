@@ -25,7 +25,7 @@ public class ListAction<E extends RowBean> extends BaseAction<E> {
 	/**
 	 * Es escuchador de la acción.
 	 */
-	private ListListener<E> listListener;
+	private final ListListener<E> listListener;
 	/**
 	 * La lista base.
 	 */
@@ -36,7 +36,7 @@ public class ListAction<E extends RowBean> extends BaseAction<E> {
 	 * 
 	 * @param list
 	 *            La lista sobre la que vamos a crear la acción.
-	 * @param tableListener
+	 * @param listListener
 	 *            El escuchador de la acción.
 	 * @param buttonDecorator
 	 *            El decorador del botón.

@@ -27,11 +27,20 @@ public class ListEvent<E extends RowBean> extends BaseEvent<E> {
 	/**
 	 * Crea un evento de la lista.
 	 * 
-	 * @param table
+	 * @param list
 	 *            La lista que disparo el evento.
 	 */
 	public ListEvent(BaseList<E> list) {
 		this.list = list;
+	}
+
+	/**
+	 * Retorna la entidad seleccionada de la lista.
+	 * 
+	 * @return La entidad.
+	 */
+	public E getSelectedEntity() {
+		return this.list.getValue();
 	}
 
 	/**

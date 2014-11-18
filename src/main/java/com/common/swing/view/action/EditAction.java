@@ -24,12 +24,12 @@ public class EditAction<E extends EditBean> extends BaseAction<E> {
 	/**
 	 * El escuchador de la edición.
 	 */
-	private EditListener<E> editListener;
+	private final EditListener<E> editListener;
 
 	/**
 	 * El constructor del escuchador de la edición.
 	 * 
-	 * @param filterListener
+	 * @param editListener
 	 *            El escuchador de la edición.
 	 * @param buttonDecorator
 	 *            El decorador del botón.

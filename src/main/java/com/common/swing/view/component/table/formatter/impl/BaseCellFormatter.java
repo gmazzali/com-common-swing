@@ -183,7 +183,7 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	 * Permite formatear el objeto que corresponde a la celda. Previamente ya se valida que el mismo no sea <code>null</code>.
 	 * 
 	 * <pre>
-	 * BEAN -> format -> CELL VIEW
+	 * BEAN - format - CELL VIEW
 	 * </pre>
 	 * 
 	 * @param beanValue
@@ -196,7 +196,7 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	 * Permite parsear el valor ingreado en la celda al valor de la variable.
 	 * 
 	 * <pre>
-	 * CELL EDIT -> parse -> BEAN
+	 * CELL EDIT - parse - BEAN
 	 * </pre>
 	 * 
 	 * @param editComponent
@@ -210,7 +210,7 @@ public abstract class BaseCellFormatter<C extends Component> extends AbstractCel
 	 * Permite cargar dentro del campo de edición el valor de la variable.
 	 * 
 	 * <pre>
-	 * BEAN -> setValue -> CELL EDIT
+	 * BEAN - setValue - CELL EDIT
 	 * </pre>
 	 * 
 	 * @param beanValue

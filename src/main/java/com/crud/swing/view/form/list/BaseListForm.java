@@ -41,7 +41,7 @@ public abstract class BaseListForm<B extends RowBean> extends JPanel implements 
 	/**
 	 * El objecto que permite el acceso exclusivo a las acciones.
 	 */
-	private Object actionsMutex = new Object();
+	private final Object actionsMutex = new Object();
 
 	/**
 	 * Metodo que permite iniciar el panel de la tabla.
@@ -159,6 +159,8 @@ public abstract class BaseListForm<B extends RowBean> extends JPanel implements 
 
 	/**
 	 * Retorna el listado de las acciones de la lista.
+	 * 
+	 * @return La lista de acción de la lista.
 	 */
 	protected abstract Collection<ListAction<B>> getListActions();
 }

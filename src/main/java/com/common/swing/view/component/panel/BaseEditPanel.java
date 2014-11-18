@@ -56,7 +56,8 @@ public abstract class BaseEditPanel<B extends EditBean> extends JPanel implement
 	/**
 	 * Se encarga de cargar el bean dentro del panel.
 	 * 
-	 * @return El bean que vamos a cargar dentro de la ventana.
+	 * @param bean
+	 *            El bean que vamos a cargar dentro de la ventana.
 	 * @throws SwingException
 	 *             En caso de algún problema al cargar el bean al panel.
 	 */

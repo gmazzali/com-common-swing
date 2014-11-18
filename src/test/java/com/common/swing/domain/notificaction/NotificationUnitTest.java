@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.common.swing.view.Constants;
 import com.common.swing.view.notification.Notificaction;
 import com.common.swing.view.notification.util.ConfirmReturnType;
 import com.common.swing.view.notification.util.ConfirmType;
@@ -28,7 +29,9 @@ public class NotificationUnitTest {
 	 */
 	@Test
 	public void testShowMessage() {
-		Notificaction.showMessage(null, "mensaje de información");
+		if (Constants.visible) {
+			Notificaction.showMessage(null, "mensaje de información");
+		}
 	}
 
 	/**
@@ -36,7 +39,9 @@ public class NotificationUnitTest {
 	 */
 	@Test
 	public void testShowErrorMessage() {
-		Notificaction.showErrorMessage(null, "mensaje de error");
+		if (Constants.visible) {
+			Notificaction.showErrorMessage(null, "mensaje de error");
+		}
 	}
 
 	/**
@@ -44,13 +49,16 @@ public class NotificationUnitTest {
 	 */
 	@Test
 	public void testShowConfirmMessage() {
-		Assert.assertEquals(ConfirmReturnType.CLOSE, Notificaction.showConfirmMessage(null, ConfirmType.YES_NO, "mensaje de confirmación por cierre"));
+		if (Constants.visible) {
+			Assert.assertEquals(ConfirmReturnType.CLOSE,
+					Notificaction.showConfirmMessage(null, ConfirmType.YES_NO, "mensaje de confirmación por cierre"));
 
-		Assert.assertEquals(ConfirmReturnType.YES, Notificaction.showConfirmMessage(null, ConfirmType.YES_NO, "mensaje de confirmación positiva"));
+			Assert.assertEquals(ConfirmReturnType.YES, Notificaction.showConfirmMessage(null, ConfirmType.YES_NO, "mensaje de confirmación positiva"));
 
-		Assert.assertEquals(ConfirmReturnType.NO, Notificaction.showConfirmMessage(null, ConfirmType.YES_NO, "mensaje de confirmación negativa"));
+			Assert.assertEquals(ConfirmReturnType.NO, Notificaction.showConfirmMessage(null, ConfirmType.YES_NO, "mensaje de confirmación negativa"));
 
-		Assert.assertEquals(ConfirmReturnType.CANCEL,
-				Notificaction.showConfirmMessage(null, ConfirmType.YES_NO_CANCEL, "mensaje de confirmación de cancelación"));
+			Assert.assertEquals(ConfirmReturnType.CANCEL,
+					Notificaction.showConfirmMessage(null, ConfirmType.YES_NO_CANCEL, "mensaje de confirmación de cancelación"));
+		}
 	}
 }

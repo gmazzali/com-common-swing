@@ -68,6 +68,8 @@ public abstract class BaseTableModel<B extends RowBean> extends AbstractTableMod
 	 * 
 	 * @param visibleProperties
 	 *            Las propiedades que vamos a desplegar en las columnas de la tabla.
+	 * @param editableProperties
+	 *            Las propiedades que vamos a poder editar dentro de la tabla.
 	 * @param visiblePropertiesName
 	 *            Los nombre de las columnas, discriminados por propiedades.
 	 */

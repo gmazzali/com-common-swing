@@ -194,6 +194,7 @@ public class Notificaction {
 	 *            La clave del mensaje de confirmación que vamos a usar para la notificación.
 	 * @param messageParameter
 	 *            Los parámetros para mensaje de confirmación.
+	 * @return El tipo de opción que ingreso el usuario.
 	 */
 	public static ConfirmReturnType showConfirmMessage(Component component, ConfirmType confirmType, String messageKey, Object... messageParameter) {
 		return Notificaction.showConfirmMessage(component, confirmType, "notification.message.confirm.title.default", messageKey, messageParameter);
@@ -214,6 +215,7 @@ public class Notificaction {
 	 *            La clave del mensaje de confirmación que vamos a usar para la notificación.
 	 * @param messageParameter
 	 *            Los parámetros para mensaje de confirmación.
+	 * @return El tipo de opción que ingreso el usuario.
 	 */
 	public static ConfirmReturnType showConfirmMessage(Component component, ConfirmType confirmType, String titleKey, String messageKey,
 			Object... messageParameter) {
@@ -237,6 +239,7 @@ public class Notificaction {
 	 *            La clave del mensaje de confirmación que vamos a usar para la notificación.
 	 * @param messageParameter
 	 *            Los parámetros para mensaje de confirmación.
+	 * @return El tipo de opción que ingreso el usuario.
 	 */
 	public static ConfirmReturnType showConfirmMessage(Component component, ConfirmType confirmType, Icon icon, String titleKey, String messageKey,
 			Object... messageParameter) {
