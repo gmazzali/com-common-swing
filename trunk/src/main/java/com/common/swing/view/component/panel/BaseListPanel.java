@@ -34,14 +34,14 @@ public abstract class BaseListPanel<B extends RowBean> extends JPanel implements
 	 * Permite inicializar los componentes del panel.
 	 */
 	@PostConstruct
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void init() {
 		this.removeAll();
 		this.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(this.getWidthSize(), this.getHeightSize()));
 
 		this.list = this.createList();
-		ListCellRenderer<B> listCellRenderer = (ListCellRenderer<B>) this.getFormatterProperty();
+		ListCellRenderer listCellRenderer = this.getFormatterProperty();
 		if (listCellRenderer != null) {
 			this.list.setCellRenderer(listCellRenderer);
 		}

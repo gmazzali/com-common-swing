@@ -7,7 +7,6 @@ import com.common.swing.domain.model.Element;
 import com.common.swing.domain.model.Sexo;
 import com.common.swing.view.bean.RowBean;
 import com.common.swing.view.component.panel.BaseTablePanel;
-import com.common.swing.view.component.table.BaseTable;
 import com.common.swing.view.component.table.formatter.CellFormatter;
 import com.common.swing.view.component.table.formatter.impl.BigDecimalCellFormatter;
 import com.common.swing.view.component.table.formatter.impl.BooleanComboCellFormatter;

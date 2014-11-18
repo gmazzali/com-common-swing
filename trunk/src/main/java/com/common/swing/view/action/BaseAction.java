@@ -28,7 +28,7 @@ public abstract class BaseAction<E extends Serializable> implements Serializable
 	/**
 	 * El decorador del botón.
 	 */
-	private ButtonDecorator buttonDecorator;
+	private final ButtonDecorator buttonDecorator;
 
 	/**
 	 * Contructor de una acción base.
@@ -59,9 +59,11 @@ public abstract class BaseAction<E extends Serializable> implements Serializable
 	 * 
 	 * @param parameter
 	 *            El parámetro de la acción.
+	 * @param <P>
+	 *            El tipo de parametro que vamos a recibir.
 	 * @return <code>true</code> en caso de que la acción este habilitada para la entidad, en caso contrario, retorna <code>false</code>.
 	 */
-	public <P extends BaseActionParameter<E>> boolean  isEnabledAction(P parameter) {
+	public <P extends BaseActionParameter<E>> boolean isEnabledAction(P parameter) {
 		return true;
 	}
 
@@ -70,6 +72,8 @@ public abstract class BaseAction<E extends Serializable> implements Serializable
 	 * 
 	 * @param parameter
 	 *            El parámetro de la acción.
+	 * @param <P>
+	 *            El tipo de parametro que vamos a recibir.
 	 * @return <code>true</code> en caso de que la acción este visible para la entidad, en caso contrario, retorna <code>false</code>.
 	 */
 	public <P extends BaseActionParameter<E>> boolean isVisibleAction(P parameter) {

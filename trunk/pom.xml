@@ -7,9 +7,10 @@
 	<artifactId>common.swing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+
 	<properties>
-		<spring.richclient.version>1.1.0</spring.richclient.version>
-		<jdk.version>1.6</jdk.version>
+		<output.dorectory>C:/</output.dorectory>
+		<jdk.version>1.7</jdk.version>
 	</properties>
 
 	<build>
@@ -20,14 +21,15 @@
 				<version>2.9</version>
 				<executions>
 					<execution>
-						<id>javadoc-jar</id>
+						<id>javadoc</id>
 						<phase>package</phase>
+						<configuration>
+							<includeDependencySources>false</includeDependencySources>
+							<outputDirectory>${output.directory}</outputDirectory>
+						</configuration>
 						<goals>
 							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<includeDependencySources>false</includeDependencySources>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -38,8 +40,12 @@
 				<version>2.2.1</version>
 				<executions>
 					<execution>
-						<id>attach-sources</id>
+						<id>sources</id>
 						<phase>package</phase>
+						<configuration>
+							<excludeResources>true</excludeResources>
+							<outputDirectory>${output.directory}</outputDirectory>
+						</configuration>
 						<goals>
 							<goal>jar</goal>
 						</goals>
@@ -50,13 +56,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.2</version>
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
-					<compilerVersion>${jdk.version}</compilerVersion>
-					<verbose>true</verbose>
-					<fork>true</fork>
 				</configuration>
 			</plugin>
 
@@ -67,6 +70,7 @@
 				<configuration>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
+					<outputDirectory>${output.directory}</outputDirectory>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
@@ -75,56 +79,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.7</version><!--$NO-MVN-MAN-VER$ -->
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>install</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>
-								${project.build.directory}/lib
-							</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[2.7,)</versionRange>
-										<goals>
-											<goal>copy-dependencies</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 	<dependencies>
@@ -177,7 +132,7 @@
 		<!-- /COMMON -->
 
 		<!-- ADD-ON -->
-		
+
 		<dependency>
 			<groupId>com.toedter</groupId>
 			<artifactId>jcalendar</artifactId>
