@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import com.common.swing.view.notification.util.ConfirmReturnType;
 import com.common.swing.view.notification.util.ConfirmType;
 import com.common.swing.view.notification.util.NotificactionType;
-import com.common.util.business.holder.HolderMessage;
+import com.common.util.business.service.MessageService;
 import com.common.util.domain.exception.error.ErrorDetail;
 import com.common.util.domain.exception.error.Errors;
 
@@ -22,6 +22,21 @@ import com.common.util.domain.exception.error.Errors;
  * @version 1.0
  */
 public class Notificaction {
+
+	/**
+	 * El servicio para los mensajes.
+	 */
+	private static MessageService messageService;
+
+	/**
+	 * Permite cargar el servicio de los mensajes.
+	 * 
+	 * @param messageService
+	 *            El servicio para los mensajes.
+	 */
+	public void setMessageService(MessageService messageService) {
+		Notificaction.messageService = messageService;
+	}
 
 	/**
 	 * Crea una ventana informativa con titulo definido por la clave <code>notification.message.info.title.default</code> y el mensaje definido por su
@@ -72,7 +87,7 @@ public class Notificaction {
 	 *            Los parámetros para mensaje.
 	 */
 	public static void showMessage(Component component, Icon icon, String titleKey, String messageKey, Object... messageParameter) {
-		JOptionPane.showMessageDialog(component, HolderMessage.getMessage(messageKey, messageParameter), HolderMessage.getMessage(titleKey),
+		JOptionPane.showMessageDialog(component, messageService.getMessage(messageKey, messageParameter), messageService.getMessage(titleKey),
 				NotificactionType.INFO.getType(), icon);
 	}
 
@@ -125,7 +140,7 @@ public class Notificaction {
 	 *            Los parámetros para mensaje de error.
 	 */
 	public static void showErrorMessage(Component component, Icon icon, String titleKey, String messageKey, Object... messageParameter) {
-		JOptionPane.showMessageDialog(component, HolderMessage.getMessage(messageKey, messageParameter), HolderMessage.getMessage(titleKey),
+		JOptionPane.showMessageDialog(component, messageService.getMessage(messageKey, messageParameter), messageService.getMessage(titleKey),
 				NotificactionType.ERROR.getType(), icon);
 	}
 
@@ -174,10 +189,10 @@ public class Notificaction {
 	public static void showErrorMessage(Component component, Icon icon, String titleKey, Errors errors) {
 		StringBuffer buffer = new StringBuffer();
 		for (ErrorDetail errorDetail : errors.getErrorDetails()) {
-			buffer.append(HolderMessage.getMessage(errorDetail.getDefaultMessage(), errorDetail.getKeyMessage(), errorDetail.getParameters()));
+			buffer.append(messageService.getMessage(errorDetail.getDefaultMessage(), errorDetail.getKeyMessage(), errorDetail.getParameters()));
 			buffer.append("\n");
 		}
-		JOptionPane.showMessageDialog(component, buffer.toString(), HolderMessage.getMessage(titleKey), NotificactionType.ERROR.getType(), icon);
+		JOptionPane.showMessageDialog(component, buffer.toString(), messageService.getMessage(titleKey), NotificactionType.ERROR.getType(), icon);
 	}
 
 	/**
@@ -246,7 +261,7 @@ public class Notificaction {
 		if (confirmType == null) {
 			confirmType = ConfirmType.DEFAULT;
 		}
-		return ConfirmReturnType.get(JOptionPane.showConfirmDialog(component, HolderMessage.getMessage(messageKey, messageParameter),
-				HolderMessage.getMessage(titleKey), confirmType.getType(), NotificactionType.CONFIRM.getType(), icon));
+		return ConfirmReturnType.get(JOptionPane.showConfirmDialog(component, messageService.getMessage(messageKey, messageParameter),
+				messageService.getMessage(titleKey), confirmType.getType(), NotificactionType.CONFIRM.getType(), icon));
 	}
 }
