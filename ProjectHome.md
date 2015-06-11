@@ -1,0 +1,1 @@
+El proyecto de la librería común para los proyectos que van a realizarse sobre el framework SWING.
